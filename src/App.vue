@@ -9,18 +9,16 @@
     />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <CameraAccess />
     </div>
   </header>
 
   <main>
-    <TheWelcome />
   </main>
 </template>
 
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
-import TheWelcome from "./components/TheWelcome.vue";
+import CameraAccess from '@/components/CameraAccess.vue'
 </script>
 
 <style scoped>
