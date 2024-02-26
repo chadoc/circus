@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
-import TheWelcome from "./components/TheWelcome.vue";
-</script>
-
 <template>
   <header>
     <img
@@ -22,6 +17,11 @@ import TheWelcome from "./components/TheWelcome.vue";
     <TheWelcome />
   </main>
 </template>
+
+<script setup lang="ts">
+import HelloWorld from "./components/HelloWorld.vue";
+import TheWelcome from "./components/TheWelcome.vue";
+</script>
 
 <style scoped>
 header {
