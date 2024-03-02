@@ -19,7 +19,7 @@ const CANVAS_HEIGHT = 1000;
 
 const canvas1 = ref<HTMLCanvasElement>()
 const gameSpeed = ref(10)  // define speed of animation/game
-const numberOfEnemies = ref(10)
+const numberOfEnemies = ref(15)
 const enemies: Enemy[] = []
 
 
@@ -44,12 +44,14 @@ class Enemy {
   private spriteFrames: number
   private animationSpeed: number
   private image: any
+  private canvasWidth: number
 
   constructor(ctx: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
+    this.canvasWidth = canvasWidth
     this.image = new Image()
     this.image.src = enemyImg
     this.ctx = ctx
-    // this.speed = Math.random() * 6 - 1
+    this.speed = Math.random() * 4 + 1
     this.spriteWidth = 200
     this.spriteHeight = 150
     this.widthRatio = 1.2
@@ -64,8 +66,11 @@ class Enemy {
   }
 
   update() {
-    this.x += Math.random() * 5 - 2.5
-    this.y += Math.random() * 5 - 2.5
+    this.x -= this.speed
+    // this.y += Math.random() * 5 - 2.5
+    if (this.x + this.width < 0) {
+      this.x = this.canvasWidth
+    }
     if (gameFrame % this.animationSpeed === 0) {
       if (this.frame > this.spriteFrames - 2) {
         this.frame = 0
