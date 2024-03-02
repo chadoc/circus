@@ -1,12 +1,16 @@
 <template>
   <div>
-    <Background v-if="true" />
+    <Background v-if="false" />
     <Player v-if="false" />
+    <Enemy v-if="true" />
+    <CameraAccess v-if="false" />
   </div>
 </template>
 <script setup lang="ts">
 import Background from '@/components/Background.vue'
 import Player from '@/components/Player.vue'
+import Enemy from '@/components/Enemy.vue'
+import CameraAccess from '@/components/CameraAccess.vue'
 </script>
 <style scoped>
 #animationSelector {

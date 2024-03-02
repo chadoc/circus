@@ -8,10 +8,10 @@
 </template>
 <script setup lang="ts">
 import {onMounted, ref, unref} from 'vue'
-import clouds1 from '../assets/clouds1/1.png'
-import clouds2 from '../assets/clouds1/2.png'
-import clouds3 from '../assets/clouds1/3.png'
-import clouds4 from '../assets/clouds1/4.png'
+import clouds1 from '../assets/clouds4/1.png'
+import clouds2 from '../assets/clouds4/2.png'
+import clouds3 from '../assets/clouds4/3.png'
+import clouds4 from '../assets/clouds4/4.png'
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 700;
