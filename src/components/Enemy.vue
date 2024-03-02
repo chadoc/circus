@@ -8,10 +8,6 @@
 </template>
 <script setup lang="ts">
 import {onMounted, ref, unref} from 'vue'
-import clouds1 from '../assets/clouds1/1.png'
-import clouds2 from '../assets/clouds1/2.png'
-import clouds3 from '../assets/clouds1/3.png'
-import clouds4 from '../assets/clouds1/4.png'
 import enemyImg from '../assets/SpriteEnemy.png'
 
 const CANVAS_WIDTH = 500;
@@ -22,13 +18,7 @@ const gameSpeed = ref(20)  // define speed of animation/game
 const numberOfEnemies = ref(15)
 const enemies: Enemy[] = []
 
-
-
 let gameFrame = 0
-
-function nextFrame(gameFrame: number, maxFrame: number): AnimationFrame {
-  return Math.floor(gameFrame/gameSpeed.value) % maxFrame
-}
 
 class Enemy {
   private ctx: CanvasRenderingContext2D
@@ -48,6 +38,7 @@ class Enemy {
   private angle: number
   private angleSpeed: number
   private sinHeightRatio: number
+  private markedForDeletion: boolean
 
   constructor(ctx: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
     this.canvasWidth = canvasWidth
@@ -68,7 +59,7 @@ class Enemy {
     this.angle = Math.random() * 2
     this.angleSpeed = Math.random() * 0.2
     this.sinHeightRatio = Math.random() * 7 + 2
-
+    this.markedForDeletion = false
   }
 
   update() {

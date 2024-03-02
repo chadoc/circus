@@ -19,11 +19,20 @@ https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Manipulating_video_u
 https://dev.to/mathewthe2/using-html-canvas-to-snip-screenshots-of-your-video-4c4h
 https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Manipulating_video_using_canvas
 
+Orientation
+***********
+https://stackoverflow.com/questions/4378435/how-to-access-accelerometer-gyroscope-data-from-javascript
+https://developer.mozilla.org/en-US/docs/Web/API/Device_orientation_events/Detecting_device_orientation
+https://nerdhut.de/2020/02/11/smartphone-permissions-api-on-website/
+
 Gaming fw review
 ****************
 https://blog.logrocket.com/best-javascript-html5-game-engines/
 https://code.tutsplus.com/best-free-open-source-javascript-game-engines-and-libraries--cms-38277a
 https://code.tutsplus.com/best-free-open-source-javascript-game-engines-and-libraries--cms-38277a
+https://developer.mozilla.org/en-US/docs/Web/API/Accelerometer
+https://developer.mozilla.org/en-US/docs/Web/API/Sensor_APIs
+https://stackoverflow.com/questions/4474508/access-accelerometer-via-javascript-in-android
 
 Gaming framework
 ****************
@@ -43,3 +52,5 @@ Assets
 ******
 https://itch.io/game-assets/tag-parallax/tag-sky
 https://bevouliin.com/
+
+https://digitalmoons.itch.io/pixel-skies-demo
