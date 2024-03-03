@@ -3,6 +3,7 @@ import {Puppet} from '@/components/game/Puppet'
 import {Cloud} from '@/components/game/Cloud'
 import {Player} from '@/components/game/Player'
 import {Background} from '@/components/game/Background'
+import {PlayerShip} from '@/components/game/PlayerShip'
 
 class Level {
   private readonly maxPuppet = 10
@@ -43,11 +44,11 @@ class Level {
 class InputHandler implements InputController {
   private readonly supportedKeys: string[] = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
   private readonly keys: string[] = []
+  private touchX?: number
   private touchY?: number
   private readonly touchThreshold = 120
 
   constructor() {
-    this.touchY
     window.addEventListener('keydown', ({ key }: KeyboardEvent) => {
       if (this.supportedKeys.includes(key) && !this.hasKey(key)) {
         this.keys.push(key)
@@ -59,20 +60,29 @@ class InputHandler implements InputController {
       }
     })
     window.addEventListener('touchstart', (event: TouchEvent) => {
+      this.touchX = event.changedTouches[0].pageX
       this.touchY = event.changedTouches[0].pageY
     })
     window.addEventListener('touchmove', (event: TouchEvent) => {
-      const swipeDistance = event.changedTouches[0].pageY - this.touchY
-      if (swipeDistance < -this.touchThreshold && !this.hasKey('SwipeUp')) {
+      const swipeVerticalDistance = event.changedTouches[0].pageY - this.touchY
+      if (swipeVerticalDistance < -this.touchThreshold && !this.hasKey('SwipeUp')) {
         this.keys.push('SwipeUp')
-      } else if (swipeDistance > this.touchThreshold && !this.hasKey('SwipeDown')) {
+      } else if (swipeVerticalDistance > this.touchThreshold && !this.hasKey('SwipeDown')) {
         this.keys.push('SwipeDown')
       }
-      console.log('touchmove')
+
+      const swipeHorizontalDistance = event.changedTouches[0].pageX - this.touchX
+      if (swipeHorizontalDistance < -this.touchThreshold && !this.hasKey('SwipeLeft')) {
+        this.keys.push('SwipeLeft')
+      } else if (swipeHorizontalDistance > this.touchThreshold && !this.hasKey('SwipeRight')) {
+        this.keys.push('SwipeRight')
+      }
     })
     window.addEventListener('touchend', (event: TouchEvent) => {
       this.removeKey('SwipeUp')
       this.removeKey('SwipeDown')
+      this.removeKey('SwipeLeft')
+      this.removeKey('SwipeRight')
     })
   }
   private removeKey(key: string) {
@@ -92,6 +102,7 @@ class Game implements PuppetHandler {
   private puppets: Puppet[] = []
   private animations: DisplayedObject[] = []
   private player: Player
+  private ship: PlayerShip
   private background: Background
   private readonly level = new Level()
   private readonly input: InputHandler
@@ -103,6 +114,7 @@ class Game implements PuppetHandler {
     ctx.font = '50px Impact'
     this.input = new InputHandler()
     this.player = new Player(this)
+    this.ship = new PlayerShip(this)
     this.background = new Background(this)
   }
 
@@ -127,7 +139,8 @@ class Game implements PuppetHandler {
       ...[this.background],
       ...this.puppets,
       ...this.animations,
-      ...[this.player]
+      // ...[this.player],
+      ...[this.ship]
     ]
   }
 
@@ -152,8 +165,7 @@ class Game implements PuppetHandler {
       return
     }
     this.allObjects.forEach(o => o.draw())
-    this.player.draw()
-    this.drawScore()
+    // this.drawScore()
   }
 
   get isGameOver() {

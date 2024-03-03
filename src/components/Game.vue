@@ -6,8 +6,8 @@
     <CameraAccess v-if="false" />
     <Cloud v-if="false" />
     <Shout v-if="false" />
-    <FullGame v-if="false" />
-    <Ship v-if="true" />
+    <FullGame v-if="true" />
+    <Ship v-if="false" />
   </div>
 </template>
 <script setup lang="ts">
