@@ -6,7 +6,8 @@
     <CameraAccess v-if="false" />
     <Cloud v-if="false" />
     <Shout v-if="false" />
-    <FullGame v-if="true" />
+    <FullGame v-if="false" />
+    <Ship v-if="true" />
   </div>
 </template>
 <script setup lang="ts">
@@ -17,6 +18,7 @@ import CameraAccess from '@/components/CameraAccess.vue'
 import Cloud from '@/components/Cloud.vue'
 import Shout from '@/components/Shout.vue'
 import FullGame from '@/components/game/FullGame.vue'
+import Ship from '@/components/Ship.vue'
 </script>
 <style scoped>
 </style>
