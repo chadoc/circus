@@ -4,7 +4,8 @@
     <Player v-if="false" />
     <Enemy v-if="false" />
     <CameraAccess v-if="false" />
-    <Cloud v-if="true" />
+    <Cloud v-if="false" />
+    <Shout v-if="true" />
   </div>
 </template>
 <script setup lang="ts">
@@ -13,6 +14,7 @@ import Player from '@/components/Player.vue'
 import Enemy from '@/components/Enemy.vue'
 import CameraAccess from '@/components/CameraAccess.vue'
 import Cloud from '@/components/Cloud.vue'
+import Shout from '@/components/Shout.vue'
 </script>
 <style scoped>
 #animationSelector {

@@ -8,7 +8,7 @@
 </template>
 <script setup lang="ts">
 import {onMounted, ref, unref} from 'vue'
-import enemyImg from '../assets/SpriteEnemy.png'
+import enemyImg from '../assets/SpritePuppet.png'
 
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 1000;
