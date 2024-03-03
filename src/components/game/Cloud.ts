@@ -15,7 +15,6 @@ export class Cloud implements DisplayedObject {
   private size: number
 
   private frame: number
-  private animationSpeed: number
 
   private spriteWidth: number
   private spriteHeight: number
@@ -38,7 +37,6 @@ export class Cloud implements DisplayedObject {
     this.y = y
     this.size = size
     this.spriteFrames = 9
-    this.animationSpeed = 4
     this.frame = 0
     this.markedForDeletion = false
 

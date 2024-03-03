@@ -1,6 +1,8 @@
-import type {DisplayedObject, PuppetHandler} from '@/components/game/Draw'
+import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
 import {Puppet} from '@/components/game/Puppet'
 import {Cloud} from '@/components/game/Cloud'
+import {Player} from '@/components/game/Player'
+import {Background} from '@/components/game/Background'
 
 class Level {
   private readonly maxPuppet = 10
@@ -19,7 +21,7 @@ class Level {
   }
 
   get isGameOver() {
-    return this.missedPuppet > this.puppetMissThreshold
+    return false && this.missedPuppet > this.puppetMissThreshold
   }
 
   miss() {
@@ -38,18 +40,45 @@ class Level {
 }
 
 
+class InputHandler implements InputController {
+  private readonly supportedKeys: string[] = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
+  private readonly keys: string[] = []
+  constructor() {
+    window.addEventListener('keydown', ({ key }: KeyboardEvent) => {
+      if (this.supportedKeys.includes(key) && !this.hasKey(key)) {
+        this.keys.push(key)
+      }
+    })
+    window.addEventListener('keyup', ({ key }: KeyboardEvent) => {
+      if (this.supportedKeys.includes(key)) {
+        this.keys.splice(this.keys.indexOf(key), 1)
+      }
+    })
+
+  }
+  hasKey(key: string): boolean {
+    return this.keys.includes(key)
+  }
+}
+
 class Game implements PuppetHandler {
   readonly ctx: CanvasRenderingContext2D
   readonly collisionCtx: CanvasRenderingContext2D
   private puppets: Puppet[] = []
   private animations: DisplayedObject[] = []
+  private player: Player
+  private background: Background
   private readonly level = new Level()
+  private readonly input: InputHandler
 
   constructor(ctx: CanvasRenderingContext2D, collisionCtx: CanvasRenderingContext2D) {
     this.ctx = ctx
     this.collisionCtx = collisionCtx
     ctx.canvas.addEventListener('click', (e) => this.click(e))
     ctx.font = '50px Impact'
+    this.input = new InputHandler()
+    this.player = new Player(this)
+    this.background = new Background(this)
   }
 
   click(event: MouseEvent) {
@@ -70,8 +99,10 @@ class Game implements PuppetHandler {
 
   private get allObjects() {
     return [
+      ...[this.background],
       ...this.puppets,
-      ...this.animations
+      ...this.animations,
+      ...[this.player]
     ]
   }
 
@@ -87,9 +118,7 @@ class Game implements PuppetHandler {
       })
     }
 
-    this.allObjects.forEach(o => o.update(deltaTime))
-
-
+    this.allObjects.forEach(o => o.update(deltaTime, this.input))
   }
 
   draw() {
@@ -98,6 +127,7 @@ class Game implements PuppetHandler {
       return
     }
     this.allObjects.forEach(o => o.draw())
+    this.player.draw()
     this.drawScore()
   }
 

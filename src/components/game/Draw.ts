@@ -1,5 +1,5 @@
 export interface DisplayedObject {
-  update(deltaTime: number)
+  update(deltaTime: number, input: InputController)
   draw()
   mustDelete: boolean
 }
@@ -10,4 +10,8 @@ export interface PuppetHandler {
   miss()
   ctx: CanvasRenderingContext2D
   collisionCtx: CanvasRenderingContext2D
+}
+
+export interface InputController {
+  hasKey(key: string): boolean
 }

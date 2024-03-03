@@ -33,21 +33,18 @@ onMounted(() =>  {
 
 </script>
 <style scoped>
-#canvas1 {
+#canvas1, #collisionCanvas1 {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 5px solid white;
+  max-width: 100%;
+  max-height: 100%;
 }
 #collisionCanvas1 {
   //background: red;
   opacity: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
 }
 .hiddenAsset {
   display: none;
