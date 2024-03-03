@@ -14,4 +14,5 @@ export interface PuppetHandler {
 
 export interface InputController {
   hasKey(key: string): boolean
+  hasOneOf(...keys: string[]): boolean
 }

@@ -41,7 +41,7 @@ export class Player implements DisplayedObject {
     this.state = stateFor('idle')
     this.spriteFrames = this.state.frames
     this.frameY = frameY(this.state)
-    this.widthRatio = 1.2
+    this.widthRatio = 3
     this.spriteWidth = ShadowDogSprite.colWidth
     this.spriteHeight = ShadowDogSprite.rowHeight
     this.frame = 0
@@ -71,8 +71,8 @@ export class Player implements DisplayedObject {
       this.speed = 0
     }
 
-    if (input.hasKey('ArrowUp') && this.onGround) {
-      this.verticalSpeed -= 40
+    if (input.hasOneOf('ArrowUp', 'SwipeUp') && this.onGround) {
+      this.verticalSpeed -= 28
     }
 
     this.x += this.speed

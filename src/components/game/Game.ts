@@ -43,7 +43,11 @@ class Level {
 class InputHandler implements InputController {
   private readonly supportedKeys: string[] = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
   private readonly keys: string[] = []
+  private touchY?: number
+  private readonly touchThreshold = 120
+
   constructor() {
+    this.touchY
     window.addEventListener('keydown', ({ key }: KeyboardEvent) => {
       if (this.supportedKeys.includes(key) && !this.hasKey(key)) {
         this.keys.push(key)
@@ -51,13 +55,34 @@ class InputHandler implements InputController {
     })
     window.addEventListener('keyup', ({ key }: KeyboardEvent) => {
       if (this.supportedKeys.includes(key)) {
-        this.keys.splice(this.keys.indexOf(key), 1)
+        this.removeKey(key)
       }
     })
-
+    window.addEventListener('touchstart', (event: TouchEvent) => {
+      this.touchY = event.changedTouches[0].pageY
+    })
+    window.addEventListener('touchmove', (event: TouchEvent) => {
+      const swipeDistance = event.changedTouches[0].pageY - this.touchY
+      if (swipeDistance < -this.touchThreshold && !this.hasKey('SwipeUp')) {
+        this.keys.push('SwipeUp')
+      } else if (swipeDistance > this.touchThreshold && !this.hasKey('SwipeDown')) {
+        this.keys.push('SwipeDown')
+      }
+      console.log('touchmove')
+    })
+    window.addEventListener('touchend', (event: TouchEvent) => {
+      this.removeKey('SwipeUp')
+      this.removeKey('SwipeDown')
+    })
+  }
+  private removeKey(key: string) {
+    this.keys.splice(this.keys.indexOf(key), 1)
   }
   hasKey(key: string): boolean {
     return this.keys.includes(key)
+  }
+  hasOneOf(...keys: string[]): boolean {
+    return this.keys.some(key => keys.includes(key))
   }
 }
 
