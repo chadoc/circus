@@ -12,8 +12,8 @@ imgWindow.src = ImageWindow
 const imageWidth = 900
 const imageHeight = 963
 
-const userImageWidth = 1200
-const userImageHeight = 720
+const userImageWidth = 300
+const userImageHeight = 300
 
 const userTargetWidth = 210
 const userTargetHeight = 210
@@ -42,17 +42,17 @@ export class PlayerShip implements DisplayedObject {
     this.userImg = new Image()
     this.userImg.src = userImg || ImageUser
     this.userImg.style.borderRadius = '50%'
-    this.widthRatio = 9
-    this.width = imageWidth / this.widthRatio
-    this.height = imageHeight / this.widthRatio
-    this.userWidth = userTargetWidth / this.widthRatio
-    this.userHeight = userTargetHeight / this.widthRatio
+    this.widthRatio = (this.game.ctx.canvas.width / 4) / this.game.ctx.canvas.width
+
+    this.width = imageWidth * this.widthRatio
+    this.height = imageHeight * this.widthRatio
+    this.userWidth = userTargetWidth * this.widthRatio
+    this.userHeight = userTargetHeight * this.widthRatio
     this.x = 0
     this.y = game.ctx.canvas.height - this.height
 
-
-    this.userX = this.x + (((imageWidth / 2) - 160) / this.widthRatio)
-    this.userY = this.y + (((imageHeight / 2) - 180) / this.widthRatio)
+    this.userX = this.x + (((imageWidth / 2) - 160) * this.widthRatio)
+    this.userY = this.y + (((imageHeight / 2) - 180) * this.widthRatio)
 
     this.timeSinceUpdate = 0
     this.updateInterval = 60
@@ -87,8 +87,8 @@ export class PlayerShip implements DisplayedObject {
     this.x = Math.min(Math.max(this.x, 0), rightBoundary)
     this.y = Math.min(Math.max(this.y, 0), this.groundHeight)
 
-    this.userX = this.x + (((imageWidth / 2) - 160) / this.widthRatio)
-    this.userY = this.y + (((imageHeight / 2) - 180) / this.widthRatio)
+    this.userX = this.x + (((imageWidth / 2) - 160) * this.widthRatio)
+    this.userY = this.y + (((imageHeight / 2) - 180) * this.widthRatio)
 
     // if (!this.onGround) {
     //   this.verticalSpeed += this.weight

@@ -31,7 +31,7 @@ onMounted(() => {
 
 
 function pictureTaken({ img }: { img: any }) {
-  console.log('pic is', img)
+  // console.log('pic is', img)
   userImg.value = img
   play.value = true
 }
