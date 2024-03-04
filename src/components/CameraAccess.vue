@@ -1,36 +1,41 @@
 <template>
-  <div>
-<!--    <p>is secured context: {{ isSecuredContext }}</p>-->
-<!--    <p>is camera supported: {{ cameraSupported }}</p>-->
-<!--    <p>available devices: {{ availableDevices }}</p>-->
-<!--    <button type="button" @click="getVideoWidth">VideoWidth</button>-->
-    <button type="button" @click="capture">Start Camera</button>
-    <canvas v-show="showCanvas" ref="canvas" id="canvas" style="border: 1px solid black"> </canvas>
-    <div v-show="showPhoto" id="myPic">
-      <button type="button" @click="happy">Happy with your Pic ?</button>
-      <button type="button" @click="clear">Restart</button>
-      <img ref="photo" id="photo" alt="The screen capture will appear in this box." />
+  <div id="cameraAccess">
+    <div v-if="isCameraSupported">
+      <div v-show="!streaming">
+        <p style="padding: 10px; max-width: 400px">Veuillez demarrer votre camera et prendre une photo de vous avec votre visage remplissant le rond blanc</p>
+        <button type="button" @click="startCamera">Demarrer la camera</button>
+      </div>
+      <div v-show="streaming">
+        <div v-show="isTakingPicture">
+          <button id="startbutton" type="button" @click.prevent="takePicture">Dites Cheese !</button>
+          <div id="camera" class="camera">
+            <video ref="video" id="video">Video stream not available.</video>
+            <canvas ref="maskCanvas" id="maskCanvas"></canvas>
+            <canvas v-show="false" ref="canvas" id="canvas"></canvas>
+          </div>
+        </div>
+        <div v-show="!isTakingPicture">
+          <button type="button" @click="happy">Content de votre photo ? On peut continuer ?</button>
+          <button type="button" @click="takeAnother">Re-essayez avec votre meilleur profil ?</button>
+          <img ref="photo" id="photo" alt="The screen capture will appear in this box." />
+        </div>
+      </div>
     </div>
-    <button id="startbutton" type="button" @click.prevent="takePicture">Take photo</button>
-    <div v-show="showVideo" id="camera" class="camera">
-      <video ref="video" id="video">Video stream not available.</video>
-      <canvas ref="maskCanvas" id="maskCanvas"></canvas>
+    <div v-else>
+      Desole, malheureusement, il n'y a aucune camera disponible sur votre appareil.
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import {computed, onMounted, ref, unref} from 'vue'
+import {onMounted, ref, unref} from 'vue'
 
 const width = 1280;    // We will scale the photo width to this
 const height = 0;     // This will be computed based on the input stream
 
 const picWidth = 300
 
-const streaming = false;
-
-const showVideo = ref(true)
-const showPhoto = ref(false)
-const showCanvas = ref(false)
+const streaming = ref(false);
+const isTakingPicture = ref(false)
 const imgData = ref<any>()
 
 const video = ref<HTMLVideoElement>()
@@ -42,26 +47,13 @@ const emit = defineEmits<{
   (event: 'pictureTaken', data: { img: any }): void
 }>()
 
-const isSecuredContext = computed(() => Boolean(window.isSecureContext))
-const cameraSupported = ref(isCameraSupported())
-
-const availableDevices = ref<string[]>([])
-
-async function loadAvailableDevices() {
-  if (!navigator.mediaDevices?.enumerateDevices) {
-    console.log("enumerateDevices() not supported.");
-  } else {
-    // List cameras and microphones.
-    availableDevices.value = (await navigator.mediaDevices.enumerateDevices()).map(device => `${device.kind}: ${device.label} id = ${device.deviceId}`)
-  }
-}
-
 function happy() {
   const p = unref(photo)!
   emit('pictureTaken', { img: p.src })
 }
 
-function clear() {
+function takeAnother() {
+  isTakingPicture.value = true
   const c = unref(canvas)!
   const p = unref(photo)!
   const ctx = c.getContext('2d')!
@@ -69,35 +61,37 @@ function clear() {
   ctx.fillRect(0, 0, c.width, c.height)
   const data = c.toDataURL('image/png')
   p.src = data
+  video.value!.play()
 }
 
-function isCameraSupported() {
-  return 'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices
-}
+const isCameraSupported = 'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices
 
-onMounted(() => {
-  const v = unref(video)!
-  const c = unref(canvas)!
-  const m = unref(maskCanvas)!
-  v.addEventListener('canplay', (event) => {
-    const height = (v.videoHeight / v.videoWidth) * width
-    v.width = width
-    v.height = height
-    c.width = width
-    c.height = height
-    m.width = width
-    m.height = height
+onMounted(async () => {
+  console.log('isCameraSupported', isCameraSupported)
+  if (isCameraSupported) {
+    const v = unref(video)!
+    const c = unref(canvas)!
+    const m = unref(maskCanvas)!
+    v.addEventListener('canplay', (event) => {
+          const height = (v.videoHeight / v.videoWidth) * width
+          v.width = width
+          v.height = height
+          c.width = width
+          c.height = height
+          m.width = width
+          m.height = height
 
-    const centerX = width / 2
-    const centerY = height / 2
-    const ctx = m.getContext('2d')!
-    ctx.fillStyle = 'white'
-    ctx.beginPath()
-    ctx.arc(centerX, centerY, picWidth / 2, 2 * Math.PI, 0)
-    ctx.fill()
-    ctx.stroke()
-  },
-  false)
+          const centerX = width / 2
+          const centerY = height / 2
+          const ctx = m.getContext('2d')!
+          ctx.fillStyle = 'white'
+          ctx.beginPath()
+          ctx.arc(centerX, centerY, picWidth / 2, 2 * Math.PI, 0)
+          ctx.fill()
+          ctx.stroke()
+        },
+        false)
+  }
 })
 
 function takePicture() {
@@ -114,20 +108,14 @@ function takePicture() {
   const data = c.toDataURL('image/webp')
   imgData.value = data
   p.src = data
-  showPhoto.value = true
-  showVideo.value = false
+  isTakingPicture.value = false
   v.pause()
   // emit('pictureTaken', { img: data })
 }
 
-function getVideoWidth() {
-  console.log('video stream', video.value!.width, video.value!.height)
-}
-
-async function capture() {
+async function startCamera() {
   try {
-    showPhoto.value = false
-    showVideo.value = true
+    isTakingPicture.value = true
     const stream = await navigator.mediaDevices.getUserMedia({
       video: {
         width: {
@@ -142,13 +130,13 @@ async function capture() {
     })
     video.value!.srcObject = stream
     video.value!.play()
+    streaming.value = true
     console.log('video stream', video.value!.width, video.value!.height)
   } catch (error) {
     console.error('Not able to load video', error)
   }
 }
 
-loadAvailableDevices()
 </script>
 <style scoped>
 #camera {
@@ -169,5 +157,9 @@ loadAvailableDevices()
 #photo {
   width: 300px;
   height: 300px;
+}
+#cameraAccess {
+  display: flex;
+  justify-content: center;
 }
 </style>
