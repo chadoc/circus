@@ -1,7 +1,9 @@
 <template>
   <div>
+<!--    <img id="userImg" :src="userImg" />-->
     <canvas id="collisionCanvas1" ref="collisionCanvas1"></canvas>
     <canvas id="canvas1" ref="canvas1"></canvas>
+    <button id="fullScreenButton" ref="fullScreenButton" @click="toggleFullScreen">FullScreen</button>
     <div class="hiddenAsset">
       <img src="../../assets/SpriteCloud.png" />
       <img src="../../assets/SpritePuppet.png" />
@@ -12,10 +14,16 @@
 <script setup lang="ts">
 import {onMounted, ref, unref} from 'vue'
 import {triggerGame} from '@/components/game/Game'
+import {Game} from '@/components/game/Game'
+
+const props = defineProps<{
+  userImg: any
+}>()
 
 const canvas1 = ref<HTMLCanvasElement>()
 const collisionCanvas1 = ref<HTMLCanvasElement>()
-
+const fullScreenButton = ref<HTMLButtonElement>()
+const game = ref<Game>()
 // TODO preload img/wav
 
 onMounted(() =>  {
@@ -28,8 +36,12 @@ onMounted(() =>  {
   collisionCanvas.width = innerWidth
   collisionCanvas.height = innerHeight
 
-  triggerGame(canvas, collisionCanvas)
+  game.value = triggerGame(canvas, collisionCanvas, props.userImg)
 })
+
+function toggleFullScreen() {
+  game.value?.toggleFullScreen()
+}
 
 </script>
 <style scoped>
@@ -48,5 +60,13 @@ onMounted(() =>  {
 }
 .hiddenAsset {
   display: none;
+}
+#fullScreenButton {
+  position: absolute;
+  font-size: 20px;
+  padding: 10px;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>

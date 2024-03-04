@@ -8,6 +8,7 @@
     <Shout v-if="false" />
     <FullGame v-if="true" />
     <Ship v-if="false" />
+    <Home v-if="false" />
   </div>
 </template>
 <script setup lang="ts">
@@ -19,6 +20,7 @@ import Cloud from '@/components/Cloud.vue'
 import Shout from '@/components/Shout.vue'
 import FullGame from '@/components/game/FullGame.vue'
 import Ship from '@/components/Ship.vue'
+import Home from '@/components/Home.vue'
 </script>
 <style scoped>
 </style>

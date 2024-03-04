@@ -46,7 +46,7 @@ class InputHandler implements InputController {
   private readonly keys: string[] = []
   private touchX?: number
   private touchY?: number
-  private readonly touchThreshold = 120
+  private readonly touchThreshold = 30
 
   constructor() {
     window.addEventListener('keydown', ({ key }: KeyboardEvent) => {
@@ -96,7 +96,7 @@ class InputHandler implements InputController {
   }
 }
 
-class Game implements PuppetHandler {
+export class Game implements PuppetHandler {
   readonly ctx: CanvasRenderingContext2D
   readonly collisionCtx: CanvasRenderingContext2D
   private puppets: Puppet[] = []
@@ -107,14 +107,14 @@ class Game implements PuppetHandler {
   private readonly level = new Level()
   private readonly input: InputHandler
 
-  constructor(ctx: CanvasRenderingContext2D, collisionCtx: CanvasRenderingContext2D) {
+  constructor(ctx: CanvasRenderingContext2D, collisionCtx: CanvasRenderingContext2D, userImg: any) {
     this.ctx = ctx
     this.collisionCtx = collisionCtx
     ctx.canvas.addEventListener('click', (e) => this.click(e))
     ctx.font = '50px Impact'
     this.input = new InputHandler()
     this.player = new Player(this)
-    this.ship = new PlayerShip(this)
+    this.ship = new PlayerShip(this, userImg)
     this.background = new Background(this)
   }
 
@@ -182,13 +182,23 @@ class Game implements PuppetHandler {
     this.ctx.fillStyle = 'white'
     this.ctx.fillText(`GAME OVER, your score is ${this.level.score}`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 2)
   }
+
+  async toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      try {
+        await this.ctx.canvas.requestFullscreen()
+      } catch (error) {
+        console.error('Not able to enable full screen', error)
+      }
+    }
+  }
 }
 
-export function triggerGame(canvas: HTMLCanvasElement, collisionCanvas: HTMLCanvasElement) {
+export function triggerGame(canvas: HTMLCanvasElement, collisionCanvas: HTMLCanvasElement, userImg: any): Game {
   const ctx = canvas.getContext('2d')
   const collisionCtx = collisionCanvas.getContext('2d')
 
-  const game = new Game(ctx, collisionCtx)
+  const game = new Game(ctx, collisionCtx, userImg)
 
   let lastTime = 1
   function animate(timestamp: number) {
@@ -207,4 +217,6 @@ export function triggerGame(canvas: HTMLCanvasElement, collisionCanvas: HTMLCanv
   }
 
   animate(0)
+
+  return game
 }

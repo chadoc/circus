@@ -72,8 +72,8 @@ export class Puppet implements DisplayedObject {
     this.height = this.spriteHeight / this.widthRatio
 
     // this.x = Math.random() * (canvas.width - this.width)
-    this.x = game.ctx.canvas.width
-    this.y = Math.random() * (game.ctx.canvas.height - this.height)
+    this.x = this.game.ctx.canvas.width
+    this.y = Math.random() * (this.game.ctx.canvas.height - this.height)
     this.frame = 0
     this.speed = Math.random() * 4 + 1
     this.markedForDeletion = false

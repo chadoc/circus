@@ -1,17 +1,19 @@
 <template>
   <div>
-    <p>is secured context: {{ isSecuredContext }}</p>
-    <p>is camera supported: {{ cameraSupported }}</p>
-    <p>available devices: {{ availableDevices }}</p>
-    <button type="button" @click="getVideoWidth">VideoWidth</button>
-    <button type="button" @click="capture">Capture</button>
-    <button type="button" @click="clear">Clear</button>
-
-    <canvas ref="canvas" id="canvas" style="border: 1px solid black"> </canvas>
-    <img v-show="showPhoto" ref="photo" id="photo" alt="The screen capture will appear in this box." />
+<!--    <p>is secured context: {{ isSecuredContext }}</p>-->
+<!--    <p>is camera supported: {{ cameraSupported }}</p>-->
+<!--    <p>available devices: {{ availableDevices }}</p>-->
+<!--    <button type="button" @click="getVideoWidth">VideoWidth</button>-->
+    <button type="button" @click="capture">Start Camera</button>
+    <canvas v-show="showCanvas" ref="canvas" id="canvas" style="border: 1px solid black"> </canvas>
+    <div v-show="showPhoto" id="myPic">
+      <button type="button" @click="happy">Happy with your Pic ?</button>
+      <button type="button" @click="clear">Restart</button>
+      <img ref="photo" id="photo" alt="The screen capture will appear in this box." />
+    </div>
     <button id="startbutton" type="button" @click.prevent="takePicture">Take photo</button>
-    <div id="camera" class="camera">
-      <video v-show="showVideo" ref="video" id="video">Video stream not available.</video>
+    <div v-show="showVideo" id="camera" class="camera">
+      <video ref="video" id="video">Video stream not available.</video>
       <canvas ref="maskCanvas" id="maskCanvas"></canvas>
     </div>
   </div>
@@ -29,11 +31,16 @@ const streaming = false;
 const showVideo = ref(true)
 const showPhoto = ref(false)
 const showCanvas = ref(false)
+const imgData = ref<any>()
 
 const video = ref<HTMLVideoElement>()
 const canvas = ref<HTMLCanvasElement>()
 const maskCanvas = ref<HTMLCanvasElement>()
 const photo = ref<HTMLImageElement>()
+
+const emit = defineEmits<{
+  (event: 'pictureTaken', data: { img: any })
+}>()
 
 const isSecuredContext = computed(() => Boolean(window.isSecureContext))
 const cameraSupported = ref(isCameraSupported())
@@ -47,6 +54,11 @@ async function loadAvailableDevices() {
     // List cameras and microphones.
     availableDevices.value = (await navigator.mediaDevices.enumerateDevices()).map(device => `${device.kind}: ${device.label} id = ${device.deviceId}`)
   }
+}
+
+function happy() {
+  const p = unref(photo)!
+  emit('pictureTaken', { img: p.src })
 }
 
 function clear() {
@@ -99,10 +111,13 @@ function takePicture() {
   const picWidth = 300
   const picHeight = 300
   c.getContext('2d')!.drawImage(v, centerX - (picWidth / 2), centerY - (picHeight / 2), picWidth, picHeight, 0, 0, c.width, c.height)
-  p.src = c.toDataURL('image/webp')
+  const data = c.toDataURL('image/webp')
+  imgData.value = data
+  p.src = data
   showPhoto.value = true
   showVideo.value = false
   v.pause()
+  // emit('pictureTaken', { img: data })
 }
 
 function getVideoWidth() {

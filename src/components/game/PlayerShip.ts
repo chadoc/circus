@@ -15,8 +15,8 @@ const imageHeight = 963
 const userImageWidth = 1200
 const userImageHeight = 720
 
-const userTargetWidth = 180
-const userTargetHeight = 180
+const userTargetWidth = 210
+const userTargetHeight = 210
 
 export class PlayerShip implements DisplayedObject {
   private readonly game: PuppetHandler
@@ -36,13 +36,12 @@ export class PlayerShip implements DisplayedObject {
   private verticalSpeed: number
   private frame: number
 
-  constructor(game: PuppetHandler, userImage: any) {
+  constructor(game: PuppetHandler, userImg: any | undefined) {
     this.game = game
     this.userImg = new Image()
-    // this.userImg.src = userImage
-    this.userImg.src = ImageUser
+    this.userImg.src = userImg || ImageUser
     this.userImg.style.borderRadius = '50%'
-    this.widthRatio = 4
+    this.widthRatio = 9
     this.width = imageWidth / this.widthRatio
     this.height = imageHeight / this.widthRatio
     this.userWidth = userTargetWidth / this.widthRatio
@@ -52,7 +51,7 @@ export class PlayerShip implements DisplayedObject {
 
 
     this.userX = this.x + (((imageWidth / 2) - 160) / this.widthRatio)
-    this.userY = this.y + (((imageHeight / 2) - 160) / this.widthRatio)
+    this.userY = this.y + (((imageHeight / 2) - 180) / this.widthRatio)
 
     this.timeSinceUpdate = 0
     this.updateInterval = 60
@@ -87,7 +86,7 @@ export class PlayerShip implements DisplayedObject {
     this.y = Math.min(Math.max(this.y, 0), this.groundHeight)
 
     this.userX = this.x + (((imageWidth / 2) - 160) / this.widthRatio)
-    this.userY = this.y + (((imageHeight / 2) - 160) / this.widthRatio)
+    this.userY = this.y + (((imageHeight / 2) - 180) / this.widthRatio)
 
     // if (!this.onGround) {
     //   this.verticalSpeed += this.weight
