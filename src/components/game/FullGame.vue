@@ -8,6 +8,9 @@
       <img src="../../assets/SpriteCloud.png" />
       <img src="../../assets/SpritePuppet.png" />
 <!--      <audio src="../../assets/liquid.wav" preload="auto" />-->
+      <audio autoplay>
+        <source src="../../assets/spirit.mp3" type="audio/mpeg">
+      </audio>
     </div>
   </div>
 </template>
