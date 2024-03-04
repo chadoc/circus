@@ -3,7 +3,7 @@
     <canvas id="canvas1" ref="canvas1"></canvas>
     <div id="controls">
       <select v-model="playerStateKey">
-        <option v-for="a in availableAnimations" :value="a" :selected="a === selectedAnimationKey">{{ a }}</option>
+        <option v-for="a in availableAnimations" :value="a" :selected="a === playerStateKey">{{ a }}</option>
       </select>
       <input type="number" v-model="gameSpeed" />
     </div>

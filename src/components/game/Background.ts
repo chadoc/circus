@@ -28,7 +28,7 @@ class BackgroundLayer implements DisplayedObject {
   private timeSinceUpdate: number
   private updateInterval: number
 
-  constructor(game: PuppetHandler, image: Image, speedModifier: number) {
+  constructor(game: PuppetHandler, image: any, speedModifier: number) {
     this.game = game
     this.image = image
     this.width = game.ctx.canvas.width

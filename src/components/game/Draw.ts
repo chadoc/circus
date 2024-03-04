@@ -1,13 +1,11 @@
 export interface DisplayedObject {
-  update(deltaTime: number, input: InputController)
-  draw()
+  update(deltaTime: number, input: InputController): void
+  draw(): void
   mustDelete: boolean
 }
 
 export interface PuppetHandler {
-  addAnimation(animation: DisplayedObject)
-  win(point: number)
-  miss()
+  miss(): void
   ctx: CanvasRenderingContext2D
   collisionCtx: CanvasRenderingContext2D
 }

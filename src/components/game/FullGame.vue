@@ -17,7 +17,7 @@ import {triggerGame} from '@/components/game/Game'
 import {Game} from '@/components/game/Game'
 
 const props = defineProps<{
-  userImg: any
+  userImg?: any | undefined
 }>()
 
 const canvas1 = ref<HTMLCanvasElement>()

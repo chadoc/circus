@@ -104,7 +104,7 @@ export class Player implements DisplayedObject {
     // this.game.ctx.fillRect(this.x, this.y, this.width, this.height)
   }
 
-  get groundHeight(): boolean {
+  get groundHeight(): number {
     return this.game.ctx.canvas.height - this.height
   }
 

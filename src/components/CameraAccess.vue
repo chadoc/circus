@@ -39,7 +39,7 @@ const maskCanvas = ref<HTMLCanvasElement>()
 const photo = ref<HTMLImageElement>()
 
 const emit = defineEmits<{
-  (event: 'pictureTaken', data: { img: any })
+  (event: 'pictureTaken', data: { img: any }): void
 }>()
 
 const isSecuredContext = computed(() => Boolean(window.isSecureContext))

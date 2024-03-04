@@ -16,7 +16,7 @@ const CANVAS_HEIGHT = 600;
 
 const canvas1 = ref<HTMLCanvasElement>()
 const gameSpeed = ref(4)  // define speed of animation/game
-let animations = []
+let animations: Cloud[] = []
 
 let gameFrame = 0
 
@@ -36,7 +36,7 @@ class Cloud {
   private widthRatio: number
   private spriteFrames: number
 
-  private markedForDeletion: boolean
+  markedForDeletion: boolean
 
   constructor(x: number, y: number) {
     this.image = new Image()

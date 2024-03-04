@@ -44,11 +44,13 @@ class Level {
 class InputHandler implements InputController {
   private readonly supportedKeys: string[] = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
   private readonly keys: string[] = []
-  private touchX?: number
-  private touchY?: number
+  private touchX: number
+  private touchY: number
   private readonly touchThreshold = 30
 
   constructor() {
+    this.touchX = -1
+    this.touchY = -1
     window.addEventListener('keydown', ({ key }: KeyboardEvent) => {
       if (this.supportedKeys.includes(key) && !this.hasKey(key)) {
         this.keys.push(key)
@@ -110,12 +112,12 @@ export class Game implements PuppetHandler {
   constructor(ctx: CanvasRenderingContext2D, collisionCtx: CanvasRenderingContext2D, userImg: any) {
     this.ctx = ctx
     this.collisionCtx = collisionCtx
-    ctx.canvas.addEventListener('click', (e) => this.click(e))
-    ctx.font = '50px Impact'
     this.input = new InputHandler()
     this.player = new Player(this)
     this.ship = new PlayerShip(this, userImg)
     this.background = new Background(this)
+    this.ctx.canvas.addEventListener('click', (e) => this.click(e))
+    this.ctx.font = '50px Impact'
   }
 
   click(event: MouseEvent) {
@@ -195,8 +197,8 @@ export class Game implements PuppetHandler {
 }
 
 export function triggerGame(canvas: HTMLCanvasElement, collisionCanvas: HTMLCanvasElement, userImg: any): Game {
-  const ctx = canvas.getContext('2d')
-  const collisionCtx = collisionCanvas.getContext('2d')
+  const ctx = canvas.getContext('2d')!
+  const collisionCtx = collisionCanvas.getContext('2d')!
 
   const game = new Game(ctx, collisionCtx, userImg)
 

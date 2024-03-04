@@ -45,7 +45,7 @@ class Puppet {
   private angle: number
   private angleSpeed: number
   private sinHeightRatio: number
-  private markedForDeletion: boolean
+  markedForDeletion: boolean
   private timeSinceUpdate: number
   private updateInterval: number
 
@@ -144,7 +144,7 @@ class Cloud {
   private widthRatio: number
   private spriteFrames: number
 
-  private markedForDeletion: boolean
+  markedForDeletion: boolean
 
   private timeSinceUpdate: number
   private updateInterval: number

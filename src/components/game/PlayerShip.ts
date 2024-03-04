@@ -7,7 +7,7 @@ const imgPlane = new Image()
 imgPlane.src = ImagePlane
 const imgWindow= new Image()
 imgWindow.src = ImageWindow
-imgWindow.style.opacity = 0.4
+// imgWindow.style.opacity = 0.4
 
 const imageWidth = 900
 const imageHeight = 963
@@ -35,6 +35,7 @@ export class PlayerShip implements DisplayedObject {
   private speed: number
   private verticalSpeed: number
   private frame: number
+  private spriteFrames: number
 
   constructor(game: PuppetHandler, userImg: any | undefined) {
     this.game = game
@@ -59,6 +60,7 @@ export class PlayerShip implements DisplayedObject {
     this.frame = 0
     this.speed = 0
     this.verticalSpeed = 0
+    this.spriteFrames = 1
   }
 
   update(deltaTime: number, input: InputController) {
@@ -106,7 +108,7 @@ export class PlayerShip implements DisplayedObject {
     }
   }
 
-  get groundHeight(): boolean {
+  get groundHeight(): number {
     return this.game.ctx.canvas.height - this.height
   }
 
