@@ -124,7 +124,20 @@ onMounted(async () => {
 
       function draw() {
         // copyCtx.drawImage(v, videoCenterX - (videoCaptureWidth / 2), videoCenterY - (videoCaptureHeight / 2), videoCaptureWidth, videoCaptureHeight, 0, 0, c.width, c.height)
-        copyCtx.drawImage(v, 0, 0, width, height, 0, 0, c.width, c.height)
+
+        copyCtx.save()
+        copyCtx.beginPath()
+        // draw form
+        copyCtx.ellipse(400, 400, 100, 200, 0,  2 * Math.PI, 0,  true)
+        // ctx.stroke()
+        copyCtx.closePath()
+        copyCtx.clip()
+        copyCtx.drawImage(v, 0, 0, width, height)
+        // ctx.drawImage(this.userImg, 0, 0, userImageWidth, userImageHeight, this.userX, this.userY, this.userWidth, this.userHeight)
+        copyCtx.restore()
+
+
+        // copyCtx.drawImage(v, 0, 0, width, height, 0, 0, c.width, c.height)
         requestAnimationFrame(draw)
       }
 
