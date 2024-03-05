@@ -119,11 +119,24 @@ export class PlayerShip implements DisplayedObject {
   draw() {
     // draw image with border radius
     // https://stackoverflow.com/questions/4882354/rounded-corners-on-images-in-canvas
-    this.game.ctx.drawImage(this.userImg, 0, 0, userImageWidth, userImageHeight, this.userX, this.userY, this.userWidth, this.userHeight)
-    this.game.ctx.drawImage(imgPlane, 0, 0, imageWidth, imageHeight, this.x, this.y, this.width, this.height)
-    this.game.ctx.globalAlpha = 0.4
-    this.game.ctx.drawImage(imgWindow, 0, 0, imageWidth, imageHeight, this.x, this.y, this.width, this.height)
-    this.game.ctx.globalAlpha = 1
+    const ctx = this.game.ctx
+    ctx.save()
+    ctx.beginPath()
+    // draw form
+    // ctx.arc(this.userX + this.userWidth, this.userY + this.userHeight, this.userWidth / 2, Math.PI * 2, true)
+    ctx.arc(this.userX + this.userWidth / 2, this.userY + this.userHeight / 2, this.userWidth / 2,  2 * Math.PI, 0,  true)
+    // ctx.stroke()
+    ctx.closePath()
+    ctx.clip()
+    ctx.drawImage(this.userImg, this.userX, this.userY, this.userWidth, this.userHeight)
+    // ctx.drawImage(this.userImg, 0, 0, userImageWidth, userImageHeight, this.userX, this.userY, this.userWidth, this.userHeight)
+    ctx.restore()
+
+
+    ctx.drawImage(imgPlane, 0, 0, imageWidth, imageHeight, this.x, this.y, this.width, this.height)
+    ctx.globalAlpha = 0.4
+    ctx.drawImage(imgWindow, 0, 0, imageWidth, imageHeight, this.x, this.y, this.width, this.height)
+    ctx.globalAlpha = 1
   }
 
   get mustDelete() {

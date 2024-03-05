@@ -1,6 +1,7 @@
 <template>
   <div id="cameraAccess">
     <div v-if="isCameraSupported">
+      <input type="file" name="image" accept="image/*" capture="user">
       <div v-show="!streaming">
         <p style="padding: 10px; max-width: 400px">Veuillez demarrer votre camera et prendre une photo de vous avec votre visage remplissant le rond blanc</p>
         <button type="button" @click="startCamera">Demarrer la camera</button>
