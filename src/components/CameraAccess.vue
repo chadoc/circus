@@ -1,8 +1,8 @@
 <template>
   <div id="cameraAccess">
     <div v-if="isCameraSupported">
-      <input type="file" name="image" accept="image/*" capture="user">
-      <div v-show="!streaming">
+      <input v-if="false" type="file" name="image" accept="image/*" capture="user">
+      <div v-show="!streaming" style="text-align: center">
         <p style="padding: 10px; max-width: 400px">Veuillez demarrer votre camera et prendre une photo de vous avec votre visage remplissant le rond blanc</p>
         <button type="button" @click="startCamera">Demarrer la camera</button>
       </div>
@@ -15,7 +15,7 @@
             <button id="pictureButton" type="button" @click.prevent="takePicture">Dites Cheese !</button>
           </div>
         </div>
-        <div v-show="!isTakingPicture">
+        <div v-show="!isTakingPicture" style="display: flex; flex-direction: column; justify-content: center; align-content: center">
           <button type="button" @click="happy">Content de votre photo ? On peut continuer ?</button>
           <button type="button" @click="takeAnother">Re-essayez avec votre meilleur profil ?</button>
           <img ref="photo" id="photo" alt="The screen capture will appear in this box."/>
@@ -196,5 +196,11 @@ async function startCamera() {
 #cameraAccess {
   display: flex;
   justify-content: center;
+  font-size: 20px;
+}
+
+#cameraAccess button {
+  font-size: 20px;
+  padding: 10px;
 }
 </style>
