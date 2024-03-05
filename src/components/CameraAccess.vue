@@ -9,9 +9,9 @@
       <div v-show="streaming">
         <div v-show="isTakingPicture">
           <div id="camera" class="camera">
-            <video ref="video" id="video">Video stream not available.</video>
+            <video v-show="false" ref="video" id="video">Video stream not available.</video>
+            <canvas v-show="true" ref="canvas" id="canvas"></canvas>
             <canvas ref="maskCanvas" id="maskCanvas"></canvas>
-            <canvas v-show="false" ref="canvas" id="canvas"></canvas>
             <button id="pictureButton" type="button" @click.prevent="takePicture">Dites Cheese !</button>
           </div>
         </div>
@@ -71,10 +71,10 @@ const isCameraSupported = 'mediaDevices' in navigator && 'getUserMedia' in navig
 
 onMounted(async () => {
   console.log('isCameraSupported', isCameraSupported)
+  const v = unref(video)!
+  const c = unref(canvas)!
+  const m = unref(maskCanvas)!
   if (isCameraSupported) {
-    const v = unref(video)!
-    const c = unref(canvas)!
-    const m = unref(maskCanvas)!
     v.addEventListener('canplay', async (event) => {
       console.log('canplay', v.videoWidth, v.videoHeight)
       // const width = v.videoWidth
@@ -108,6 +108,28 @@ onMounted(async () => {
       // ctx.arc(centerX, centerY, picWidth / 2, 2 * Math.PI, 0)
       ctx.fill()
       ctx.stroke()
+
+
+
+      const copyCtx = c.getContext("2d")!
+      const videoCaptureWidth = width / 1.8
+      const videoCaptureHeight = height / 1.8
+      const videoCenterX = width / 2
+      const videoCenterY = height / 2
+
+      const targetWidth = 300
+      const targetHeight = 300
+      c.width = width
+      c.height = height
+
+      function draw() {
+        // copyCtx.drawImage(v, videoCenterX - (videoCaptureWidth / 2), videoCenterY - (videoCaptureHeight / 2), videoCaptureWidth, videoCaptureHeight, 0, 0, c.width, c.height)
+        copyCtx.drawImage(v, 0, 0, width, height, 0, 0, c.width, c.height)
+        requestAnimationFrame(draw)
+      }
+
+      draw()
+
     },
     false)
   }
@@ -156,6 +178,7 @@ async function startCamera() {
     stream.value = videoStream
     video.value!.srcObject = videoStream
     video.value!.play()
+    console.log('play requested')
     console.log('video stream', video.value!.width, video.value!.height)
   } catch (error) {
     console.error('Not able to load video', error)
@@ -178,7 +201,7 @@ async function startCamera() {
 
 #maskCanvas {
   opacity: 0.5;
-  background: red;
+  /* background: red; */
 }
 
 #pictureButton {
