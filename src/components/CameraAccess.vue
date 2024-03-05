@@ -27,12 +27,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import {nextTick, onMounted, ref, unref} from 'vue'
+import {computed, nextTick, onMounted, ref, unref} from 'vue'
 
 // const width = 1280    // We will scale the photo width to this
 // const height = 0     // This will be computed based on the input stream
 
-const streaming = ref(false)
+const stream = ref<MediaStream>()
+const streaming = computed(() => Boolean(stream.value))
 const isTakingPicture = ref(false)
 const imgData = ref<any>()
 
@@ -47,6 +48,9 @@ const emit = defineEmits<{
 
 function happy() {
   const p = unref(photo)!
+  video.value?.pause()
+  stream.value?.getTracks().forEach(track => track.stop())
+  stream.value = undefined
   emit('pictureTaken', {img: p.src})
 }
 
@@ -134,7 +138,7 @@ function takePicture() {
 async function startCamera() {
   try {
     isTakingPicture.value = true
-    const stream = await navigator.mediaDevices.getUserMedia({
+    const videoStream = await navigator.mediaDevices.getUserMedia({
       video: {
         // width: {
         //   min: 1280
@@ -146,9 +150,9 @@ async function startCamera() {
       },
       audio: false
     })
-    video.value!.srcObject = stream
+    stream.value = videoStream
+    video.value!.srcObject = videoStream
     video.value!.play()
-    streaming.value = true
     console.log('video stream', video.value!.width, video.value!.height)
   } catch (error) {
     console.error('Not able to load video', error)
