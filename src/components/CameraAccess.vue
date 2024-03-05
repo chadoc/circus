@@ -104,7 +104,8 @@ onMounted(async () => {
       const ctx = m.getContext('2d')!
       ctx.fillStyle = 'white'
       ctx.beginPath()
-      ctx.arc(centerX, centerY, picWidth / 2, 2 * Math.PI, 0)
+      ctx.ellipse(centerX, centerY, picWidth / 2.8, picWidth / 2, 0, 2 * Math.PI, 0)
+      // ctx.arc(centerX, centerY, picWidth / 2, 2 * Math.PI, 0)
       ctx.fill()
       ctx.stroke()
     },
@@ -127,7 +128,8 @@ function takePicture() {
   const targetHeight = 300
   c.width = targetWidth
   c.height = targetHeight
-  c.getContext('2d')!.drawImage(v, videoCenterX - (videoCaptureWidth / 2), videoCenterY - (videoCaptureHeight / 2), videoCaptureWidth, videoCaptureHeight, 0, 0, c.width, c.height)
+  const ctx = c.getContext('2d')!
+  ctx.drawImage(v, videoCenterX - (videoCaptureWidth / 2), videoCenterY - (videoCaptureHeight / 2), videoCaptureWidth, videoCaptureHeight, 0, 0, c.width, c.height)
   const data = c.toDataURL('image/png')
   imgData.value = data
   p.src = data

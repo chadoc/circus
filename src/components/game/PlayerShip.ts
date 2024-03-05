@@ -124,7 +124,8 @@ export class PlayerShip implements DisplayedObject {
     ctx.beginPath()
     // draw form
     // ctx.arc(this.userX + this.userWidth, this.userY + this.userHeight, this.userWidth / 2, Math.PI * 2, true)
-    ctx.arc(this.userX + this.userWidth / 2, this.userY + this.userHeight / 2, this.userWidth / 2,  2 * Math.PI, 0,  true)
+    // ctx.arc(this.userX + this.userWidth / 2, this.userY + this.userHeight / 2, this.userWidth / 2,  2 * Math.PI, 0,  true)
+    ctx.ellipse(this.userX + this.userWidth / 2, this.userY + this.userHeight / 2, this.userWidth / 2.8, this.userHeight / 2, 0,  2 * Math.PI, 0,  true)
     // ctx.stroke()
     ctx.closePath()
     ctx.clip()
