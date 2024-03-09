@@ -1,12 +1,28 @@
 import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
-import layerImg1 from '../../assets/background/fantasy-bright/sky.png'
-import layerImg2 from '../../assets/background/fantasy-bright/jungle_bg.png'
-import layerImg3 from '../../assets/background/fantasy-bright/trees&bushes.png'
-import layerImg4 from '../../assets/background/fantasy-bright/grasses.png'
-import layerImg5 from '../../assets/background/fantasy-bright/lianas.png'
-import layerImg6 from '../../assets/background/fantasy-bright/grass&road.png'
-import layerImg7 from '../../assets/background/fantasy-bright/fireflys.png'
-import layerImg8 from '../../assets/background/fantasy-bright/tree_face.png'
+import fantasyBrightSky from '../../assets/background/fantasy-bright/sky.png'
+import fantasyBrightJungle from '../../assets/background/fantasy-bright/jungle_bg.png'
+import fantasyBrightTreeBrushes from '../../assets/background/fantasy-bright/trees&bushes.png'
+import fantasyBrightGrasses from '../../assets/background/fantasy-bright/grasses.png'
+import fantasyBrightLianas from '../../assets/background/fantasy-bright/lianas.png'
+import fantasyBrightGrassRoad from '../../assets/background/fantasy-bright/grass&road.png'
+import fantasyBrightFireFlys from '../../assets/background/fantasy-bright/fireflys.png'
+import fantasyBrightTreeFace from '../../assets/background/fantasy-bright/tree_face.png'
+import forestBackground from '../../assets/background/forest/parallax/0_Background.png'
+import forestTreesBackground from '../../assets/background/forest/parallax/1_Trees Background.png'
+import forestTrees1 from '../../assets/background/forest/parallax/2_Trees.png'
+import forestTrees2 from '../../assets/background/forest/parallax/3_Trees.png'
+import forestTrees3 from '../../assets/background/forest/parallax/4_Trees.png'
+import forestFloor from '../../assets/background/forest/parallax/5_Floor Platform.png'
+import forestSimple1 from '../../assets/background/forest-simple/bg1/Vrstva 2.png'
+import forestSimple2 from '../../assets/background/forest-simple/bg1/Vrstva 3.png'
+import forestSimple3 from '../../assets/background/forest-simple/bg1/Vrstva 5.png'
+import forestSimple4 from '../../assets/background/forest-simple/bg1/Vrstva 6.png'
+import forestComplexSky from '../../assets/background/forest-complex/forest/sky (z -3).png'
+import forestComplexBg1 from '../../assets/background/forest-complex/forest/bg_1 (z -1).png'
+import forestComplexBg2 from '../../assets/background/forest-complex/forest/bg_2 (z -2).png'
+import forestComplexMiddlePlus from '../../assets/background/forest-complex/forest/middleplus (z 1).png'
+import forestComplexMiddleGround from '../../assets/background/forest-complex/forest/middleground (z 0).png'
+import forestComplexForeground from '../../assets/background/forest-complex/forest/foreground (z 2).png'
 import {FrameRate} from '@/components/game/FrameRate'
 
 type LayerImage = {
@@ -20,16 +36,47 @@ function layerImage(source: any, speedModifier: number): LayerImage {
   return { img, speedModifier }
 }
 
-const layerImages: LayerImage[] = [
-  layerImage(layerImg1, 0),
-  layerImage(layerImg2, 0.2),
-  layerImage(layerImg3, 0.4),
-  layerImage(layerImg4, 0.6),
-  layerImage(layerImg5, 0.8),
-  layerImage(layerImg6, 1),
-  layerImage(layerImg7, 1.2),
-  layerImage(layerImg8, 1),
+const fantasyBright: LayerImage[] = [
+  layerImage(fantasyBrightSky, 0),
+  layerImage(fantasyBrightJungle, 0.2),
+  layerImage(fantasyBrightTreeBrushes, 0.4),
+  layerImage(fantasyBrightGrasses, 0.6),
+  layerImage(fantasyBrightLianas, 0.8),
+  layerImage(fantasyBrightGrassRoad, 1),
+  layerImage(fantasyBrightFireFlys, 1.2),
+  layerImage(fantasyBrightTreeFace, 1),
 ]
+
+const forestSimple: LayerImage[] = [
+  layerImage(forestSimple4, 0.2),
+  layerImage(forestSimple3, 0.4),
+  layerImage(forestSimple2, 0.6),
+  layerImage(forestSimple1, 0.8),
+]
+
+
+
+// different width calculation
+const forest: LayerImage[] = [
+  layerImage(forestBackground, 0),
+  layerImage(forestTreesBackground, 0.2),
+  layerImage(forestTrees1, 0.4),
+  layerImage(forestTrees2, 0.6),
+  layerImage(forestTrees3, 0.8),
+  layerImage(forestFloor, 1),
+]
+
+// different width calculation
+const forestComplex: LayerImage[] = [
+  layerImage(forestComplexSky, 0.2),
+  layerImage(forestComplexBg1, 0.4),
+  layerImage(forestComplexBg2, 0.6),
+  layerImage(forestComplexMiddlePlus, 0.8),
+  layerImage(forestComplexMiddleGround, 1),
+  layerImage(forestComplexForeground, 1.2),
+]
+
+const layerImages: LayerImage[] = fantasyBright
 
 class InteractiveBackgroundLayer implements DisplayedObject {
   private readonly game: PuppetHandler
