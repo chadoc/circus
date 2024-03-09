@@ -8,7 +8,7 @@
       <img src="../../assets/SpriteCloud.png" />
       <img src="../../assets/SpritePuppet.png" />
 <!--      <audio src="../../assets/liquid.wav" preload="auto" />-->
-      <audio autoplay>
+      <audio v-if="Config.backgroundSound" autoplay>
         <source src="../../assets/spirit.mp3" type="audio/mpeg">
       </audio>
     </div>
@@ -18,6 +18,7 @@
 import {onMounted, ref, unref} from 'vue'
 import {triggerGame} from '@/components/game/Game'
 import {Game} from '@/components/game/Game'
+import Config from '@/components/game/Config'
 
 const props = defineProps<{
   userImg?: any | undefined

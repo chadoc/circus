@@ -1,10 +1,13 @@
 <template>
   <div id="welcome">
-    <p v-if="!landscapeMode">Veuillez tourner votre telephone en mode paysage</p>
+    <p v-if="Config.requireLandscapeMode && !landscapeMode">Veuillez tourner votre telephone en mode paysage</p>
     <div v-else>
-      <div>
+      <div v-if="loading">
+        Loading
+      </div>
+      <div v-else>
         <CameraAccess v-if="!play" @pictureTaken="pictureTaken"  />
-        <FullGame v-if="userImg && play" :user-img="userImg" />
+        <FullGame v-if="play" :user-img="userImg" />
       </div>
     </div>
   </div>
@@ -14,21 +17,26 @@
 import CameraAccess from '@/components/CameraAccess.vue'
 import FullGame from '@/components/game/FullGame.vue'
 import {onMounted, ref} from 'vue'
+import Config from '@/components/game/Config'
 
+const loading = ref(true)
 const play = ref(false)
 const userImg = ref<any>()
-
 const landscapeMode = ref(false)
 
 onMounted(() => {
   landscapeMode.value = screen.orientation.type.indexOf('landscape') > -1
-  console.log('mode', landscapeMode.value)
-  window.addEventListener('orientationchange', (event) => {
-    landscapeMode.value = screen.orientation.type.indexOf('landscape') > -1
-  })
+
+  if (Config.requireLandscapeMode) {
+    window.addEventListener('orientationchange', (event) => {
+      landscapeMode.value = screen.orientation.type.indexOf('landscape') > -1
+    })
+  }
+  if (!Config.requestUserPicture) {
+    play.value = true
+  }
+  loading.value = false
 })
-
-
 
 function pictureTaken({ img }: { img: any }) {
   // console.log('pic is', img)

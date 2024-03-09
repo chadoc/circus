@@ -1,8 +1,8 @@
 import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
-import clouds1 from '../../assets/clouds1/1.png'
-import clouds2 from '../../assets/clouds1/2.png'
-import clouds3 from '../../assets/clouds1/3.png'
-import clouds4 from '../../assets/clouds1/4.png'
+import clouds1 from '../../assets/background/cloud/clouds1/1.png'
+import clouds2 from '../../assets/background/cloud/clouds1/2.png'
+import clouds3 from '../../assets/background/cloud/clouds1/3.png'
+import clouds4 from '../../assets/background/cloud/clouds1/4.png'
 
 const img1 = new Image()
 img1.src = clouds1
