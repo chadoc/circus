@@ -2,6 +2,7 @@ import type {DisplayedObject, InputController, PuppetHandler} from '@/components
 import ImagePlane from '../../assets/plane/shipPlane.png'
 import ImageWindow from '../../assets/plane/shipWindow.png'
 import ImageUser from '../../assets/plane/julien.webp'
+import {FrameRate} from '@/components/game/FrameRate'
 
 const imgPlane = new Image()
 imgPlane.src = ImagePlane
@@ -30,12 +31,12 @@ export class PlayerShip implements DisplayedObject {
   private userWidth: number
   private userHeight: number
   private widthRatio: number
-  private timeSinceUpdate: number
-  private updateInterval: number
   private speed: number
   private verticalSpeed: number
   private frame: number
   private spriteFrames: number
+
+  private frameRate: FrameRate
 
   constructor(game: PuppetHandler, userImg: any | undefined) {
     this.game = game
@@ -54,8 +55,7 @@ export class PlayerShip implements DisplayedObject {
     this.userX = this.x + (((imageWidth / 2) - 160) * this.widthRatio)
     this.userY = this.y + (((imageHeight / 2) - 180) * this.widthRatio)
 
-    this.timeSinceUpdate = 0
-    this.updateInterval = 60
+    this.frameRate = new FrameRate(60)
 
     this.frame = 0
     this.speed = 0
@@ -96,16 +96,13 @@ export class PlayerShip implements DisplayedObject {
     //   this.verticalSpeed = 0
     // }
 
-
-    this.timeSinceUpdate += deltaTime
-    if (this.timeSinceUpdate > this.updateInterval) {
-      this.timeSinceUpdate = 0
+    this.frameRate.onUpdate(deltaTime, () => {
       if (this.frame > this.spriteFrames - 2) {
         this.frame = 0
       } else {
         this.frame++
       }
-    }
+    })
   }
 
   get groundHeight(): number {

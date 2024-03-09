@@ -1,5 +1,6 @@
 import SpritePuppet from '../../assets/SpritePuppet.png'
 import type {DisplayedObject, PuppetHandler} from '@/components/game/Draw'
+import {FrameRate} from '@/components/game/FrameRate'
 
 export type PuppetCoordinate = {
   x: number
@@ -59,6 +60,7 @@ export class Puppet implements DisplayedObject {
   private timeSinceUpdate: number
   private updateInterval: number
 
+  private frameRate: FrameRate
   private collisionDetection: CollisionDetection
 
   constructor(game: PuppetHandler) {
@@ -81,9 +83,7 @@ export class Puppet implements DisplayedObject {
     this.angleSpeed = Math.random() * 0.2
     this.sinHeightRatio = Math.random() * 7 + 2
 
-    this.timeSinceUpdate = 0
-    this.updateInterval = Math.random() * 50 + 20
-
+    this.frameRate = new FrameRate(Math.random() * 50 + 20)
     this.collisionDetection = new CollisionDetection(game.collisionCtx)
   }
 
@@ -122,15 +122,13 @@ export class Puppet implements DisplayedObject {
       this.markedForDeletion = true
       this.game.miss()
     }
-    this.timeSinceUpdate += deltaTime
-    if (this.timeSinceUpdate > this.updateInterval) {
-      this.timeSinceUpdate = 0
+    this.frameRate.onUpdate(deltaTime, () => {
       if (this.frame > this.spriteFrames - 2) {
         this.frame = 0
       } else {
         this.frame++
       }
-    }
+    })
   }
 
   draw() {

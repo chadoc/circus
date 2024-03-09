@@ -3,6 +3,7 @@ import clouds1 from '../../assets/background/cloud/clouds1/1.png'
 import clouds2 from '../../assets/background/cloud/clouds1/2.png'
 import clouds3 from '../../assets/background/cloud/clouds1/3.png'
 import clouds4 from '../../assets/background/cloud/clouds1/4.png'
+import {FrameRate} from '@/components/game/FrameRate'
 
 const img1 = new Image()
 img1.src = clouds1
@@ -25,8 +26,7 @@ class BackgroundLayer implements DisplayedObject {
   private speed: number
   private gameSpeed: number
 
-  private timeSinceUpdate: number
-  private updateInterval: number
+  private frameRate: FrameRate
 
   constructor(game: PuppetHandler, image: any, speedModifier: number) {
     this.game = game
@@ -36,21 +36,18 @@ class BackgroundLayer implements DisplayedObject {
     this.x = 0
     this.y = 0
     this.speedModifier = speedModifier
-    this.timeSinceUpdate = 0
-    this.updateInterval = 60
+    this.frameRate = new FrameRate(60)
     this.gameSpeed = 20
     this.speed = this.gameSpeed * speedModifier
   }
 
   update(deltaTime: number, input: InputController) {
-    this.timeSinceUpdate += deltaTime
-    if (this.timeSinceUpdate > this.updateInterval) {
-      this.timeSinceUpdate = 0
+    this.frameRate.onUpdate(deltaTime, () => {
       if (this.x <= -this.width) {
         this.x = 0
       }
       this.x = Math.floor(this.x - this.speed)
-    }
+    })
   }
 
   draw() {

@@ -1,6 +1,7 @@
 import CloudImg from '../../assets/SpriteCloud.png'
 import CloudSound from '../../assets/liquid.wav'
 import type {DisplayedObject, PuppetHandler} from '@/components/game/Draw'
+import {FrameRate} from '@/components/game/FrameRate'
 
 const sound = new Audio(CloudSound)
 const image = new Image()
@@ -23,8 +24,7 @@ export class Cloud implements DisplayedObject {
 
   private markedForDeletion: boolean
 
-  private timeSinceUpdate: number
-  private updateInterval: number
+  private frameRate: FrameRate
 
   constructor(game: PuppetHandler,  x: number, y: number, size: number) {
     this.game = game
@@ -40,8 +40,7 @@ export class Cloud implements DisplayedObject {
     this.frame = 0
     this.markedForDeletion = false
 
-    this.timeSinceUpdate = 0
-    this.updateInterval = 60
+    this.frameRate = new FrameRate(60)
   }
 
   get mustDelete() {
@@ -52,14 +51,12 @@ export class Cloud implements DisplayedObject {
     if (this.frame === 0) {
       sound.play()
     }
-    this.timeSinceUpdate += deltaTime
-    if (this.timeSinceUpdate > this.updateInterval) {
+    this.frameRate.onUpdate(deltaTime, () => {
       this.frame++
-      this.timeSinceUpdate = 0
       if (this.frame > this.spriteFrames - 2) {
         this.markedForDeletion = true
       }
-    }
+    })
   }
 
   draw() {

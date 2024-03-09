@@ -1,5 +1,6 @@
 import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
-import {type AnimationState, ShadowDogSprite, type SpriteAnimation, SpriteAnimations} from '@/components/SprintAnimations'
+import {type AnimationState, ShadowDogSprite} from '@/components/SprintAnimations'
+import {FrameRate} from '@/components/game/FrameRate'
 
 
 const image = new Image()
@@ -33,8 +34,7 @@ export class Player implements DisplayedObject {
 
   private markedForDeletion: boolean
 
-  private timeSinceUpdate: number
-  private updateInterval: number
+  private frameRate: FrameRate
 
   constructor(game: PuppetHandler) {
     this.game = game
@@ -54,8 +54,7 @@ export class Player implements DisplayedObject {
 
     this.markedForDeletion = false
 
-    this.timeSinceUpdate = 0
-    this.updateInterval = 60
+    this.frameRate = new FrameRate(60)
 
     this.speed = 0
     this.verticalSpeed = 0
@@ -87,16 +86,13 @@ export class Player implements DisplayedObject {
       this.verticalSpeed = 0
     }
 
-    // this.y
-    this.timeSinceUpdate += deltaTime
-    if (this.timeSinceUpdate > this.updateInterval) {
-      this.timeSinceUpdate = 0
+    this.frameRate.onUpdate(() => {
       if (this.frame > this.spriteFrames - 2) {
         this.frame = 0
       } else {
         this.frame++
       }
-    }
+    })
   }
   draw() {
     this.game.ctx.fillStyle = 'white'
