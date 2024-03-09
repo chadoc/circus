@@ -2,8 +2,8 @@ import type {DisplayedObject, InputController, PuppetHandler} from '@/components
 import {Puppet} from '@/components/game/Puppet'
 import {Cloud} from '@/components/game/Cloud'
 import {Player} from '@/components/game/Player'
-import {Background} from '@/components/game/Background'
 import {PlayerShip} from '@/components/game/PlayerShip'
+import {InteractiveBackground} from '@/components/game/InteractiveBackground'
 
 class Level {
   private readonly maxPuppet = 10
@@ -105,7 +105,7 @@ export class Game implements PuppetHandler {
   private animations: DisplayedObject[] = []
   private player: Player
   private ship: PlayerShip
-  private background: Background
+  private background: InteractiveBackground
   private readonly level = new Level()
   private readonly input: InputHandler
 
@@ -115,7 +115,7 @@ export class Game implements PuppetHandler {
     this.input = new InputHandler()
     this.player = new Player(this)
     this.ship = new PlayerShip(this, userImg)
-    this.background = new Background(this)
+    this.background = new InteractiveBackground(this)
     this.ctx.canvas.addEventListener('click', (e) => this.click(e))
     this.ctx.font = '50px Impact'
   }
