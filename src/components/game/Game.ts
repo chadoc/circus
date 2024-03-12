@@ -4,6 +4,7 @@ import {Cloud} from '@/components/game/Cloud'
 import {Player} from '@/components/game/Player'
 import {PlayerShip} from '@/components/game/PlayerShip'
 import {InteractiveBackground} from '@/components/game/InteractiveBackground'
+import {Opossum} from '@/components/game/Opossum'
 
 class Level {
   private readonly maxPuppet = 10
@@ -33,7 +34,7 @@ class Level {
     this.timeToNextPuppet += deltaTime
     if (this.timeToNextPuppet > this.puppetInterval && puppetCount < this.maxPuppet) {
       this.timeToNextPuppet = 0
-      return true
+      return false
     } else {
       return false
     }
@@ -102,6 +103,7 @@ export class Game implements PuppetHandler {
   readonly ctx: CanvasRenderingContext2D
   readonly collisionCtx: CanvasRenderingContext2D
   private puppets: Puppet[] = []
+  private opossums: Opossum[] = []
   private animations: DisplayedObject[] = []
   private player: Player
   private ship: PlayerShip
@@ -140,6 +142,7 @@ export class Game implements PuppetHandler {
     return [
       ...[this.background],
       ...this.puppets,
+      ...this.opossums,
       ...this.animations,
       // ...[this.player],
       ...[this.ship]
@@ -150,6 +153,9 @@ export class Game implements PuppetHandler {
     this.puppets = this.puppets.filter(p => !p.mustDelete)
     this.animations = this.animations.filter(a => !a.mustDelete)
 
+    if (this.opossums.length == 0) {
+      this.opossums.push(new Opossum(this))
+    }
     if (this.level.shouldAddPuppet(deltaTime, this.puppets.length)) {
       this.puppets.push(new Puppet(this))
       // sort puppets by width to make sure bigger are in front
