@@ -77,7 +77,7 @@ export class Opossum implements DisplayedObject {
     // this.x = this.game.ctx.canvas.width
     // this.y = Math.random() * (this.game.ctx.canvas.height - this.height)
     this.x = this.game.ctx.canvas.width / 2
-    this.y = this.game.ctx.canvas.height / 2
+    this.y = this.game.ctx.canvas.height / 2 - 200
     this.frame = 3
     // this.speed = Math.random() * 4 + 1
     this.speed = 0

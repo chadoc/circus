@@ -23,6 +23,9 @@ import forestComplexBg2 from '../../assets/background/forest-complex/forest/bg_2
 import forestComplexMiddlePlus from '../../assets/background/forest-complex/forest/middleplus (z 1).png'
 import forestComplexMiddleGround from '../../assets/background/forest-complex/forest/middleground (z 0).png'
 import forestComplexForeground from '../../assets/background/forest-complex/forest/foreground (z 2).png'
+import julienBg1 from '../../assets/background/julien/bg1.png'
+import julienBg2 from '../../assets/background/julien/bg2.png'
+import julienBg3 from '../../assets/background/julien/bg3.png'
 import {FrameRate} from '@/components/game/FrameRate'
 
 type LayerImage = {
@@ -35,6 +38,8 @@ function layerImage(source: any, speedModifier: number): LayerImage {
   img.src = source
   return { img, speedModifier }
 }
+
+
 
 const fantasyBright: LayerImage[] = [
   layerImage(fantasyBrightSky, 0),
@@ -52,6 +57,12 @@ const forestSimple: LayerImage[] = [
   layerImage(forestSimple3, 0.4),
   layerImage(forestSimple2, 0.6),
   layerImage(forestSimple1, 0.8),
+]
+
+const julienForest: LayerImage[] = [
+  layerImage(julienBg3, 0.4),
+  layerImage(julienBg2, 0.6),
+  layerImage(julienBg1, 0.8),
 ]
 
 
@@ -76,7 +87,7 @@ const forestComplex: LayerImage[] = [
   layerImage(forestComplexForeground, 1.2),
 ]
 
-const layerImages: LayerImage[] = fantasyBright
+const layerImages: LayerImage[] = julienForest
 
 class InteractiveBackgroundLayer implements DisplayedObject {
   private readonly game: PuppetHandler
