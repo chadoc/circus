@@ -1,5 +1,5 @@
 import Sprite from '../../assets/opossum/SpriteOpossum1.png'
-import type {DisplayedObject, PuppetHandler} from '@/components/game/Draw'
+import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
 import {FrameRate} from '@/components/game/FrameRate'
 
 export type PuppetCoordinate = {
@@ -59,6 +59,8 @@ export class Opossum implements DisplayedObject {
   private sinHeightRatio: number
   private markedForDeletion: boolean
 
+  private layerSpeed: number
+
   private frameRate: FrameRate
   private collisionDetection: CollisionDetection
 
@@ -87,8 +89,10 @@ export class Opossum implements DisplayedObject {
     this.angleSpeed = Math.random() * 0.2
     this.sinHeightRatio = Math.random() * 7 + 2
 
+    this.layerSpeed = 25 * 0.8 // TODO should be based on background
+
     // this.frameRate = new FrameRate(Math.random() * 50 + 20)
-    this.frameRate = new FrameRate(100)
+    this.frameRate = new FrameRate(60)
     this.collisionDetection = new CollisionDetection(game.collisionCtx)
   }
 
@@ -118,7 +122,16 @@ export class Opossum implements DisplayedObject {
     }
   }
 
-  update(deltaTime: number) {
+  update(deltaTime: number, input: InputController) {
+    if (input.hasOneOf('ArrowRight', 'SwipeRight')) {
+      this.speed = this.layerSpeed
+    } else if (input.hasOneOf('ArrowLeft', 'SwipeLeft')) {
+      this.speed = -this.layerSpeed
+    } else {
+      this.speed = 0
+    }
+
+
     // this.x -= this.speed
     // // this.y += Math.random() * 5 - 2.5
     // this.y += this.sinHeightRatio * Math.sin(this.angle)
@@ -129,6 +142,7 @@ export class Opossum implements DisplayedObject {
     // }
     this.frameRate.onUpdate(deltaTime, () => {
       // console.log(`should draw frame ${this.frame}`)
+      // compute frame
       if (this.frame <= 0) {
         this.leftDirection = false
       }
@@ -140,6 +154,12 @@ export class Opossum implements DisplayedObject {
       } else {
         this.frame++
       }
+
+      // compute x
+      if (this.x <= -this.width) {
+        this.x = 0
+      }
+      this.x = Math.floor(this.x - this.speed)
     })
   }
 
