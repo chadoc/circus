@@ -5,6 +5,10 @@ import {Player} from '@/components/game/Player'
 import {PlayerShip} from '@/components/game/PlayerShip'
 import {InteractiveBackground} from '@/components/game/InteractiveBackground'
 import {Opossum} from '@/components/game/Opossum'
+import {Opossum1} from '@/components/game/Opossum1'
+import {Opossum2} from '@/components/game/Opossum2'
+import {Opossum3} from '@/components/game/Opossum3'
+import {SpeechBubble} from '@/components/game/SpeechBubble'
 
 class Level {
   private readonly maxPuppet = 10
@@ -154,7 +158,11 @@ export class Game implements PuppetHandler {
     this.animations = this.animations.filter(a => !a.mustDelete)
 
     if (this.opossums.length == 0) {
-      this.opossums.push(new Opossum(this))
+      this.opossums.push(new Opossum1(this))
+      this.opossums.push(new Opossum2(this))
+      this.opossums.push(new Opossum3(this))
+      this.animations.push(new SpeechBubble(this, 300, 300, 300))
+      // this.opossums.push(new Opossum(this))
     }
     if (this.level.shouldAddPuppet(deltaTime, this.puppets.length)) {
       this.puppets.push(new Puppet(this))
