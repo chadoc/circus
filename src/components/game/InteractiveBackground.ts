@@ -112,7 +112,7 @@ class InteractiveBackgroundLayer implements DisplayedObject {
     this.x = 0
     this.y = 0
     this.frameRate = new FrameRate(60)
-    this.backgroundSpeed = 10
+    this.backgroundSpeed = 25
     this.speedModifier = speedModifier
     this.layerSpeed = this.backgroundSpeed * this.speedModifier
     this.speed = 0
