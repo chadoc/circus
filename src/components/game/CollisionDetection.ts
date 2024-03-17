@@ -1,4 +1,4 @@
-import type {PuppetCoordinate} from '@/components/game/Opossum1'
+import type {DisplayCoordinate} from '@/components/game/Draw'
 
 export class CollisionDetection {
   readonly randomColors: [number, number, number]
@@ -23,7 +23,7 @@ export class CollisionDetection {
     }
   }
 
-  draw({ x, y, width, height }: PuppetCoordinate) {
+  draw({ x, y, width, height }: DisplayCoordinate) {
     this.collisionCtx.fillStyle = this.color
     this.collisionCtx.fillRect(x, y, width, height)
   }

@@ -161,9 +161,25 @@ export class Game implements PuppetHandler {
       this.opossums.push(new Opossum1(this))
       this.opossums.push(new Opossum2(this))
       this.opossums.push(new Opossum3(this))
-      this.animations.push(new SpeechBubble(this, 300, 300, 300))
+      // this.animations.push(new SpeechBubble(this, 300, 300, 300))
       // this.opossums.push(new Opossum(this))
     }
+
+    this.opossums.forEach(opossum => {
+      const op = opossum.coordinate
+      const player = this.ship.coordinate
+      if (player.x > op.x + op.width ||
+        player.x + player.width < op.x ||
+        player.y > op.y + op.height ||
+        player.y + player.height < op.y) {
+        // no collision
+      } else {
+        if (!this.animations.some(a => a.source === opossum)) {
+          this.animations.push(new SpeechBubble(this, opossum, 300))
+        }
+      }
+    })
+
     if (this.level.shouldAddPuppet(deltaTime, this.puppets.length)) {
       this.puppets.push(new Puppet(this))
       // sort puppets by width to make sure bigger are in front

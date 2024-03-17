@@ -1,17 +1,10 @@
 import Sprite from '../../assets/opossum/Opossum2Sprite.png'
-import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
+import type {DisplayCoordinate, DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
 import {FrameRate} from '@/components/game/FrameRate'
 import {CollisionDetection} from '@/components/game/CollisionDetection'
 import type {AnimationState} from '@/components/SprintAnimations'
 import {LeftRightAnimation} from '@/components/game/LeftRightAnimation'
 import type {ObjectAnimation} from '@/components/game/LeftRightAnimation'
-
-export type PuppetCoordinate = {
-  x: number
-  y: number
-  width: number
-  height: number
-}
 
 const image = new Image()
 image.src = Sprite
@@ -110,7 +103,7 @@ export class Opossum2 implements DisplayedObject {
     return this.width
   }
 
-  get coordinate(): PuppetCoordinate {
+  get coordinate(): DisplayCoordinate {
     return {
       x: this.x,
       y: this.y,

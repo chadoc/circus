@@ -1,7 +1,7 @@
 import CloudImg from '../../assets/SpriteCloud.png'
 import Bubble from '../../assets/speech3.png'
 import CloudSound from '../../assets/liquid.wav'
-import type {DisplayedObject, PuppetHandler} from '@/components/game/Draw'
+import type {DisplayCoordinate, DisplayedObject, PuppetHandler} from '@/components/game/Draw'
 import {FrameRate} from '@/components/game/FrameRate'
 
 const sound = new Audio(CloudSound)
@@ -29,22 +29,24 @@ export class SpeechBubble implements DisplayedObject {
   private markedForDeletion: boolean
 
   private frameRate: FrameRate
-  private quoteDurationSeconds: number = 10
+  private quoteDurationSeconds: number = 4
   private creationTime: number
   private displayBubble: boolean = false
 
   private bubbleImageWidth: number = 656
   private bubbleImageHeight: number = 520
+  readonly source: DisplayedObject & { coordinates: DisplayCoordinate }
 
-  constructor(game: PuppetHandler,  x: number, y: number, size: number) {
+  constructor(game: PuppetHandler, source: DisplayedObject & { coordinate: DisplayCoordinate }, size: number) {
     this.game = game
     this.spriteWidth = 300
     this.spriteHeight = 230
     this.widthRatio = 1.2
     this.width = this.spriteWidth / this.widthRatio
     this.height = this.spriteHeight / this.widthRatio
-    this.x = x
-    this.y = y
+    this.source = source
+    this.x = source.coordinate.x
+    this.y = source.coordinate.y
     this.size = size
     this.spriteFrames = 9
     this.frame = 0
@@ -66,7 +68,7 @@ export class SpeechBubble implements DisplayedObject {
       if (!this.displayBubble) {
         if (this.frame > (this.spriteFrames - 2)) {
           this.markedForDeletion = true
-        } else if (this.frame == 2) {
+        } else if (this.frame == 4) {
           this.displayBubble = true
         } else {
           this.frame++

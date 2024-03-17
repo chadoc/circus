@@ -1,4 +1,4 @@
-import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
+import type {DisplayCoordinate, DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
 import ImagePlane from '../../assets/plane/shipPlane.png'
 import ImageWindow from '../../assets/plane/shipWindow.png'
 import ImageUser from '../../assets/plane/julien.webp'
@@ -96,6 +96,8 @@ export class PlayerShip implements DisplayedObject {
     //   this.verticalSpeed = 0
     // }
 
+    // is there a collision
+
     this.frameRate.onUpdate(deltaTime, () => {
       if (this.frame > this.spriteFrames - 2) {
         this.frame = 0
@@ -111,6 +113,15 @@ export class PlayerShip implements DisplayedObject {
 
   get onGround(): boolean {
     return this.y >= this.groundHeight
+  }
+
+  get coordinate(): DisplayCoordinate {
+    return {
+      x: this.x,
+      y: this.y,
+      width: this.width,
+      height: this.height
+    }
   }
 
   draw() {

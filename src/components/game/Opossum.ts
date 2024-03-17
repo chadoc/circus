@@ -1,13 +1,6 @@
 import Sprite from '../../assets/opossum/SpriteOpossum1.png'
-import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
+import type {DisplayCoordinate, DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
 import {FrameRate} from '@/components/game/FrameRate'
-
-export type PuppetCoordinate = {
-  x: number
-  y: number
-  width: number
-  height: number
-}
 
 class CollisionDetection {
   readonly randomColors: [number, number, number]
@@ -32,7 +25,7 @@ class CollisionDetection {
     }
   }
 
-  draw({ x, y, width, height }: PuppetCoordinate) {
+  draw({ x, y, width, height }: DisplayCoordinate) {
     this.collisionCtx.fillStyle = this.color
     this.collisionCtx.fillRect(x, y, width, height)
   }
@@ -104,7 +97,7 @@ export class Opossum implements DisplayedObject {
     return this.width
   }
 
-  get coordinate(): PuppetCoordinate {
+  get coordinate(): DisplayCoordinate {
     return {
       x: this.x,
       y: this.y,
