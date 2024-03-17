@@ -26,6 +26,7 @@ export class Opossum3 implements DisplayedObject {
 
   private layerSpeed: number
 
+  private movementRate: FrameRate
   private frameRate: FrameRate
   private collisionDetection: CollisionDetection
 
@@ -57,6 +58,7 @@ export class Opossum3 implements DisplayedObject {
     this.layerSpeed = 25 * 0.8 // TODO should be based on background
 
     // this.frameRate = new FrameRate(Math.random() * 50 + 20)
+    this.movementRate = new FrameRate(60)
     this.frameRate = new FrameRate(100)
     this.collisionDetection = new CollisionDetection(game.collisionCtx)
   }
@@ -105,6 +107,13 @@ export class Opossum3 implements DisplayedObject {
     //   this.markedForDeletion = true
     //   this.game.miss()
     // }
+    this.movementRate.onUpdate(deltaTime, () => {
+      // compute x
+      if (this.x <= -this.width) {
+        this.x = 0
+      }
+      this.x = Math.floor(this.x - this.speed)
+    })
     this.frameRate.onUpdate(deltaTime, () => {
       // console.log(`should draw frame ${this.frame}`)
       // compute frame
@@ -119,12 +128,6 @@ export class Opossum3 implements DisplayedObject {
       } else {
         this.frame++
       }
-
-      // compute x
-      if (this.x <= -this.width) {
-        this.x = 0
-      }
-      this.x = Math.floor(this.x - this.speed)
     })
   }
 

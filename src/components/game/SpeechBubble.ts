@@ -85,13 +85,16 @@ export class SpeechBubble implements DisplayedObject {
 
   draw() {
     if (this.displayBubble) {
-      // https://stackoverflow.com/questions/12652769/rendering-html-elements-to-canvas
       this.game.ctx.drawImage(bubble, 0, 0, this.bubbleImageWidth, this.bubbleImageHeight, this.x, this.y, this.size, this.size)
-      this.game.ctx.font = '20px julien'
+      this.game.ctx.font = '25px julien'
       this.game.ctx.fillStyle = 'black'
-      this.game.ctx.fillText('Parce que les opossums', this.x + 40, this.y + 100)
-      this.game.ctx.fillText('les mettraient', this.x + 40, this.y + 130)
-      this.game.ctx.fillText('sûrement à l\'envers', this.x + 40, this.y + 160)
+      this.game.ctx.textAlign = 'center'
+      const textX = (this.x + this.width / 2) + 30
+      const textYBase = this.y + 120
+      const lineHeight = 30
+      this.game.ctx.fillText('Parce que les opossums', textX, textYBase)
+      this.game.ctx.fillText('les mettraient', textX, textYBase + lineHeight * 1)
+      this.game.ctx.fillText('sûrement à l\'envers', textX, textYBase + lineHeight * 2)
     } else {
       this.game.ctx.drawImage(image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.size, this.size)
     }
