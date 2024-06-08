@@ -1,36 +1,14 @@
 import shadowDog from '../assets/shadow_dog.png'
+import type {AnimationSprite, SpriteAnimation} from "@/components/game/common/AnimatedSprite";
+import {createCoordinates} from "@/components/game/common/AnimatedSprite";
 
-export type SpriteCoordinate = {
-  x: number
-  y: number
-}
-
-export type SpriteAnimation = {
-  loc: SpriteCoordinate[]
-}
-
-function createCoordinates(width: number, y: number, frameCount: number): SpriteCoordinate[] {
-  const coordinates: SpriteCoordinate[] = []
-  for (let i = 0; i < frameCount; i++) {
-    coordinates.push({ x: i * width, y })
-  }
-  return coordinates
-}
 
 const spriteWidth = 575
 const spriteHeight = 523
 
-export type AnimationState = {
-  name: string
-  frames: number
-}
+const image = new Image()
+image.src = shadowDog
 
-export type AnimationSprite = {
-  img: any,
-  colWidth: number,
-  rowHeight: number,
-  states: AnimationState[]
-}
 
 /*
 sprite :
@@ -39,6 +17,7 @@ height: 5230 px / 10 rows = 523
  */
 export const ShadowDogSprite: AnimationSprite = {
   img: shadowDog,
+  image,
   colWidth: 575,
   rowHeight: 523,
   states: [

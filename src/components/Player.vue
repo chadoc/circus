@@ -11,7 +11,8 @@
 </template>
 <script setup lang="ts">
 import {computed, onMounted, ref, unref} from 'vue'
-import {type AnimationState, ShadowDogSprite, type SpriteAnimation, SpriteAnimations} from '@/components/SprintAnimations'
+import {ShadowDogSprite} from '@/components/SprintAnimations'
+import type {AnimationState} from "@/components/game/common/AnimatedSprite";
 
 const CANVAS_WIDTH = 600;
 const CANVAS_HEIGHT = 600;
@@ -20,7 +21,7 @@ const gameSpeed = ref(4)  // define speed of animation/game
 const canvas1 = ref<HTMLCanvasElement>()
 const playerStateKey = ref('idle')
 const sprite = ShadowDogSprite
-const { colWidth, rowHeight, states, img } = sprite
+const { colWidth, rowHeight, states, image } = sprite
 const availableAnimations = states.map(({ name }) => name)
 const playState = computed<AnimationState>(() => states.find(({ name }) => name === playerStateKey.value)!)
 const maxFrame = computed(() => playState.value.frames)
@@ -50,8 +51,6 @@ onMounted(() =>  {
   canvas.width = CANVAS_WIDTH
   canvas.height = CANVAS_HEIGHT
 
-  const playerImage = new Image()
-  playerImage.src = img
   let gameFrame = 0
 
   function animate() {
@@ -59,7 +58,7 @@ onMounted(() =>  {
     // ctx.fillRect(100, 50, 100,100)
 
     const { x, y, width, height } = animationFrame(gameFrame)
-    ctx.drawImage(playerImage, x, y, width, height, 0, 0, width, height)
+    ctx.drawImage(image, x, y, width, height, 0, 0, width, height)
     gameFrame++
     requestAnimationFrame(animate)
   }

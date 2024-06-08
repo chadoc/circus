@@ -1,4 +1,4 @@
-import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
+import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
 import fantasyBrightSky from '../../assets/background/fantasy-bright/sky.png'
 import fantasyBrightJungle from '../../assets/background/fantasy-bright/jungle_bg.png'
 import fantasyBrightTreeBrushes from '../../assets/background/fantasy-bright/trees&bushes.png'
@@ -26,7 +26,7 @@ import forestComplexForeground from '../../assets/background/forest-complex/fore
 import julienBg1 from '../../assets/background/julien/bg1.png'
 import julienBg2 from '../../assets/background/julien/bg2.png'
 import julienBg3 from '../../assets/background/julien/bg3.png'
-import {FrameRate} from '@/components/game/FrameRate'
+import {FrameRate} from '@/components/game/common/FrameRate'
 
 type LayerImage = {
   img: any

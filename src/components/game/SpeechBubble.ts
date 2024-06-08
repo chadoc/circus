@@ -1,8 +1,8 @@
 import CloudImg from '../../assets/SpriteCloud.png'
 import Bubble from '../../assets/speech3.png'
 import CloudSound from '../../assets/liquid.wav'
-import type {DisplayCoordinate, DisplayedObject, PuppetHandler} from '@/components/game/Draw'
-import {FrameRate} from '@/components/game/FrameRate'
+import type {DisplayCoordinate, DisplayedObject, PuppetHandler} from '@/components/game/common/Draw'
+import {FrameRate} from '@/components/game/common/FrameRate'
 
 const sound = new Audio(CloudSound)
 const image = new Image()

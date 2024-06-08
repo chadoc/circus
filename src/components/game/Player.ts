@@ -1,10 +1,8 @@
-import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
-import {type AnimationState, ShadowDogSprite} from '@/components/SprintAnimations'
-import {FrameRate} from '@/components/game/FrameRate'
+import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
+import {ShadowDogSprite} from '@/components/SprintAnimations'
+import {FrameRate} from '@/components/game/common/FrameRate'
+import type {AnimationState} from "@/components/game/common/AnimatedSprite";
 
-
-const image = new Image()
-image.src = ShadowDogSprite.img
 
 function stateFor(key: string): AnimationState {
   return ShadowDogSprite.states.find(({ name }) => name === key)!
@@ -96,7 +94,7 @@ export class Player implements DisplayedObject {
   }
   draw() {
     this.game.ctx.fillStyle = 'white'
-    this.game.ctx.drawImage(image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height)
+    this.game.ctx.drawImage(ShadowDogSprite.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height)
     // this.game.ctx.fillRect(this.x, this.y, this.width, this.height)
   }
 

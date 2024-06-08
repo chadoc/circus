@@ -1,14 +1,15 @@
-import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
+import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
 import {Puppet} from '@/components/game/Puppet'
 import {Cloud} from '@/components/game/Cloud'
 import {Player} from '@/components/game/Player'
 import {PlayerShip} from '@/components/game/PlayerShip'
 import {InteractiveBackground} from '@/components/game/InteractiveBackground'
-import {Opossum} from '@/components/game/Opossum'
-import {Opossum1} from '@/components/game/Opossum1'
-import {Opossum2} from '@/components/game/Opossum2'
-import {Opossum3} from '@/components/game/Opossum3'
+import {Opossum1} from '@/components/game/opossum/Opossum1'
+import {Opossum2} from '@/components/game/opossum/Opossum2'
+import {Opossum3} from '@/components/game/opossum/Opossum3'
 import {SpeechBubble} from '@/components/game/SpeechBubble'
+import {DrawContext} from "@/components/game/common/Draw";
+import type {GenericOpossum} from "@/components/game/opossum/GenericOpossum";
 
 class Level {
   private readonly maxPuppet = 10
@@ -104,10 +105,10 @@ class InputHandler implements InputController {
 }
 
 export class Game implements PuppetHandler {
-  readonly ctx: CanvasRenderingContext2D
-  readonly collisionCtx: CanvasRenderingContext2D
+  readonly drawer: DrawContext
+  readonly collisionDrawer: DrawContext
   private puppets: Puppet[] = []
-  private opossums: Opossum[] = []
+  private opossums: GenericOpossum[] = []
   private animations: DisplayedObject[] = []
   private player: Player
   private ship: PlayerShip
@@ -116,8 +117,8 @@ export class Game implements PuppetHandler {
   private readonly input: InputHandler
 
   constructor(ctx: CanvasRenderingContext2D, collisionCtx: CanvasRenderingContext2D, userImg: any) {
-    this.ctx = ctx
-    this.collisionCtx = collisionCtx
+    this.drawer = new DrawContext(ctx)
+    this.collisionDrawer = new DrawContext(ctx)
     this.input = new InputHandler()
     this.player = new Player(this)
     this.ship = new PlayerShip(this, userImg)
@@ -127,7 +128,7 @@ export class Game implements PuppetHandler {
   }
 
   click(event: MouseEvent) {
-    const detectPixelColor = this.collisionCtx.getImageData(event.x, event.y, 1, 1).data
+    const detectPixelColor = this.collisionDrawer.ctx.getImageData(event.x, event.y, 1, 1).data
     this.puppets.forEach(puppet => {
       if (puppet.fire(detectPixelColor)) {
         // has been touched
@@ -202,6 +203,14 @@ export class Game implements PuppetHandler {
 
   get isGameOver() {
     return this.level.isGameOver
+  }
+
+  get ctx() {
+    return this.drawer.ctx
+  }
+
+  get collisionCtx() {
+    return this.collisionDrawer.ctx
   }
 
   private drawScore() {

@@ -1,8 +1,8 @@
-import type {DisplayCoordinate, DisplayedObject, InputController, PuppetHandler} from '@/components/game/Draw'
+import type {DisplayCoordinate, DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
 import ImagePlane from '../../assets/plane/shipPlane.png'
 import ImageWindow from '../../assets/plane/shipWindow.png'
 import ImageUser from '../../assets/plane/julien.webp'
-import {FrameRate} from '@/components/game/FrameRate'
+import {FrameRate} from '@/components/game/common/FrameRate'
 
 const imgPlane = new Image()
 imgPlane.src = ImagePlane
@@ -120,7 +120,8 @@ export class PlayerShip implements DisplayedObject {
       x: this.x,
       y: this.y,
       width: this.width,
-      height: this.height
+      height: this.height,
+      ratio: this.widthRatio
     }
   }
 

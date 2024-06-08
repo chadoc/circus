@@ -1,6 +1,6 @@
 import SpritePuppet from '../../assets/SpritePuppet.png'
-import type {DisplayCoordinate, DisplayedObject, PuppetHandler} from '@/components/game/Draw'
-import {FrameRate} from '@/components/game/FrameRate'
+import type {DisplayCoordinate, DisplayedObject, PuppetHandler} from '@/components/game/common/Draw'
+import {FrameRate} from '@/components/game/common/FrameRate'
 
 class CollisionDetection {
   readonly randomColors: [number, number, number]
@@ -93,7 +93,8 @@ export class Puppet implements DisplayedObject {
       x: this.x,
       y: this.y,
       width: this.width,
-      height: this.height
+      height: this.height,
+      ratio: this.widthRatio
     }
   }
 
