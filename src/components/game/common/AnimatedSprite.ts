@@ -99,10 +99,6 @@ export class AnimatedSprite {
             dh: this.sprite.rowHeight / coordinates.ratio
         }
     }
-
-    toDrawRefState(state: string, frame: number, coordinates: DisplayCoordinate): SpriteDrawReference {
-        return this.toDrawRef(this.rowFor(state), frame, coordinates)
-    }
 }
 
 export type SpritePointer = {

@@ -1,6 +1,9 @@
-import Sprite from '../../../assets/niko/NikoMovementFull.png'
-import type {AnimationSprite} from "@/components/game/opossum/Opossum2";
-import type {SpriteCoordinate} from "@/components/game/common/AnimatedSprite";
+import Sprite from '../../../assets/niko/NikoMovementPartial.png'
+import type {
+    AnimationSprite,
+    SpriteCoordinate,
+    SpritePointer
+} from "@/components/game/common/AnimatedSprite";
 
 /*
  4500 x 5400
@@ -14,8 +17,12 @@ row index: 1
 col size: 3
  */
 
+const image = new Image()
+image.src = Sprite
+
 export const NikoSprite: AnimationSprite = {
     img: Sprite,
+    image,
     colWidth: 900,
     rowHeight: 900,
     states: [
@@ -45,4 +52,9 @@ export const NikoSprite: AnimationSprite = {
 export const NikoBody: SpriteCoordinate = {
     x: NikoSprite.colWidth * 4,
     y: NikoSprite.rowHeight * 0
+}
+
+export const NikoBodyRef: SpritePointer = {
+    row: 0,
+    frame: 4
 }

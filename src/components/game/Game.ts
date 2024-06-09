@@ -10,6 +10,7 @@ import {Opossum3} from '@/components/game/opossum/Opossum3'
 import {SpeechBubble} from '@/components/game/SpeechBubble'
 import {DrawContext} from "@/components/game/common/Draw";
 import type {GenericOpossum} from "@/components/game/opossum/GenericOpossum";
+import {NikoPlayer} from "@/components/game/niko/NikoPlayer";
 
 class Level {
   private readonly maxPuppet = 10
@@ -110,8 +111,9 @@ export class Game implements PuppetHandler {
   private puppets: Puppet[] = []
   private opossums: GenericOpossum[] = []
   private animations: DisplayedObject[] = []
-  private player: Player
-  private ship: PlayerShip
+  //private player: Player
+  private player: NikoPlayer
+  //private ship: PlayerShip
   private background: InteractiveBackground
   private readonly level = new Level()
   private readonly input: InputHandler
@@ -120,8 +122,9 @@ export class Game implements PuppetHandler {
     this.drawer = new DrawContext(ctx)
     this.collisionDrawer = new DrawContext(ctx)
     this.input = new InputHandler()
-    this.player = new Player(this)
-    this.ship = new PlayerShip(this, userImg)
+    //this.player = new Player(this)
+    this.player = new NikoPlayer(this)
+    //this.ship = new PlayerShip(this, userImg)
     this.background = new InteractiveBackground(this)
     this.ctx.canvas.addEventListener('click', (e) => this.click(e))
     this.ctx.font = '50px Impact'
@@ -149,8 +152,8 @@ export class Game implements PuppetHandler {
       ...this.puppets,
       ...this.opossums,
       ...this.animations,
-      // ...[this.player],
-      ...[this.ship]
+      ...[this.player]
+      //...[this.ship]
     ]
   }
 
@@ -168,7 +171,7 @@ export class Game implements PuppetHandler {
 
     this.opossums.forEach(opossum => {
       const op = opossum.coordinate
-      const player = this.ship.coordinate
+      const player = this.player.coordinate
       if (player.x > op.x + op.width ||
         player.x + player.width < op.x ||
         player.y > op.y + op.height ||

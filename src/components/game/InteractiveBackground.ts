@@ -149,7 +149,7 @@ class InteractiveBackgroundLayer implements DisplayedObject {
 
 export class InteractiveBackground implements DisplayedObject {
   private readonly game: PuppetHandler
-  private readonly layers: BackgroundLayer[]
+  private readonly layers: InteractiveBackgroundLayer[]
 
   constructor(game: PuppetHandler) {
     this.game = game
