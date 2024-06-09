@@ -118,9 +118,9 @@ export class Game implements PuppetHandler {
   private readonly level = new Level()
   private readonly input: InputHandler
 
-  constructor(ctx: CanvasRenderingContext2D, collisionCtx: CanvasRenderingContext2D, userImg: any) {
+  constructor(ctx: CanvasRenderingContext2D, collisionCtx: CanvasRenderingContext2D) {
     this.drawer = new DrawContext(ctx)
-    this.collisionDrawer = new DrawContext(ctx)
+    this.collisionDrawer = new DrawContext(collisionCtx)
     this.input = new InputHandler()
     //this.player = new Player(this)
     this.player = new NikoPlayer(this)
@@ -238,11 +238,11 @@ export class Game implements PuppetHandler {
   }
 }
 
-export function triggerGame(canvas: HTMLCanvasElement, collisionCanvas: HTMLCanvasElement, userImg: any): Game {
+export function triggerGame(canvas: HTMLCanvasElement, collisionCanvas: HTMLCanvasElement): Game {
   const ctx = canvas.getContext('2d')!
   const collisionCtx = collisionCanvas.getContext('2d')!
 
-  const game = new Game(ctx, collisionCtx, userImg)
+  const game = new Game(ctx, collisionCtx)
 
   let lastTime = 1
   function animate(timestamp: number) {

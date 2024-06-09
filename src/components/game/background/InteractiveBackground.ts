@@ -1,9 +1,10 @@
-import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
+import type {DisplayCoordinate, DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
 import julienBg1 from '../../../assets/background/julien/bg1.png'
 import julienBg2 from '../../../assets/background/julien/bg2.png'
 import julienBg3 from '../../../assets/background/julien/bg3.png'
 import {FrameRate} from '@/components/game/common/FrameRate'
 import Config from "@/components/game/Config";
+import {moveX, Position} from "@/components/game/common/Draw";
 
 type LayerImage = {
   img: any
@@ -30,8 +31,7 @@ class InteractiveBackgroundLayer implements DisplayedObject {
   private readonly game: PuppetHandler
   private readonly image: any
 
-  private x: number
-  private y: number
+  private position: Position
   private width: number
   private height: number
   private speed: number
@@ -46,13 +46,34 @@ class InteractiveBackgroundLayer implements DisplayedObject {
     this.image = image
     this.width = game.ctx.canvas.width
     this.height = game.ctx.canvas.height
-    this.x = 0
-    this.y = 0
+    this.position = new Position(0, 0)
     this.frameRate = new FrameRate(Config.frameRate)
     this.backgroundSpeed = 25
     this.speedModifier = speedModifier
     this.layerSpeed = this.backgroundSpeed * this.speedModifier
     this.speed = 0
+  }
+
+  get coordinates(): DisplayCoordinate {
+    return this.computeCoordinates(0)
+  }
+
+  get leftCoordinates(): DisplayCoordinate {
+    return this.computeCoordinates(-this.width)
+  }
+
+  get rightCoordinates(): DisplayCoordinate {
+    return this.computeCoordinates(this.width)
+  }
+
+  computeCoordinates(xShift: number): DisplayCoordinate {
+    return {
+      x: this.position.x + xShift,
+      y: this.position.y,
+      width: this.width,
+      height: this.height,
+      ratio: 1
+    }
   }
 
   update(deltaTime: number, input: InputController) {
@@ -66,16 +87,14 @@ class InteractiveBackgroundLayer implements DisplayedObject {
 
     this.frameRate.onUpdate(deltaTime, () => {
       // compute also to add image on left
-      if (this.x <= -this.width) {
-        this.x = 0
-      }
-      this.x = Math.floor(this.x - this.speed)
+      this.position = moveX(this.coordinates, this.speed)
     })
   }
 
   draw() {
-    this.game.ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
-    this.game.ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height)
+    this.game.drawer.drawImage(this.image, this.leftCoordinates)
+    this.game.drawer.drawImage(this.image, this.coordinates)
+    this.game.drawer.drawImage(this.image, this.rightCoordinates)
   }
 
   get mustDelete(): boolean {

@@ -40,7 +40,7 @@ onMounted(() =>  {
   collisionCanvas.width = innerWidth
   collisionCanvas.height = innerHeight
 
-  game.value = triggerGame(canvas, collisionCanvas, props.userImg)
+  game.value = triggerGame(canvas, collisionCanvas)
   game.value?.toggleFullScreen()
 })
 

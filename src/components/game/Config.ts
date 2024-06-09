@@ -3,7 +3,7 @@ export default {
   requestUserPicture: false,
   requireLandscapeMode: false,
   frameRate: 50,
-  gravity: 12,
-  playerYSpeed: 20,
+  gravity: 10,
+  playerYSpeed: 11,
   playerXSpeed: 10
 }
