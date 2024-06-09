@@ -14,8 +14,6 @@ bubble.src = Bubble
 
 export class SpeechBubble implements DisplayedObject {
   private readonly game: PuppetHandler
-  private x: number
-  private y: number
   private width: number
   private height: number
   private size: number
@@ -46,8 +44,6 @@ export class SpeechBubble implements DisplayedObject {
     this.width = this.spriteWidth / this.widthRatio
     this.height = this.spriteHeight / this.widthRatio
     this.source = source
-    this.x = source.coordinate.x
-    this.y = source.coordinate.y
     this.size = size
     this.spriteFrames = 9
     this.frame = 0
@@ -55,6 +51,14 @@ export class SpeechBubble implements DisplayedObject {
 
     this.frameRate = new FrameRate(Config.frameRate)
     this.creationTime = new Date().getTime()
+  }
+
+  get x(): number {
+    return this.source.coordinate.x // + 100
+  }
+
+  get y(): number {
+    return this.source.coordinate.y // - 100
   }
 
   get mustDelete() {
@@ -65,6 +69,7 @@ export class SpeechBubble implements DisplayedObject {
     if (this.frame === 0) {
       // sound.play()
     }
+
     this.frameRate.onUpdate(deltaTime, () => {
       if (!this.displayBubble) {
         if (this.frame > (this.spriteFrames - 2)) {

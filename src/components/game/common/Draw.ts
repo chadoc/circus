@@ -18,10 +18,6 @@ export class DrawContext {
     this.ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
   }
 
-  drawImage(image: HTMLImageElement, dx: number, dy: number, dw: number, dh: number) {
-    this.ctx.drawImage(image, dx, dy, dw, dh)
-  }
-
   drawImage(image: HTMLImageElement, { x, y, width, height }: DisplayCoordinate) {
     this.ctx.drawImage(image, x, y, width, height)
   }

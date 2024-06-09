@@ -80,7 +80,10 @@ export abstract class GenericOpossum implements DisplayedObject {
         }
 
         this.movementRate.onUpdate(deltaTime, () => {
-            this.position = moveX(this.coordinate, this.speed)
+            this.position = {
+                x: Math.floor(this.position.x - this.speed),
+                y: this.position.y
+            }
         })
         this.frameRate.onUpdate(deltaTime, () => {
             this.sprite.update(this.nextFrame())
