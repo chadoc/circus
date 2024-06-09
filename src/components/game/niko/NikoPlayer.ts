@@ -41,21 +41,26 @@ export class NikoPlayer implements DisplayedObject {
 
   update(deltaTime: number, input: InputController) {
     if (input.hasOneOf('ArrowRight', 'SwipeRight')) {
-      this.speed = 10
+      this.speed = Math.min(this.speed + 1, Config.playerXSpeed)
     } else if (input.hasOneOf('ArrowLeft', 'SwipeLeft')) {
-      this.speed = -10
+      this.speed = Math.max(this.speed - 1, -Config.playerXSpeed)
     } else {
-      this.speed = 0
+      if (this.speed > 0) {
+        this.speed = Math.max(this.speed - 1, 0)
+      } else {
+        this.speed = Math.min(this.speed + 1, 0)
+      }
     }
 
     if (input.hasOneOf('ArrowUp', 'SwipeUp')) {
-      this.verticalSpeed -= 4
+      this.verticalSpeed -= Config.playerYSpeed
     } else if (input.hasOneOf('ArrowDown', 'SwipeDown')) {
-      this.verticalSpeed += 4
+      this.verticalSpeed += Config.playerYSpeed
     } else {
       this.verticalSpeed = 0
     }
 
+    this.verticalSpeed = this.applyGravity(this.verticalSpeed)
     this.position = this.newPosition(this.speed, this.verticalSpeed)
 
     // if (!this.onGround) {
@@ -73,6 +78,14 @@ export class NikoPlayer implements DisplayedObject {
         this.frame++
       }
     })
+  }
+
+  private applyGravity(verticalSpeed: number): number {
+    if (!this.onGround) {
+      return verticalSpeed + Config.gravity
+    } else {
+      return verticalSpeed
+    }
   }
 
   newPosition(speed: number, verticalSpeed: number): Position {
