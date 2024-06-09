@@ -1,14 +1,12 @@
 import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
+import {DrawContext} from "@/components/game/common/Draw";
 import {Puppet} from '@/components/game/Puppet'
 import {Cloud} from '@/components/game/Cloud'
-import {Player} from '@/components/game/Player'
-import {PlayerShip} from '@/components/game/PlayerShip'
 import {InteractiveBackground} from '@/components/game/background/InteractiveBackground'
 import {Opossum1} from '@/components/game/opossum/Opossum1'
 import {Opossum2} from '@/components/game/opossum/Opossum2'
 import {Opossum3} from '@/components/game/opossum/Opossum3'
 import {SpeechBubble} from '@/components/game/SpeechBubble'
-import {DrawContext} from "@/components/game/common/Draw";
 import type {GenericOpossum} from "@/components/game/opossum/GenericOpossum";
 import {NikoPlayer} from "@/components/game/niko/NikoPlayer";
 
@@ -146,12 +144,18 @@ export class Game implements PuppetHandler {
     this.level.miss()
   }
 
-  private get allObjects() {
+  private get envObjects() {
     return [
       ...[this.background],
       ...this.puppets,
       ...this.opossums,
       ...this.animations,
+    ]
+  }
+
+  private get allObjects() {
+    return [
+      ...this.envObjects,
       ...[this.player]
       //...[this.ship]
     ]
@@ -192,7 +196,11 @@ export class Game implements PuppetHandler {
       })
     }
 
-    this.allObjects.forEach(o => o.update(deltaTime, this.input))
+    if (!this.background.limit.shouldStopMove(this.input)) {
+      console.log('udate')
+      this.envObjects.forEach(o => o.update(deltaTime, this.input))
+    }
+    this.player.update(deltaTime, this.input)
   }
 
   draw() {

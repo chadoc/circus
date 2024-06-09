@@ -103,13 +103,84 @@ class InteractiveBackgroundLayer implements DisplayedObject {
 
 }
 
+class BackgroundLimit {
+  private readonly game: PuppetHandler
+  private position: Position
+  private width: number
+  private height: number
+  private speed: number
+  private backgroundSpeed: number
+
+  private frameRate: FrameRate
+
+  constructor(game: PuppetHandler) {
+    this.game = game
+    this.width = game.ctx.canvas.width
+    this.height = game.ctx.canvas.height
+    this.position = new Position(0, 0)
+    this.frameRate = new FrameRate(Config.frameRate)
+    this.backgroundSpeed = 25
+    this.speed = 0
+  }
+
+  get coordinates(): DisplayCoordinate {
+    return {
+      x: this.position.x,
+      y: this.position.y,
+      width: this.width,
+      height: this.height,
+      ratio: 1
+    }
+  }
+
+  update(deltaTime: number, input: InputController) {
+    if (input.hasOneOf('ArrowRight', 'SwipeRight')) {
+      this.speed = this.backgroundSpeed
+    } else if (input.hasOneOf('ArrowLeft', 'SwipeLeft')) {
+      this.speed = -this.backgroundSpeed
+    } else {
+      this.speed = 0
+    }
+
+    this.frameRate.onUpdate(deltaTime, () => {
+      // compute also to add image on left
+      this.position = {
+        x: Math.floor(this.position.x - this.speed),
+        y: this.position.y
+      }
+    })
+  }
+
+  shouldStopMove(input: InputController): boolean {
+    return this.shouldStopMovingLeft(input) || this.shouldStopMovingRight(input)
+  }
+
+  shouldStopMovingLeft(input: InputController): boolean {
+    return input.hasOneOf('ArrowLeft', 'SwipeLeft') && this.leftLimitReached
+  }
+
+  shouldStopMovingRight(input: InputController): boolean {
+    return input.hasOneOf('ArrowRight', 'SwipeRight') && this.rightLimitReached
+  }
+
+  get leftLimitReached(): boolean {
+    return this.position.x >= (this.width)
+  }
+
+  get rightLimitReached(): boolean {
+    return this.position.x <= -(this.width)
+  }
+}
+
 export class InteractiveBackground implements DisplayedObject {
   private readonly game: PuppetHandler
   private readonly layers: InteractiveBackgroundLayer[]
+  readonly limit: BackgroundLimit
 
   constructor(game: PuppetHandler) {
     this.game = game
     this.layers = layerImages.map(({ img, speedModifier }) => new InteractiveBackgroundLayer(game, img, speedModifier))
+    this.limit = new BackgroundLimit(game)
   }
 
   get mustDelete(): boolean {
@@ -118,10 +189,10 @@ export class InteractiveBackground implements DisplayedObject {
 
   update(deltaTime: number, input: InputController) {
     this.layers.forEach(layer => layer.update(deltaTime, input))
+    this.limit.update(deltaTime, input)
   }
 
   draw() {
     this.layers.forEach(layer => layer.draw())
   }
-
 }

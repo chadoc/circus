@@ -36,7 +36,7 @@ export class SpeechBubble implements DisplayedObject {
 
   private bubbleImageWidth: number = 656
   private bubbleImageHeight: number = 520
-  readonly source: DisplayedObject & { coordinates: DisplayCoordinate }
+  readonly source: DisplayedObject & { coordinate: DisplayCoordinate }
 
   constructor(game: PuppetHandler, source: DisplayedObject & { coordinate: DisplayCoordinate }, size: number) {
     this.game = game
