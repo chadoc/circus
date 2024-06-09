@@ -3,6 +3,7 @@ import {Position} from "@/components/game/common/Draw";
 import {FrameRate} from '@/components/game/common/FrameRate'
 import {AnimatedSprite} from "@/components/game/common/AnimatedSprite";
 import {NikoBodyRef, NikoSprite} from "@/components/game/niko/NikoSprite";
+import Config from "@/components/game/Config";
 
 export class NikoPlayer implements DisplayedObject {
   private readonly game: PuppetHandler
@@ -22,7 +23,7 @@ export class NikoPlayer implements DisplayedObject {
     //this.ratio = (this.game.ctx.canvas.width / 4) / this.game.ctx.canvas.width
     this.ratio = 5
     this.position = new Position(0, game.ctx.canvas.height - this.height)
-    this.frameRate = new FrameRate(60)
+    this.frameRate = new FrameRate(Config.frameRate)
 
     this.frame = 0
     this.speed = 0

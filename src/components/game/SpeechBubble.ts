@@ -3,6 +3,7 @@ import Bubble from '../../assets/speech3.png'
 import CloudSound from '../../assets/liquid.wav'
 import type {DisplayCoordinate, DisplayedObject, PuppetHandler} from '@/components/game/common/Draw'
 import {FrameRate} from '@/components/game/common/FrameRate'
+import Config from "@/components/game/Config";
 
 const sound = new Audio(CloudSound)
 const image = new Image()
@@ -52,7 +53,7 @@ export class SpeechBubble implements DisplayedObject {
     this.frame = 0
     this.markedForDeletion = false
 
-    this.frameRate = new FrameRate(60)
+    this.frameRate = new FrameRate(Config.frameRate)
     this.creationTime = new Date().getTime()
   }
 

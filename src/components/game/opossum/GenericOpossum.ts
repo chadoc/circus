@@ -3,6 +3,7 @@ import {moveX, Position} from "@/components/game/common/Draw";
 import {FrameRate} from '@/components/game/common/FrameRate'
 import {CollisionDetection} from '@/components/game/common/CollisionDetection'
 import {AnimatedSprite, type SpritePointer} from "@/components/game/common/AnimatedSprite";
+import Config from "@/components/game/Config";
 
 
 export abstract class GenericOpossum implements DisplayedObject {
@@ -38,7 +39,7 @@ export abstract class GenericOpossum implements DisplayedObject {
 
         // this.frameRate = new FrameRate(Math.random() * 50 + 20)
         this.movementRate = new FrameRate(60)
-        this.frameRate = new FrameRate(100)
+        this.frameRate = new FrameRate(Config.frameRate * 1.66)
         this.collisionDetection = new CollisionDetection(game.collisionCtx)
     }
 
