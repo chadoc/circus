@@ -54,6 +54,10 @@ export type DisplayCoordinate = {
   ratio: number
 }
 
+export interface PositionedElement {
+  coordinate: DisplayCoordinate
+}
+
 export function moveX({ x, y, width }: DisplayCoordinate, speed: number): Position {
   let newX = x
   if (x <= -width) {
@@ -66,4 +70,10 @@ export function moveX({ x, y, width }: DisplayCoordinate, speed: number): Positi
   }
 }
 
+export interface ObjectAnimation {
+  update(): void
+  isFinished(): boolean
+  currentFrame(): number
+  spriteRow(): number
+}
 

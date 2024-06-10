@@ -32,8 +32,6 @@ class InteractiveBackgroundLayer implements DisplayedObject {
   private readonly image: any
 
   private position: Position
-  private width: number
-  private height: number
   private speed: number
   private backgroundSpeed: number
   private layerSpeed: number
@@ -44,14 +42,20 @@ class InteractiveBackgroundLayer implements DisplayedObject {
   constructor(game: PuppetHandler, image: any, speedModifier: number) {
     this.game = game
     this.image = image
-    this.width = game.ctx.canvas.width
-    this.height = game.ctx.canvas.height
     this.position = new Position(0, 0)
     this.frameRate = new FrameRate(Config.frameRate)
     this.backgroundSpeed = 25
     this.speedModifier = speedModifier
     this.layerSpeed = this.backgroundSpeed * this.speedModifier
     this.speed = 0
+  }
+
+  get width(): number {
+    return this.game.ctx.canvas.width
+  }
+
+  get height(): number {
+    return this.game.ctx.canvas.height
   }
 
   get coordinates(): DisplayCoordinate {

@@ -1,9 +1,4 @@
-export interface ObjectAnimation {
-  update(): void
-  isFinished(): boolean
-  currentFrame(): number
-  spriteRow(): number
-}
+import type {ObjectAnimation} from "@/components/game/common/Draw";
 
 export class LeftRightAnimation implements ObjectAnimation {
   private row: number

@@ -1,11 +1,17 @@
-import type {DisplayCoordinate, DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
+import type {
+  DisplayCoordinate,
+  DisplayedObject,
+  InputController,
+  PositionedElement,
+  PuppetHandler
+} from '@/components/game/common/Draw'
 import {Position} from "@/components/game/common/Draw";
 import {FrameRate} from '@/components/game/common/FrameRate'
 import {AnimatedSprite} from "@/components/game/common/AnimatedSprite";
 import {NikoBodyRef, NikoSprite} from "@/components/game/niko/NikoSprite";
 import Config from "@/components/game/Config";
 
-export class NikoPlayer implements DisplayedObject {
+export class NikoPlayer implements DisplayedObject, PositionedElement {
   private readonly game: PuppetHandler
   private position: Position
   private body: AnimatedSprite
