@@ -2,7 +2,8 @@ import type {
   DisplayCoordinate,
   DisplayedObject,
   InputController,
-  PositionedElement,
+  Movement,
+  MovingElement,
   PuppetHandler
 } from '@/components/game/common/Draw'
 import {Position} from "@/components/game/common/Draw";
@@ -14,16 +15,12 @@ import {NikoArms} from "@/components/game/niko/NikoArms";
 import {NikoLegs} from "@/components/game/niko/NikoLegs";
 import {NikoHead} from "@/components/game/niko/NikoHead";
 
-export class NikoPlayer implements DisplayedObject, PositionedElement {
+export class NikoPlayer implements DisplayedObject, MovingElement {
   private readonly game: PuppetHandler
   private position: Position
   private body: AnimatedSprite
   private ratio: number
-  private speed: number
-  private verticalSpeed: number
-  private frame: number
-  private spriteFrames: number
-
+  protected movement: Movement
   private frameRate: FrameRate
   private arms: NikoArms
   private legs: NikoLegs
@@ -33,14 +30,13 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
     this.game = game
     this.body = new AnimatedSprite(NikoSprite, NikoBodyRef)
     //this.ratio = (this.game.ctx.canvas.width / 4) / this.game.ctx.canvas.width
-    this.ratio = 4
+    this.ratio = 3
     this.position = new Position((game.ctx.canvas.width / 2) - (this.width / 2), game.ctx.canvas.height - this.height)
     this.frameRate = new FrameRate(Config.frameRate)
-
-    this.frame = 0
-    this.speed = 0
-    this.verticalSpeed = 0
-    this.spriteFrames = 1
+    this.movement = {
+      xSpeed: 0,
+      ySpeed: 0
+    }
 
     this.arms = new NikoArms(game, this)
     this.legs = new NikoLegs(game, this)
@@ -55,29 +51,35 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
     return this.body.sh / this.ratio
   }
 
-  update(deltaTime: number, input: InputController) {
+  private computeSpeed(input: InputController, movement: Movement) {
+    let { xSpeed, ySpeed } = movement
     if (input.moveRight()) {
-      this.speed = Math.min(this.speed + 1, Config.playerXSpeed)
+      xSpeed = Math.min(xSpeed + 1, Config.playerXSpeed)
     } else if (input.moveLeft()) {
-      this.speed = Math.max(this.speed - 1, -Config.playerXSpeed)
+      xSpeed = Math.max(xSpeed - 1, -Config.playerXSpeed)
     } else {
-      if (this.speed > 0) {
-        this.speed = Math.max(this.speed - 1, 0)
+      if (xSpeed > 0) {
+        xSpeed = Math.max(xSpeed - 1, 0)
       } else {
-        this.speed = Math.min(this.speed + 1, 0)
+        xSpeed = Math.min(xSpeed + 1, 0)
       }
     }
 
     if (input.moveUp()) {
-      this.verticalSpeed -= Config.playerYSpeed
+      ySpeed -= Config.playerYSpeed
     } else if (input.moveDown()) {
-      this.verticalSpeed += Config.playerYSpeed
+      ySpeed += Config.playerYSpeed
     } else {
-      this.verticalSpeed = 0
+      ySpeed = 0
     }
 
-    this.verticalSpeed = this.applyGravity(this.verticalSpeed)
-    this.position = this.newPosition(this.speed, this.verticalSpeed)
+    ySpeed = this.applyGravity(ySpeed)
+    return { xSpeed, ySpeed }
+  }
+
+  update(deltaTime: number, input: InputController) {
+    this.movement = this.computeSpeed(input, this.movement)
+    this.position = this.newPosition(this.movement)
 
     // if (!this.onGround) {
     //   this.verticalSpeed += this.weight
@@ -88,11 +90,6 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
     // is there a collision
 
     this.frameRate.onUpdate(deltaTime, () => {
-      if (this.frame > this.spriteFrames - 2) {
-        this.frame = 0
-      } else {
-        this.frame++
-      }
     })
 
     this.arms.update(deltaTime, input)
@@ -108,9 +105,9 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
     }
   }
 
-  newPosition(speed: number, verticalSpeed: number): Position {
-    let x = Math.min(this.position.x + speed)
-    let y = this.position.y + verticalSpeed
+  newPosition({ xSpeed, ySpeed }: Movement): Position {
+    let x = Math.min(this.position.x + xSpeed)
+    let y = this.position.y + ySpeed
 
     return new Position(
         Math.min(Math.max(x, 0), this.rightBoundary),

@@ -58,8 +58,17 @@ export type DisplayCoordinate = {
   ratio: number
 }
 
+export type Movement = {
+  xSpeed: number
+  ySpeed: number
+}
+
 export interface PositionedElement {
   coordinate: DisplayCoordinate
+}
+
+export interface MovingElement extends PositionedElement {
+  movement: Movement
 }
 
 export function moveX({ x, y, width }: DisplayCoordinate, speed: number): Position {

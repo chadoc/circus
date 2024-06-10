@@ -1,21 +1,16 @@
 import type {
     DisplayCoordinate,
     DisplayedObject,
-    InputController, ObjectAnimation,
-    PositionedElement,
+    InputController,
+    MovingElement,
+    ObjectAnimation,
     PuppetHandler
 } from "@/components/game/common/Draw";
-import Sprite from '../../../assets/niko/NikoMovementFull.png'
-import {Position} from "@/components/game/common/Draw";
-import type {AnimationSprite} from "@/components/game/common/AnimatedSprite";
-import game from "@/components/Game.vue";
-import type {NikoPlayer} from "@/components/game/niko/NikoPlayer";
 import {AnimatedSprite} from "@/components/game/common/AnimatedSprite";
 import {NikoSprite} from "@/components/game/niko/NikoSprite";
 import {FrameRate} from "@/components/game/common/FrameRate";
 import Config from "@/components/game/Config";
-import {RandomUpDownAnimation} from "@/components/game/common/RandomUpDownAnimation";
-import {randomize} from "@/components/game/common/RandomFrameRateAnimation";
+import {MovingUpAnimation} from "@/components/game/common/MovingUpAnimation";
 
 /*
  4500 x 5400
@@ -31,7 +26,7 @@ col size: 3
  */
 export class NikoArms implements DisplayedObject {
     private readonly game: PuppetHandler
-    private readonly parent: PositionedElement
+    private readonly parent: MovingElement
     private sprite: AnimatedSprite
     private frameRate: FrameRate
     private animation: ObjectAnimation
@@ -39,12 +34,12 @@ export class NikoArms implements DisplayedObject {
     mustDelete: boolean;
     source: any;
 
-    constructor(game: PuppetHandler, parent: PositionedElement) {
+    constructor(game: PuppetHandler, parent: MovingElement) {
         this.game = game;
         this.parent = parent;
         this.sprite = new AnimatedSprite(NikoSprite, { row: 1, frame: 0 })
         this.frameRate = new FrameRate(Config.frameRate * 2)
-        this.animation = randomize(new RandomUpDownAnimation(this.sprite.frameCount, 1));
+        this.animation = new MovingUpAnimation(parent, this.sprite.frameCount, false, this.sprite.row);
     }
 
     get coordinate(): DisplayCoordinate {
