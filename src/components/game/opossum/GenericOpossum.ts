@@ -71,9 +71,9 @@ export abstract class GenericOpossum implements DisplayedObject {
     }
 
     update(deltaTime: number, input: InputController) {
-        if (input.hasOneOf('ArrowRight', 'SwipeRight')) {
+        if (input.moveRight()) {
             this.speed = this.layerSpeed
-        } else if (input.hasOneOf('ArrowLeft', 'SwipeLeft')) {
+        } else if (input.moveLeft()) {
             this.speed = -this.layerSpeed
         } else {
             this.speed = 0

@@ -1,4 +1,5 @@
 import type {ObjectAnimation} from "@/components/game/common/Draw";
+import type {SpritePointer} from "@/components/game/common/AnimatedSprite";
 
 export class AlternateAnimation implements ObjectAnimation {
 
@@ -11,23 +12,15 @@ export class AlternateAnimation implements ObjectAnimation {
         this.currentAnimation = this.animations[this.selectedAnimation]()
     }
 
-    currentFrame(): number {
-        return this.currentAnimation.currentFrame();
-    }
-
     isFinished(): boolean {
         return false;
     }
 
-    spriteRow(): number {
-        return this.currentAnimation.spriteRow();
-    }
-
-    update(): void {
+    update(): SpritePointer {
         if (this.currentAnimation.isFinished()) {
             this.switchAnimation()
         }
-        this.currentAnimation.update()
+        return this.currentAnimation.update()
     }
 
     private switchAnimation() {

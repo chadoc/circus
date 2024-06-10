@@ -10,6 +10,8 @@ import {FrameRate} from '@/components/game/common/FrameRate'
 import {AnimatedSprite} from "@/components/game/common/AnimatedSprite";
 import {NikoBodyRef, NikoSprite} from "@/components/game/niko/NikoSprite";
 import Config from "@/components/game/Config";
+import {NikoArms} from "@/components/game/niko/NikoArms";
+import {NikoLegs} from "@/components/game/niko/NikoLegs";
 
 export class NikoPlayer implements DisplayedObject, PositionedElement {
   private readonly game: PuppetHandler
@@ -22,6 +24,8 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
   private spriteFrames: number
 
   private frameRate: FrameRate
+  private arms: NikoArms
+  private legs: NikoLegs
 
   constructor(game: PuppetHandler) {
     this.game = game
@@ -35,6 +39,9 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
     this.speed = 0
     this.verticalSpeed = 0
     this.spriteFrames = 1
+
+    this.arms = new NikoArms(game, this)
+    this.legs = new NikoLegs(game, this)
   }
 
   get width(): number {
@@ -46,9 +53,9 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
   }
 
   update(deltaTime: number, input: InputController) {
-    if (input.hasOneOf('ArrowRight', 'SwipeRight')) {
+    if (input.moveRight()) {
       this.speed = Math.min(this.speed + 1, Config.playerXSpeed)
-    } else if (input.hasOneOf('ArrowLeft', 'SwipeLeft')) {
+    } else if (input.moveLeft()) {
       this.speed = Math.max(this.speed - 1, -Config.playerXSpeed)
     } else {
       if (this.speed > 0) {
@@ -58,9 +65,9 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
       }
     }
 
-    if (input.hasOneOf('ArrowUp', 'SwipeUp')) {
+    if (input.moveUp()) {
       this.verticalSpeed -= Config.playerYSpeed
-    } else if (input.hasOneOf('ArrowDown', 'SwipeDown')) {
+    } else if (input.moveDown()) {
       this.verticalSpeed += Config.playerYSpeed
     } else {
       this.verticalSpeed = 0
@@ -84,6 +91,9 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
         this.frame++
       }
     })
+
+    this.arms.update(deltaTime, input)
+    this.legs.update(deltaTime, input)
   }
 
   private applyGravity(verticalSpeed: number): number {
@@ -130,6 +140,8 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
     // draw image with border radius
     // https://stackoverflow.com/questions/4882354/rounded-corners-on-images-in-canvas
     this.game.drawer.drawSprite(this.body.toDrawRef(this.coordinate))
+    this.arms.draw()
+    this.legs.draw()
     /*
     const ctx = this.game.ctx
     ctx.drawImage(imgPlane, 0, 0, imageWidth, imageHeight, this.x, this.y, this.width, this.height)

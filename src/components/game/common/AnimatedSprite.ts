@@ -45,6 +45,11 @@ export class AnimatedSprite {
         return this.sprite.states.find(({ name }) => name === stateName)!
     }
 
+    selectState(stateName: string) {
+        this.currentRow = this.rowFor(stateName)
+        this.currentFrame = 0
+    }
+
     private rowFor(state: string): number {
         return this.sprite.states.indexOf(this.stateFor(state))
     }

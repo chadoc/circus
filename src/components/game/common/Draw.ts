@@ -1,4 +1,4 @@
-import type {AnimationSprite, SpriteDrawReference} from "@/components/game/common/AnimatedSprite";
+import type {AnimationSprite, SpriteDrawReference, SpritePointer} from "@/components/game/common/AnimatedSprite";
 
 export interface DisplayedObject {
   update(deltaTime: number, input: InputController): void
@@ -34,6 +34,10 @@ export interface PuppetHandler {
 export interface InputController {
   hasKey(key: string): boolean
   hasOneOf(...keys: string[]): boolean
+  moveLeft(): boolean
+  moveRight(): boolean
+  moveUp(): boolean
+  moveDown(): boolean
 }
 
 export class Position {
@@ -71,9 +75,7 @@ export function moveX({ x, y, width }: DisplayCoordinate, speed: number): Positi
 }
 
 export interface ObjectAnimation {
-  update(): void
+  update(): SpritePointer
   isFinished(): boolean
-  currentFrame(): number
-  spriteRow(): number
 }
 

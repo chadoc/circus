@@ -81,9 +81,9 @@ class InteractiveBackgroundLayer implements DisplayedObject {
   }
 
   update(deltaTime: number, input: InputController) {
-    if (input.hasOneOf('ArrowRight', 'SwipeRight')) {
+    if (input.moveRight()) {
       this.speed = this.layerSpeed
-    } else if (input.hasOneOf('ArrowLeft', 'SwipeLeft')) {
+    } else if (input.moveLeft()) {
       this.speed = -this.layerSpeed
     } else {
       this.speed = 0
@@ -138,9 +138,9 @@ class BackgroundLimit {
   }
 
   update(deltaTime: number, input: InputController) {
-    if (input.hasOneOf('ArrowRight', 'SwipeRight')) {
+    if (input.moveRight()) {
       this.speed = this.backgroundSpeed
-    } else if (input.hasOneOf('ArrowLeft', 'SwipeLeft')) {
+    } else if (input.moveLeft()) {
       this.speed = -this.backgroundSpeed
     } else {
       this.speed = 0
@@ -160,11 +160,11 @@ class BackgroundLimit {
   }
 
   shouldStopMovingLeft(input: InputController): boolean {
-    return input.hasOneOf('ArrowLeft', 'SwipeLeft') && this.leftLimitReached
+    return input.moveLeft() && this.leftLimitReached
   }
 
   shouldStopMovingRight(input: InputController): boolean {
-    return input.hasOneOf('ArrowRight', 'SwipeRight') && this.rightLimitReached
+    return input.moveRight() && this.rightLimitReached
   }
 
   get leftLimitReached(): boolean {

@@ -9,6 +9,7 @@ import {Opossum3} from '@/components/game/opossum/Opossum3'
 import {SpeechBubble} from '@/components/game/SpeechBubble'
 import type {GenericOpossum} from "@/components/game/opossum/GenericOpossum";
 import {NikoPlayer} from "@/components/game/niko/NikoPlayer";
+import Config from "@/components/game/Config";
 
 class Level {
   private readonly maxPuppet = 10
@@ -100,6 +101,18 @@ class InputHandler implements InputController {
   }
   hasOneOf(...keys: string[]): boolean {
     return this.keys.some(key => keys.includes(key))
+  }
+  moveLeft(): boolean {
+    return this.hasOneOf(...Config.leftKeys)
+  }
+  moveRight(): boolean {
+    return this.hasOneOf(...Config.rightKeys)
+  }
+  moveUp(): boolean {
+    return this.hasOneOf(...Config.upKeys)
+  }
+  moveDown(): boolean {
+    return this.hasOneOf(...Config.downKeys)
   }
 }
 

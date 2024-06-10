@@ -28,7 +28,7 @@ Arms:
 row index: 1
 col size: 3
  */
-export class NikoArms implements DisplayedObject {
+export class NikoLegs implements DisplayedObject {
     private readonly game: PuppetHandler
     private readonly parent: PositionedElement
     private sprite: AnimatedSprite
@@ -41,9 +41,9 @@ export class NikoArms implements DisplayedObject {
     constructor(game: PuppetHandler, parent: PositionedElement) {
         this.game = game;
         this.parent = parent;
-        this.sprite = new AnimatedSprite(NikoSprite, { row: 1, frame: 0 })
+        this.sprite = new AnimatedSprite(NikoSprite, { row: 2, frame: 0 })
         this.frameRate = new FrameRate(Config.frameRate * 2)
-        this.animation = new RandomUpDownAnimation(this.sprite.frameCount, 1);
+        this.animation = new RandomUpDownAnimation(this.sprite.frameCount, 2);
     }
 
     get coordinate(): DisplayCoordinate {

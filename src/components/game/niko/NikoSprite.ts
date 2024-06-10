@@ -35,6 +35,10 @@ export const NikoSprite: AnimationSprite = {
             frames: 4
         },
         {
+            name: 'legs',
+            frames: 3
+        },
+        {
             name: 'head-up',
             frames: 5
         },

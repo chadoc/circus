@@ -18,10 +18,6 @@ export class Opossum2 extends GenericOpossum {
   }
 
   nextFrame(): SpritePointer {
-    this.animation.update()
-    return {
-      row: this.animation.spriteRow(),
-      frame: this.animation.currentFrame()
-    }
+    return this.animation.update()
   }
 }

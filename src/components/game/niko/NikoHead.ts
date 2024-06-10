@@ -1,34 +1,17 @@
 import type {
     DisplayCoordinate,
-    DisplayedObject,
-    InputController, ObjectAnimation,
+    DisplayedObject, InputController,
+    ObjectAnimation,
     PositionedElement,
     PuppetHandler
 } from "@/components/game/common/Draw";
-import Sprite from '../../../assets/niko/NikoMovementFull.png'
-import {Position} from "@/components/game/common/Draw";
-import type {AnimationSprite} from "@/components/game/common/AnimatedSprite";
-import game from "@/components/Game.vue";
-import type {NikoPlayer} from "@/components/game/niko/NikoPlayer";
 import {AnimatedSprite} from "@/components/game/common/AnimatedSprite";
-import {NikoSprite} from "@/components/game/niko/NikoSprite";
 import {FrameRate} from "@/components/game/common/FrameRate";
+import {NikoSprite} from "@/components/game/niko/NikoSprite";
 import Config from "@/components/game/Config";
 import {RandomUpDownAnimation} from "@/components/game/common/RandomUpDownAnimation";
 
-/*
- 4500 x 5400
- 5 columns
- 6 rows
- */
-
-
-/*
-Arms:
-row index: 1
-col size: 3
- */
-export class NikoArms implements DisplayedObject {
+export class NikoHead implements DisplayedObject {
     private readonly game: PuppetHandler
     private readonly parent: PositionedElement
     private sprite: AnimatedSprite
@@ -41,9 +24,9 @@ export class NikoArms implements DisplayedObject {
     constructor(game: PuppetHandler, parent: PositionedElement) {
         this.game = game;
         this.parent = parent;
-        this.sprite = new AnimatedSprite(NikoSprite, { row: 1, frame: 0 })
+        this.sprite = new AnimatedSprite(NikoSprite, { row: 3, frame: 0 })
         this.frameRate = new FrameRate(Config.frameRate * 2)
-        this.animation = new RandomUpDownAnimation(this.sprite.frameCount, 1);
+        this.animation = new RandomUpDownAnimation(this.sprite.frameCount, 2);
     }
 
     get coordinate(): DisplayCoordinate {
@@ -51,6 +34,8 @@ export class NikoArms implements DisplayedObject {
     }
 
     update(deltaTime: number, input: InputController): void {
+        if (input.hasOneOf())
+
         this.frameRate.onUpdate(deltaTime, () => {
             this.sprite.update(this.animation.update())
         })

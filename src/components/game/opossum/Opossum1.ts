@@ -22,10 +22,6 @@ export class Opossum1 extends GenericOpossum {
   }
 
   nextFrame() {
-    this.animation.update()
-    return {
-      row: this.animation.spriteRow(),
-      frame: this.animation.currentFrame()
-    }
+    return this.animation.update()
   }
 }
