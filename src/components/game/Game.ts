@@ -157,6 +157,16 @@ export class Game implements PuppetHandler {
     this.level.miss()
   }
 
+  private get drawOrder() {
+    return [
+      ...[this.background],
+      ...this.puppets,
+      ...this.opossums,
+      ...[this.player],
+      ...this.animations,
+    ]
+  }
+
   private get envObjects() {
     return [
       ...[this.background],
@@ -221,7 +231,7 @@ export class Game implements PuppetHandler {
       this.drawGameOver()
       return
     }
-    this.allObjects.forEach(o => o.draw())
+    this.drawOrder.forEach(o => o.draw())
     // this.drawScore()
   }
 
