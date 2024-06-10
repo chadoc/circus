@@ -75,7 +75,7 @@ export function moveX({ x, y, width }: DisplayCoordinate, speed: number): Positi
 }
 
 export interface ObjectAnimation {
-  update(): SpritePointer
+  update(input: InputController): SpritePointer
   isFinished(): boolean
 }
 

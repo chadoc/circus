@@ -1,4 +1,4 @@
-import type {ObjectAnimation, PuppetHandler} from '@/components/game/common/Draw'
+import type {InputController, ObjectAnimation, PuppetHandler} from '@/components/game/common/Draw'
 import {Position} from "@/components/game/common/Draw";
 import {LeftRightAnimation} from '@/components/game/common/LeftRightAnimation'
 import {OpossumSprite2} from "@/components/game/opossum/OpossumSprite2";
@@ -17,7 +17,7 @@ export class Opossum2 extends GenericOpossum {
     ])
   }
 
-  nextFrame(): SpritePointer {
-    return this.animation.update()
+  nextFrame(input: InputController): SpritePointer {
+    return this.animation.update(input)
   }
 }

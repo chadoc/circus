@@ -52,7 +52,7 @@ export class NikoArms implements DisplayedObject {
 
     update(deltaTime: number, input: InputController): void {
         this.frameRate.onUpdate(deltaTime, () => {
-            this.sprite.update(this.animation.update())
+            this.sprite.update(this.animation.update(input))
         })
     }
 

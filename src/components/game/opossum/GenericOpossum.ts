@@ -86,11 +86,11 @@ export abstract class GenericOpossum implements DisplayedObject {
             }
         })
         this.frameRate.onUpdate(deltaTime, () => {
-            this.sprite.update(this.nextFrame())
+            this.sprite.update(this.nextFrame(input))
         })
     }
 
-    abstract nextFrame(): SpritePointer
+    abstract nextFrame(input: InputController): SpritePointer
 
     draw() {
         this.collisionDetection.draw(this.coordinate)

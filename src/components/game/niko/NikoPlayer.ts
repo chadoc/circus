@@ -12,6 +12,7 @@ import {NikoBodyRef, NikoSprite} from "@/components/game/niko/NikoSprite";
 import Config from "@/components/game/Config";
 import {NikoArms} from "@/components/game/niko/NikoArms";
 import {NikoLegs} from "@/components/game/niko/NikoLegs";
+import {NikoHead} from "@/components/game/niko/NikoHead";
 
 export class NikoPlayer implements DisplayedObject, PositionedElement {
   private readonly game: PuppetHandler
@@ -26,6 +27,7 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
   private frameRate: FrameRate
   private arms: NikoArms
   private legs: NikoLegs
+  private head: NikoHead
 
   constructor(game: PuppetHandler) {
     this.game = game
@@ -42,6 +44,7 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
 
     this.arms = new NikoArms(game, this)
     this.legs = new NikoLegs(game, this)
+    this.head = new NikoHead(game, this)
   }
 
   get width(): number {
@@ -94,6 +97,7 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
 
     this.arms.update(deltaTime, input)
     this.legs.update(deltaTime, input)
+    this.head.update(deltaTime, input)
   }
 
   private applyGravity(verticalSpeed: number): number {
@@ -142,6 +146,7 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
     this.game.drawer.drawSprite(this.body.toDrawRef(this.coordinate))
     this.arms.draw()
     this.legs.draw()
+    this.head.draw()
     /*
     const ctx = this.game.ctx
     ctx.drawImage(imgPlane, 0, 0, imageWidth, imageHeight, this.x, this.y, this.width, this.height)

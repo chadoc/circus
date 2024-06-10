@@ -1,4 +1,4 @@
-import type {ObjectAnimation} from "@/components/game/common/Draw";
+import type {InputController, ObjectAnimation} from "@/components/game/common/Draw";
 import type {SpritePointer} from "@/components/game/common/AnimatedSprite";
 
 export class AlternateAnimation implements ObjectAnimation {
@@ -16,11 +16,11 @@ export class AlternateAnimation implements ObjectAnimation {
         return false;
     }
 
-    update(): SpritePointer {
+    update(input: InputController): SpritePointer {
         if (this.currentAnimation.isFinished()) {
             this.switchAnimation()
         }
-        return this.currentAnimation.update()
+        return this.currentAnimation.update(input)
     }
 
     private switchAnimation() {
