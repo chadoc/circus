@@ -15,6 +15,7 @@ import {NikoSprite} from "@/components/game/niko/NikoSprite";
 import {FrameRate} from "@/components/game/common/FrameRate";
 import Config from "@/components/game/Config";
 import {RandomUpDownAnimation} from "@/components/game/common/RandomUpDownAnimation";
+import {randomize} from "@/components/game/common/RandomFrameRateAnimation";
 
 /*
  4500 x 5400
@@ -43,7 +44,7 @@ export class NikoArms implements DisplayedObject {
         this.parent = parent;
         this.sprite = new AnimatedSprite(NikoSprite, { row: 1, frame: 0 })
         this.frameRate = new FrameRate(Config.frameRate * 2)
-        this.animation = new RandomUpDownAnimation(this.sprite.frameCount, 1);
+        this.animation = randomize(new RandomUpDownAnimation(this.sprite.frameCount, 1));
     }
 
     get coordinate(): DisplayCoordinate {

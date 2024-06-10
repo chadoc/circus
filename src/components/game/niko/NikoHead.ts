@@ -12,6 +12,7 @@ import Config from "@/components/game/Config";
 import {RandomUpDownAnimation} from "@/components/game/common/RandomUpDownAnimation";
 import {AlternateAnimation} from "@/components/game/common/AlternateAnimation";
 import {WaitAnimation} from "@/components/game/common/WaitAnimation";
+import {randomize} from "@/components/game/common/RandomFrameRateAnimation";
 
 export class NikoHead implements DisplayedObject {
     private readonly game: PuppetHandler
@@ -28,13 +29,13 @@ export class NikoHead implements DisplayedObject {
         this.sprite = new AnimatedSprite(NikoSprite, { row: 3, frame: 0 })
         this.frameRate = new FrameRate(Config.frameRate * 2)
         this.animation = new AlternateAnimation([
-            () => new RandomUpDownAnimation( 3, 0),
-            () => new WaitAnimation(5),
-            () => new RandomUpDownAnimation( 5, 4),
-            () => new WaitAnimation(2),
-            () => new RandomUpDownAnimation( 5, 3),
-            () => new WaitAnimation(7),
-            () => new RandomUpDownAnimation( 5, 5),
+            () => randomize(new RandomUpDownAnimation( 3, 0)),
+            () => randomize(new WaitAnimation(5)),
+            () => randomize(new RandomUpDownAnimation( 5, 4)),
+            () => randomize(new WaitAnimation(2)),
+            () => randomize(new RandomUpDownAnimation( 5, 3)),
+            () => randomize(new WaitAnimation(7)),
+            () => randomize(new RandomUpDownAnimation( 5, 5)),
         ])
     }
 

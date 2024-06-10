@@ -33,7 +33,7 @@ export class NikoPlayer implements DisplayedObject, PositionedElement {
     this.game = game
     this.body = new AnimatedSprite(NikoSprite, NikoBodyRef)
     //this.ratio = (this.game.ctx.canvas.width / 4) / this.game.ctx.canvas.width
-    this.ratio = 5
+    this.ratio = 4
     this.position = new Position((game.ctx.canvas.width / 2) - (this.width / 2), game.ctx.canvas.height - this.height)
     this.frameRate = new FrameRate(Config.frameRate)
 
