@@ -1,9 +1,6 @@
 import type {DisplayedObject, InputController, ObjectAnimation} from "@/components/game/common/Draw";
 import type {SpritePointer} from "@/components/game/common/AnimatedSprite";
-
-function randomIntFromInterval(min, max) { // min and max included
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
+import {randomIntFromInterval} from '@/components/game/common/utils'
 
 export function randomize(animation: ObjectAnimation,  randomRatio = 3): RandomFrameRateAnimation {
     return new RandomFrameRateAnimation(animation, randomRatio)

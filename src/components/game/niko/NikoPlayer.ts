@@ -14,6 +14,7 @@ import Config from "@/components/game/Config";
 import {NikoArms} from "@/components/game/niko/NikoArms";
 import {NikoLegs} from "@/components/game/niko/NikoLegs";
 import {NikoHead} from "@/components/game/niko/NikoHead";
+import {BubbleParticule} from '@/components/game/niko/BubbleParticule'
 
 export class NikoPlayer implements DisplayedObject, MovingElement {
   private readonly game: PuppetHandler
@@ -25,6 +26,7 @@ export class NikoPlayer implements DisplayedObject, MovingElement {
   private arms: NikoArms
   private legs: NikoLegs
   private head: NikoHead
+  private bubbles: DisplayedObject[] = []
 
   constructor(game: PuppetHandler) {
     this.game = game
@@ -78,6 +80,9 @@ export class NikoPlayer implements DisplayedObject, MovingElement {
   }
 
   update(deltaTime: number, input: InputController) {
+    this.bubbles = this.bubbles.filter(b => !b.mustDelete)
+    this.bubbles.push(new BubbleParticule(this.game, this.coordinate))
+
     this.movement = this.computeSpeed(input, this.movement)
     this.position = this.newPosition(this.movement)
 
@@ -95,6 +100,7 @@ export class NikoPlayer implements DisplayedObject, MovingElement {
     this.arms.update(deltaTime, input)
     this.legs.update(deltaTime, input)
     this.head.update(deltaTime, input)
+    this.bubbles.forEach(bubble => bubble.update(deltaTime, input))
   }
 
   private applyGravity(verticalSpeed: number): number {
@@ -140,6 +146,7 @@ export class NikoPlayer implements DisplayedObject, MovingElement {
   draw() {
     // draw image with border radius
     // https://stackoverflow.com/questions/4882354/rounded-corners-on-images-in-canvas
+    this.bubbles.forEach(bubble => bubble.draw())
     this.game.drawer.drawSprite(this.body.toDrawRef(this.coordinate))
     this.arms.draw()
     this.legs.draw()

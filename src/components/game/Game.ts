@@ -1,5 +1,5 @@
 import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
-import {DrawContext} from "@/components/game/common/Draw";
+import {DrawContext} from '@/components/game/common/Draw'
 import {Puppet} from '@/components/game/Puppet'
 import {Cloud} from '@/components/game/Cloud'
 import {InteractiveBackground} from '@/components/game/background/InteractiveBackground'
@@ -7,9 +7,10 @@ import {Opossum1} from '@/components/game/opossum/Opossum1'
 import {Opossum2} from '@/components/game/opossum/Opossum2'
 import {Opossum3} from '@/components/game/opossum/Opossum3'
 import {SpeechBubble} from '@/components/game/SpeechBubble'
-import type {GenericOpossum} from "@/components/game/opossum/GenericOpossum";
-import {NikoPlayer} from "@/components/game/niko/NikoPlayer";
-import Config from "@/components/game/Config";
+import type {GenericOpossum} from '@/components/game/opossum/GenericOpossum'
+import {NikoPlayer} from '@/components/game/niko/NikoPlayer'
+import Config from '@/components/game/Config'
+import {BubbleParticule} from '@/components/game/niko/BubbleParticule'
 
 class Level {
   private readonly maxPuppet = 10
@@ -184,6 +185,10 @@ export class Game implements PuppetHandler {
     ]
   }
 
+  private addAnimation(animation: DisplayedObject) {
+    this.animations.push(animation);
+  }
+
   update(deltaTime: number) {
     this.puppets = this.puppets.filter(p => !p.mustDelete)
     this.animations = this.animations.filter(a => !a.mustDelete)
@@ -206,7 +211,7 @@ export class Game implements PuppetHandler {
         // no collision
       } else {
         if (!this.animations.some(a => a.source === opossum)) {
-          this.animations.push(new SpeechBubble(this, opossum, 300))
+          this.addAnimation(new SpeechBubble(this, opossum, 300))
         }
       }
     })
@@ -220,7 +225,6 @@ export class Game implements PuppetHandler {
     }
 
     if (!this.background.limit.shouldStopMove(this.input)) {
-      console.log('udate')
       this.envObjects.forEach(o => o.update(deltaTime, this.input))
     }
     this.player.update(deltaTime, this.input)
