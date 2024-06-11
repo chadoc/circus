@@ -4,6 +4,7 @@ import {FrameRate} from '@/components/game/common/FrameRate'
 import {CollisionDetection} from '@/components/game/common/CollisionDetection'
 import {AnimatedSprite, type SpritePointer} from "@/components/game/common/AnimatedSprite";
 import Config from "@/components/game/Config";
+import {computeRatio} from "@/components/game/common/utils";
 
 
 export abstract class GenericOpossum implements DisplayedObject {
@@ -30,7 +31,9 @@ export abstract class GenericOpossum implements DisplayedObject {
         this.game = game
         this.sprite = sprite
         this.position = position
-        this.ratio = 6
+        this.ratio = computeRatio(game, sprite.sh, 5)
+        // this.ratio = 6
+
         // this.speed = Math.random() * 4 + 1
         this.speed = 0
         this.markedForDeletion = false

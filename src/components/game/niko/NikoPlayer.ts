@@ -15,6 +15,7 @@ import {NikoArms} from "@/components/game/niko/NikoArms";
 import {NikoLegs} from "@/components/game/niko/NikoLegs";
 import {NikoHead} from "@/components/game/niko/NikoHead";
 import {BubbleParticule} from '@/components/game/niko/BubbleParticule'
+import {computeRatio} from "@/components/game/common/utils";
 
 export class NikoPlayer implements DisplayedObject, MovingElement {
   private readonly game: PuppetHandler
@@ -32,7 +33,7 @@ export class NikoPlayer implements DisplayedObject, MovingElement {
     this.game = game
     this.body = new AnimatedSprite(NikoSprite, NikoBodyRef)
     //this.ratio = (this.game.ctx.canvas.width / 4) / this.game.ctx.canvas.width
-    this.ratio = 3
+    this.ratio = computeRatio(game, this.body.sh, 3)
     this.position = new Position((game.ctx.canvas.width / 2) - (this.width / 2), game.ctx.canvas.height - this.height)
     this.frameRate = new FrameRate(Config.frameRate)
     this.movement = {
