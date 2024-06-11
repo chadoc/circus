@@ -3,7 +3,7 @@
 <!--    <img id="userImg" :src="userImg" />-->
     <canvas id="collisionCanvas1" ref="collisionCanvas1"></canvas>
     <canvas id="canvas1" ref="canvas1"></canvas>
-    <button id="fullScreenButton" ref="fullScreenButton" @click="toggleFullScreen">FullScreen</button>
+    <button id="fullScreenButton" style='font-family: julien; font-size:18px' ref="fullScreenButton" @click="toggleFullScreen">FullScreen</button>
     <div class="hiddenAsset">
       <img src="../../assets/SpriteCloud.png" />
       <img src="../../assets/SpritePuppet.png" />

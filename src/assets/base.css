@@ -88,5 +88,13 @@ body {
 
 @font-face {
   font-family: julien;
-  src: url(./LaBelleAurore-Regular.ttf)
+  /*src: url(./font/LaBelleAurore-Regular.ttf)*/
+  src: url(./font/Gluten-Bold.ttf)
+}
+
+.bubble-text {
+  font-family: julien;
+  color: red;
+  /*font-family: julien;*/
+  font-size: 60px;
 }
