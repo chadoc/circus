@@ -1,4 +1,4 @@
-import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
+import type {DisplayedObject, InputController, GameContext} from '@/components/game/common/Draw'
 import {ShadowDogSprite} from '@/components/SprintAnimations'
 import {FrameRate} from '@/components/game/common/FrameRate'
 import type {AnimationState} from "@/components/game/common/AnimatedSprite";
@@ -13,7 +13,7 @@ function frameY(state: AnimationState): number {
 }
 
 export class Player implements DisplayedObject {
-  private readonly game: PuppetHandler
+  private readonly game: GameContext
   private x: number
   private y: number
   private width: number
@@ -34,7 +34,7 @@ export class Player implements DisplayedObject {
 
   private frameRate: FrameRate
 
-  constructor(game: PuppetHandler) {
+  constructor(game: GameContext) {
     this.game = game
     this.state = stateFor('idle')
     this.spriteFrames = this.state.frames

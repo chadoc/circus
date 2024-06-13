@@ -4,7 +4,7 @@ import type {
   InputController,
   Movement,
   MovingElement,
-  PuppetHandler
+  GameContext
 } from '@/components/game/common/Draw'
 import {Position} from "@/components/game/common/Draw";
 import {FrameRate} from '@/components/game/common/FrameRate'
@@ -18,7 +18,7 @@ import {BubbleParticule} from '@/components/game/niko/BubbleParticule'
 import {computeRatio} from "@/components/game/common/utils";
 
 export class NikoPlayer implements DisplayedObject, MovingElement {
-  private readonly game: PuppetHandler
+  private readonly game: GameContext
   private position: Position
   private body: AnimatedSprite
   private ratio: number
@@ -29,7 +29,7 @@ export class NikoPlayer implements DisplayedObject, MovingElement {
   private head: NikoHead
   private bubbles: DisplayedObject[] = []
 
-  constructor(game: PuppetHandler) {
+  constructor(game: GameContext) {
     this.game = game
     this.body = new AnimatedSprite(NikoSprite, NikoBodyRef)
     //this.ratio = (this.game.ctx.canvas.width / 4) / this.game.ctx.canvas.width

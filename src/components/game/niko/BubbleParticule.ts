@@ -1,4 +1,4 @@
-import type {DisplayCoordinate, DisplayedObject, InputController, PositionedElement, PuppetHandler} from '@/components/game/common/Draw'
+import type {DisplayCoordinate, DisplayedObject, InputController, PositionedElement, GameContext} from '@/components/game/common/Draw'
 import {randomIntFromInterval} from '@/components/game/common/utils'
 import {BubbleSprite} from '@/components/game/niko/BubbleSprite'
 import {AnimatedSprite, type AnimationState} from '@/components/game/common/AnimatedSprite'
@@ -16,7 +16,7 @@ function randomShift(value: number, shift = 30): number {
 
 export class BubbleParticule implements DisplayedObject, PositionedElement {
 
-  private readonly game: PuppetHandler;
+  private readonly game: GameContext;
   private readonly sprite: AnimatedSprite;
   private duration: number
   private position: Position
@@ -24,7 +24,7 @@ export class BubbleParticule implements DisplayedObject, PositionedElement {
   private ratio: number
   private speed: number
 
-  constructor(game: PuppetHandler, { x, y, width, height }: Position) {
+  constructor(game: GameContext, { x, y, width, height }: Position) {
     this.frameRate = new FrameRate(Config.frameRate)
     this.game = game
     this.sprite = new AnimatedSprite(BubbleSprite, { row: 0, frame: randomFrame(BubbleSprite.states[0]) })

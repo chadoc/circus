@@ -3,7 +3,7 @@ import type {
     DisplayedObject, InputController,
     ObjectAnimation,
     PositionedElement,
-    PuppetHandler
+    GameContext
 } from "@/components/game/common/Draw";
 import {AnimatedSprite} from "@/components/game/common/AnimatedSprite";
 import {FrameRate} from "@/components/game/common/FrameRate";
@@ -15,7 +15,7 @@ import {WaitAnimation} from "@/components/game/common/WaitAnimation";
 import {randomize} from "@/components/game/common/RandomFrameRateAnimation";
 
 export class NikoHead implements DisplayedObject {
-    private readonly game: PuppetHandler
+    private readonly game: GameContext
     private readonly parent: PositionedElement
     private sprite: AnimatedSprite
     private frameRate: FrameRate
@@ -23,7 +23,7 @@ export class NikoHead implements DisplayedObject {
 
     mustDelete: boolean;
 
-    constructor(game: PuppetHandler, parent: PositionedElement) {
+    constructor(game: GameContext, parent: PositionedElement) {
         this.game = game;
         this.parent = parent;
         this.sprite = new AnimatedSprite(NikoSprite, { row: 3, frame: 0 })

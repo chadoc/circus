@@ -1,4 +1,4 @@
-import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
+import type {DisplayedObject, InputController, GameContext} from '@/components/game/common/Draw'
 import {DrawContext} from '@/components/game/common/Draw'
 import {Puppet} from '@/components/game/Puppet'
 import {Cloud} from '@/components/game/Cloud'
@@ -117,7 +117,7 @@ class InputHandler implements InputController {
   }
 }
 
-export class Game implements PuppetHandler {
+export class Game implements GameContext {
   readonly drawer: DrawContext
   readonly collisionDrawer: DrawContext
   private puppets: Puppet[] = []

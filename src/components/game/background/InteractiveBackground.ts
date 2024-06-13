@@ -1,4 +1,4 @@
-import type {DisplayCoordinate, DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
+import type {DisplayCoordinate, DisplayedObject, InputController, GameContext} from '@/components/game/common/Draw'
 import julienBg1 from '../../../assets/background/julien/bg1.png'
 import julienBg2 from '../../../assets/background/julien/bg2.png'
 import julienBg3 from '../../../assets/background/julien/bg3.png'
@@ -28,7 +28,7 @@ const julienForest: LayerImage[] = [
 const layerImages: LayerImage[] = julienForest
 
 class InteractiveBackgroundLayer implements DisplayedObject {
-  private readonly game: PuppetHandler
+  private readonly game: GameContext
   private readonly image: any
 
   private position: Position
@@ -39,7 +39,7 @@ class InteractiveBackgroundLayer implements DisplayedObject {
 
   private frameRate: FrameRate
 
-  constructor(game: PuppetHandler, image: any, speedModifier: number) {
+  constructor(game: GameContext, image: any, speedModifier: number) {
     this.game = game
     this.image = image
     this.position = new Position(0, 0)
@@ -108,7 +108,7 @@ class InteractiveBackgroundLayer implements DisplayedObject {
 }
 
 class BackgroundLimit {
-  private readonly game: PuppetHandler
+  private readonly game: GameContext
   private position: Position
   private width: number
   private height: number
@@ -117,7 +117,7 @@ class BackgroundLimit {
 
   private frameRate: FrameRate
 
-  constructor(game: PuppetHandler) {
+  constructor(game: GameContext) {
     this.game = game
     this.width = game.ctx.canvas.width
     this.height = game.ctx.canvas.height
@@ -177,11 +177,11 @@ class BackgroundLimit {
 }
 
 export class InteractiveBackground implements DisplayedObject {
-  private readonly game: PuppetHandler
+  private readonly game: GameContext
   private readonly layers: InteractiveBackgroundLayer[]
   readonly limit: BackgroundLimit
 
-  constructor(game: PuppetHandler) {
+  constructor(game: GameContext) {
     this.game = game
     this.layers = layerImages.map(({ img, speedModifier }) => new InteractiveBackgroundLayer(game, img, speedModifier))
     this.limit = new BackgroundLimit(game)

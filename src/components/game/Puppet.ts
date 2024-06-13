@@ -1,5 +1,5 @@
 import SpritePuppet from '../../assets/SpritePuppet.png'
-import type {DisplayCoordinate, DisplayedObject, PuppetHandler} from '@/components/game/common/Draw'
+import type {DisplayCoordinate, DisplayedObject, GameContext} from '@/components/game/common/Draw'
 import {FrameRate} from '@/components/game/common/FrameRate'
 
 class CollisionDetection {
@@ -35,7 +35,7 @@ const image = new Image()
 image.src = SpritePuppet
 
 export class Puppet implements DisplayedObject {
-  private readonly game: PuppetHandler
+  private readonly game: GameContext
   private x: number
   private y: number
   private width: number
@@ -56,7 +56,7 @@ export class Puppet implements DisplayedObject {
   private frameRate: FrameRate
   private collisionDetection: CollisionDetection
 
-  constructor(game: PuppetHandler) {
+  constructor(game: GameContext) {
     this.game = game
     this.spriteWidth = 200
     this.spriteHeight = 150

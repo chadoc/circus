@@ -4,7 +4,7 @@ import type {
     InputController,
     MovingElement,
     ObjectAnimation,
-    PuppetHandler
+    GameContext
 } from "@/components/game/common/Draw";
 import {AnimatedSprite} from "@/components/game/common/AnimatedSprite";
 import {NikoSprite} from "@/components/game/niko/NikoSprite";
@@ -25,7 +25,7 @@ row index: 1
 col size: 3
  */
 export class NikoArms implements DisplayedObject {
-    private readonly game: PuppetHandler
+    private readonly game: GameContext
     private readonly parent: MovingElement
     private sprite: AnimatedSprite
     private frameRate: FrameRate
@@ -34,7 +34,7 @@ export class NikoArms implements DisplayedObject {
     mustDelete: boolean;
     source: any;
 
-    constructor(game: PuppetHandler, parent: MovingElement) {
+    constructor(game: GameContext, parent: MovingElement) {
         this.game = game;
         this.parent = parent;
         this.sprite = new AnimatedSprite(NikoSprite, { row: 1, frame: 0 })

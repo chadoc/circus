@@ -1,7 +1,7 @@
 import CloudImg from '../../assets/SpriteCloud.png'
 import Bubble from '../../assets/speech3.png'
 import CloudSound from '../../assets/liquid.wav'
-import type {DisplayCoordinate, DisplayedObject, PuppetHandler} from '@/components/game/common/Draw'
+import type {DisplayCoordinate, DisplayedObject, GameContext} from '@/components/game/common/Draw'
 import {FrameRate} from '@/components/game/common/FrameRate'
 import Config from "@/components/game/Config";
 import GimmickSource from '../../assets/gimmick/gimmick.txt?raw'
@@ -43,7 +43,7 @@ function splitInLines(sentence: string, maxLine = 2): string[] {
 }
 
 export class SpeechBubble implements DisplayedObject {
-  private readonly game: PuppetHandler
+  private readonly game: GameContext
   private width: number
   private height: number
   private size: number
@@ -68,7 +68,7 @@ export class SpeechBubble implements DisplayedObject {
 
   private readonly gimmick: string[]
 
-  constructor(game: PuppetHandler, source: DisplayedObject & { coordinate: DisplayCoordinate }, size: number) {
+  constructor(game: GameContext, source: DisplayedObject & { coordinate: DisplayCoordinate }, size: number) {
     this.game = game
     this.spriteWidth = 300
     this.spriteHeight = 230

@@ -1,4 +1,4 @@
-import type {PuppetHandler} from '@/components/game/common/Draw'
+import type {GameContext} from '@/components/game/common/Draw'
 import {Position} from "@/components/game/common/Draw";
 import {OpossumSprite3} from "@/components/game/opossum/OpossumSprite3";
 import {GenericOpossum} from "@/components/game/opossum/GenericOpossum";
@@ -8,7 +8,7 @@ export class Opossum3 extends GenericOpossum{
   private leftDirection: boolean
   private frame = 3
 
-  constructor(game: PuppetHandler) {
+  constructor(game: GameContext) {
     super(
         game,
         new AnimatedSprite(OpossumSprite3, { row: 0, frame: 3 }),

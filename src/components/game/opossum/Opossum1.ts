@@ -1,4 +1,4 @@
-import type {InputController, ObjectAnimation, PuppetHandler} from '@/components/game/common/Draw'
+import type {InputController, ObjectAnimation, GameContext} from '@/components/game/common/Draw'
 import {Position} from "@/components/game/common/Draw";
 import {LeftRightAnimation} from '@/components/game/common/LeftRightAnimation'
 import {OpossumSprite1} from "@/components/game/opossum/OpossumSprite1";
@@ -9,7 +9,7 @@ import {AlternateAnimation} from "@/components/game/common/AlternateAnimation";
 export class Opossum1 extends GenericOpossum {
   private animation: ObjectAnimation
 
-  constructor(game: PuppetHandler) {
+  constructor(game: GameContext) {
     super(
         game,
         new AnimatedSprite(OpossumSprite1, { row: 0, frame: 3 }),

@@ -1,4 +1,4 @@
-import type {DisplayCoordinate, DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
+import type {DisplayCoordinate, DisplayedObject, InputController, GameContext} from '@/components/game/common/Draw'
 import {moveX, Position} from "@/components/game/common/Draw";
 import {FrameRate} from '@/components/game/common/FrameRate'
 import {CollisionDetection} from '@/components/game/common/CollisionDetection'
@@ -8,7 +8,7 @@ import {computeRatio} from "@/components/game/common/utils";
 
 
 export abstract class GenericOpossum implements DisplayedObject {
-    private readonly game: PuppetHandler
+    private readonly game: GameContext
     protected sprite: AnimatedSprite
     private position: Position
     private speed: number
@@ -27,7 +27,7 @@ export abstract class GenericOpossum implements DisplayedObject {
         return this.sprite.sh / this.ratio
     }
 
-    constructor(game: PuppetHandler, sprite: AnimatedSprite, position: Position) {
+    constructor(game: GameContext, sprite: AnimatedSprite, position: Position) {
         this.game = game
         this.sprite = sprite
         this.position = position

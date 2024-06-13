@@ -1,6 +1,6 @@
 import CloudImg from '../../assets/SpriteCloud.png'
 import CloudSound from '../../assets/liquid.wav'
-import type {DisplayedObject, PuppetHandler} from '@/components/game/common/Draw'
+import type {DisplayedObject, GameContext} from '@/components/game/common/Draw'
 import {FrameRate} from '@/components/game/common/FrameRate'
 
 const sound = new Audio(CloudSound)
@@ -8,7 +8,7 @@ const image = new Image()
 image.src = CloudImg
 
 export class Cloud implements DisplayedObject {
-  private readonly game: PuppetHandler
+  private readonly game: GameContext
   private x: number
   private y: number
   private width: number
@@ -26,7 +26,7 @@ export class Cloud implements DisplayedObject {
 
   private frameRate: FrameRate
 
-  constructor(game: PuppetHandler,  x: number, y: number, size: number) {
+  constructor(game: GameContext, x: number, y: number, size: number) {
     this.game = game
     this.spriteWidth = 300
     this.spriteHeight = 230

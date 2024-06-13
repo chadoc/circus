@@ -23,7 +23,7 @@ export class DrawContext {
   }
 }
 
-export interface PuppetHandler {
+export interface GameContext {
   miss(): void
   drawer: DrawContext
   collisionDrawer: DrawContext

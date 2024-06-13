@@ -1,4 +1,4 @@
-import type {DisplayCoordinate, DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
+import type {DisplayCoordinate, DisplayedObject, InputController, GameContext} from '@/components/game/common/Draw'
 import ImagePlane from '../../assets/plane/shipPlane.png'
 import ImageWindow from '../../assets/plane/shipWindow.png'
 import ImageUser from '../../assets/plane/julien.webp'
@@ -20,7 +20,7 @@ const userTargetWidth = 210
 const userTargetHeight = 210
 
 export class PlayerShip implements DisplayedObject {
-  private readonly game: PuppetHandler
+  private readonly game: GameContext
   private userImg: any
   private x: number
   private y: number
@@ -38,7 +38,7 @@ export class PlayerShip implements DisplayedObject {
 
   private frameRate: FrameRate
 
-  constructor(game: PuppetHandler, userImg: any | undefined) {
+  constructor(game: GameContext, userImg: any | undefined) {
     this.game = game
     this.userImg = new Image()
     this.userImg.src = userImg || ImageUser

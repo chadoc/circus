@@ -1,4 +1,4 @@
-import type {DisplayedObject, InputController, PuppetHandler} from '@/components/game/common/Draw'
+import type {DisplayedObject, InputController, GameContext} from '@/components/game/common/Draw'
 import clouds1 from '../../assets/background/cloud/clouds1/1.png'
 import clouds2 from '../../assets/background/cloud/clouds1/2.png'
 import clouds3 from '../../assets/background/cloud/clouds1/3.png'
@@ -15,7 +15,7 @@ const img4 = new Image()
 img4.src = clouds4
 
 class BackgroundLayer implements DisplayedObject {
-  private readonly game: PuppetHandler
+  private readonly game: GameContext
   private readonly image: any
 
   private x: number
@@ -28,7 +28,7 @@ class BackgroundLayer implements DisplayedObject {
 
   private frameRate: FrameRate
 
-  constructor(game: PuppetHandler, image: any, speedModifier: number) {
+  constructor(game: GameContext, image: any, speedModifier: number) {
     this.game = game
     this.image = image
     this.width = game.ctx.canvas.width
@@ -62,10 +62,10 @@ class BackgroundLayer implements DisplayedObject {
 }
 
 export class Background implements DisplayedObject {
-  private readonly game: PuppetHandler
+  private readonly game: GameContext
   private readonly layers: BackgroundLayer[]
 
-  constructor(game: PuppetHandler) {
+  constructor(game: GameContext) {
     this.game = game
     this.layers = [
       new BackgroundLayer(game, img1, 0),
