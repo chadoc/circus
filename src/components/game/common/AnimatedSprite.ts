@@ -100,8 +100,8 @@ export class AnimatedSprite {
             sh: this.sprite.rowHeight,
             dx: coordinates.x,
             dy: coordinates.y,
-            dw: this.sprite.colWidth / coordinates.ratio,
-            dh: this.sprite.rowHeight / coordinates.ratio
+            dw: coordinates.width,
+            dh: coordinates.height
         }
     }
 }

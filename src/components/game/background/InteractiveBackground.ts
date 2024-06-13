@@ -75,8 +75,7 @@ class InteractiveBackgroundLayer implements DisplayedObject {
       x: this.position.x + xShift,
       y: this.position.y,
       width: this.width,
-      height: this.height,
-      ratio: 1
+      height: this.height
     }
   }
 
@@ -132,8 +131,7 @@ class BackgroundLimit {
       x: this.position.x,
       y: this.position.y,
       width: this.width,
-      height: this.height,
-      ratio: 1
+      height: this.height
     }
   }
 

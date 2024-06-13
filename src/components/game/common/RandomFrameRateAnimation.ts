@@ -2,18 +2,16 @@ import type {DisplayedObject, InputController, ObjectAnimation} from "@/componen
 import type {SpritePointer} from "@/components/game/common/AnimatedSprite";
 import {randomIntFromInterval} from '@/components/game/common/utils'
 
-export function randomize(animation: ObjectAnimation,  randomRatio = 3): RandomFrameRateAnimation {
-    return new RandomFrameRateAnimation(animation, randomRatio)
+export function randomize(animation: ObjectAnimation): RandomFrameRateAnimation {
+    return new RandomFrameRateAnimation(animation)
 }
 
 export class RandomFrameRateAnimation implements ObjectAnimation {
     private readonly animation: ObjectAnimation
-    private readonly ratio: number
     private pointer: SpritePointer | undefined
 
-    constructor(animation: ObjectAnimation, randomRatio: number = 3) {
+    constructor(animation: ObjectAnimation) {
         this.animation = animation;
-        this.ratio = randomRatio;
     }
 
     isFinished(): boolean {

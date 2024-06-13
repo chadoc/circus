@@ -27,7 +27,7 @@ export class NikoHead implements DisplayedObject {
         this.game = game;
         this.parent = parent;
         this.sprite = new AnimatedSprite(NikoSprite, { row: 3, frame: 0 })
-        this.frameRate = new FrameRate(Config.frameRate * 2)
+        this.frameRate = new FrameRate(Config.frameRate * Config.playerFrameRateModifier)
         this.animation = new AlternateAnimation([
             () => randomize(new RandomUpDownAnimation( 3, 0)),
             () => randomize(new WaitAnimation(5)),

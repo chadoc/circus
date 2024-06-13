@@ -1,13 +1,12 @@
 import type {
   DisplayCoordinate,
   DisplayedObject,
+  GameContext,
   InputController,
   Movement,
-  MovingElement,
-  GameContext
+  MovingElement
 } from '@/components/game/common/Draw'
 import {Position} from "@/components/game/common/Draw";
-import {FrameRate} from '@/components/game/common/FrameRate'
 import {AnimatedSprite} from "@/components/game/common/AnimatedSprite";
 import {NikoBodyRef, NikoSprite} from "@/components/game/niko/NikoSprite";
 import Config from "@/components/game/Config";
@@ -15,13 +14,12 @@ import {NikoArms} from "@/components/game/niko/NikoArms";
 import {NikoLegs} from "@/components/game/niko/NikoLegs";
 import {NikoHead} from "@/components/game/niko/NikoHead";
 import {BubbleParticule} from '@/components/game/niko/BubbleParticule'
-import {computeRatio} from "@/components/game/common/utils";
+import {FrameRate} from "@/components/game/common/FrameRate";
 
 export class NikoPlayer implements DisplayedObject, MovingElement {
   private readonly game: GameContext
   private position: Position
   private body: AnimatedSprite
-  private ratio: number
   protected movement: Movement
   private frameRate: FrameRate
   private arms: NikoArms
@@ -32,34 +30,44 @@ export class NikoPlayer implements DisplayedObject, MovingElement {
   constructor(game: GameContext) {
     this.game = game
     this.body = new AnimatedSprite(NikoSprite, NikoBodyRef)
-    //this.ratio = (this.game.ctx.canvas.width / 4) / this.game.ctx.canvas.width
-    this.ratio = computeRatio(game, this.body.sh, 3)
-    this.position = new Position((game.ctx.canvas.width / 2) - (this.width / 2), game.ctx.canvas.height - this.height)
-    this.frameRate = new FrameRate(Config.frameRate)
+    this.position = game.center(this.width, this.height)
     this.movement = {
       xSpeed: 0,
       ySpeed: 0
     }
 
+    this.frameRate = new FrameRate(Config.frameRate * Config.playerFrameRateModifier)
     this.arms = new NikoArms(game, this)
     this.legs = new NikoLegs(game, this)
     this.head = new NikoHead(game, this)
   }
 
+  get maxXSpeed(): number {
+    return this.game.ch(Config.playerXSpeedScale)
+  }
+
+  get maxYSpeed(): number {
+    return this.game.cw(Config.playerYSpeedScale)
+  }
+
+  get weight(): number {
+    return this.game.ch(Config.gravityScale)
+  }
+
   get width(): number {
-    return this.body.sw / this.ratio
+    return (this.body.sw * this.height) / this.body.sh
   }
 
   get height(): number {
-    return this.body.sh / this.ratio
+    return this.game.ch(Config.playerScale)
   }
 
   private computeSpeed(input: InputController, movement: Movement) {
     let { xSpeed, ySpeed } = movement
     if (input.moveRight()) {
-      xSpeed = Math.min(xSpeed + 1, Config.playerXSpeed)
+      xSpeed = Math.min(xSpeed + 1, this.maxXSpeed)
     } else if (input.moveLeft()) {
-      xSpeed = Math.max(xSpeed - 1, -Config.playerXSpeed)
+      xSpeed = Math.max(xSpeed - 1, -this.maxXSpeed)
     } else {
       if (xSpeed > 0) {
         xSpeed = Math.max(xSpeed - 1, 0)
@@ -69,9 +77,9 @@ export class NikoPlayer implements DisplayedObject, MovingElement {
     }
 
     if (input.moveUp()) {
-      ySpeed -= Config.playerYSpeed
+      ySpeed -= this.maxYSpeed
     } else if (input.moveDown()) {
-      ySpeed += Config.playerYSpeed
+      ySpeed += this.maxYSpeed
     } else {
       ySpeed = 0
     }
@@ -84,29 +92,20 @@ export class NikoPlayer implements DisplayedObject, MovingElement {
     this.bubbles = this.bubbles.filter(b => !b.mustDelete)
     this.bubbles.push(new BubbleParticule(this.game, this.coordinate))
 
-    this.movement = this.computeSpeed(input, this.movement)
-    this.position = this.newPosition(this.movement)
-
-    // if (!this.onGround) {
-    //   this.verticalSpeed += this.weight
-    // } else {
-    //   this.verticalSpeed = 0
-    // }
-
-    // is there a collision
-
     this.frameRate.onUpdate(deltaTime, () => {
-    })
+      this.movement = this.computeSpeed(input, this.movement)
+      this.position = this.newPosition(this.movement)
 
-    this.arms.update(deltaTime, input)
-    this.legs.update(deltaTime, input)
-    this.head.update(deltaTime, input)
-    this.bubbles.forEach(bubble => bubble.update(deltaTime, input))
+      this.arms.update(deltaTime, input)
+      this.legs.update(deltaTime, input)
+      this.head.update(deltaTime, input)
+      this.bubbles.forEach(bubble => bubble.update(deltaTime, input))
+    })
   }
 
   private applyGravity(verticalSpeed: number): number {
     if (!this.onGround) {
-      return verticalSpeed + Config.gravity
+      return verticalSpeed + this.weight
     } else {
       return verticalSpeed
     }
@@ -139,8 +138,7 @@ export class NikoPlayer implements DisplayedObject, MovingElement {
       x: this.position.x,
       y: this.position.y,
       width: this.width,
-      height: this.height,
-      ratio: this.ratio
+      height: this.height
     }
   }
 

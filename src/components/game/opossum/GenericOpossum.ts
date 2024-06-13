@@ -1,10 +1,9 @@
-import type {DisplayCoordinate, DisplayedObject, InputController, GameContext} from '@/components/game/common/Draw'
-import {moveX, Position} from "@/components/game/common/Draw";
+import type {DisplayCoordinate, DisplayedObject, GameContext, InputController} from '@/components/game/common/Draw'
+import {Position} from "@/components/game/common/Draw";
 import {FrameRate} from '@/components/game/common/FrameRate'
 import {CollisionDetection} from '@/components/game/common/CollisionDetection'
 import {AnimatedSprite, type SpritePointer} from "@/components/game/common/AnimatedSprite";
 import Config from "@/components/game/Config";
-import {computeRatio} from "@/components/game/common/utils";
 
 
 export abstract class GenericOpossum implements DisplayedObject {
@@ -12,46 +11,41 @@ export abstract class GenericOpossum implements DisplayedObject {
     protected sprite: AnimatedSprite
     private position: Position
     private speed: number
-    private ratio: number
     private markedForDeletion: boolean
     private layerSpeed: number
     private movementRate: FrameRate
     private frameRate: FrameRate
     private collisionDetection: CollisionDetection
 
-    get width(): number {
-        return this.sprite.sw / this.ratio
-    }
-
-    get height(): number {
-        return this.sprite.sh / this.ratio
-    }
-
     constructor(game: GameContext, sprite: AnimatedSprite, position: Position) {
         this.game = game
         this.sprite = sprite
         this.position = position
-        this.ratio = computeRatio(game, sprite.sh, 5)
-        // this.ratio = 6
 
-        // this.speed = Math.random() * 4 + 1
         this.speed = 0
         this.markedForDeletion = false
 
         this.layerSpeed = 25 * 0.8 // TODO should be based on background
 
-        // this.frameRate = new FrameRate(Math.random() * 50 + 20)
         this.movementRate = new FrameRate(60)
         this.frameRate = new FrameRate(Config.frameRate * 1.66)
         this.collisionDetection = new CollisionDetection(game.collisionCtx)
     }
 
-    get mustDelete() {
-        return this.markedForDeletion
+    get xAcceleration(): number {
+        return this.game.ch(Config.playerXSpeedScale)
     }
 
-    get size() {
-        return this.width
+    get width(): number {
+        return (this.sprite.sw * this.height) / this.sprite.sh
+    }
+
+    get height(): number {
+        return this.game.ch(Config.opossumScale)
+    }
+
+    get mustDelete() {
+        return this.markedForDeletion
     }
 
     get coordinate(): DisplayCoordinate {
@@ -59,8 +53,7 @@ export abstract class GenericOpossum implements DisplayedObject {
             x: this.position.x,
             y: this.position.y,
             width: this.width,
-            height: this.height,
-            ratio: this.ratio
+            height: this.height
         }
     }
 
@@ -75,9 +68,9 @@ export abstract class GenericOpossum implements DisplayedObject {
 
     update(deltaTime: number, input: InputController) {
         if (input.moveRight()) {
-            this.speed = this.layerSpeed
+            this.speed = this.xAcceleration
         } else if (input.moveLeft()) {
-            this.speed = -this.layerSpeed
+            this.speed = -this.xAcceleration
         } else {
             this.speed = 0
         }

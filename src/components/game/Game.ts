@@ -1,5 +1,5 @@
 import type {DisplayedObject, InputController, GameContext} from '@/components/game/common/Draw'
-import {DrawContext} from '@/components/game/common/Draw'
+import {DrawContext, Position} from '@/components/game/common/Draw'
 import {Puppet} from '@/components/game/Puppet'
 import {Cloud} from '@/components/game/Cloud'
 import {InteractiveBackground} from '@/components/game/background/InteractiveBackground'
@@ -249,6 +249,21 @@ export class Game implements GameContext {
 
   get collisionCtx() {
     return this.collisionDrawer.ctx
+  }
+
+  cw(scale: number): number {
+    return this.ctx.canvas.width * scale
+  }
+
+  ch(scale: number): number {
+    return this.ctx.canvas.height * scale
+  }
+
+  center(width: number, height: number): Position {
+    return new Position(
+        (this.ctx.canvas.width / 2) - (width / 2),
+        (this.ctx.canvas.height / 2) - (height / 2)
+    )
   }
 
   private drawScore() {

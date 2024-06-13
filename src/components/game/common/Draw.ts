@@ -29,6 +29,9 @@ export interface GameContext {
   collisionDrawer: DrawContext
   ctx: CanvasRenderingContext2D
   collisionCtx: CanvasRenderingContext2D
+  cw(scale: number): number
+  ch(scale: number): number
+  center(width: number, height: number): Position
 }
 
 export interface InputController {
@@ -55,7 +58,6 @@ export type DisplayCoordinate = {
   y: number
   width: number
   height: number
-  ratio: number
 }
 
 export type Movement = {

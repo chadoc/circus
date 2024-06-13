@@ -93,8 +93,7 @@ export class Puppet implements DisplayedObject {
       x: this.x,
       y: this.y,
       width: this.width,
-      height: this.height,
-      ratio: this.widthRatio
+      height: this.height
     }
   }
 

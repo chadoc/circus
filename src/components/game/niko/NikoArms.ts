@@ -12,18 +12,6 @@ import {FrameRate} from "@/components/game/common/FrameRate";
 import Config from "@/components/game/Config";
 import {MovingUpAnimation} from "@/components/game/common/MovingUpAnimation";
 
-/*
- 4500 x 5400
- 5 columns
- 6 rows
- */
-
-
-/*
-Arms:
-row index: 1
-col size: 3
- */
 export class NikoArms implements DisplayedObject {
     private readonly game: GameContext
     private readonly parent: MovingElement
@@ -38,7 +26,7 @@ export class NikoArms implements DisplayedObject {
         this.game = game;
         this.parent = parent;
         this.sprite = new AnimatedSprite(NikoSprite, { row: 1, frame: 0 })
-        this.frameRate = new FrameRate(Config.frameRate * 2)
+        this.frameRate = new FrameRate(Config.frameRate * Config.playerFrameRateModifier)
         this.animation = new MovingUpAnimation(parent, this.sprite.frameCount, false, this.sprite.row);
     }
 

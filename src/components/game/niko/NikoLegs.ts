@@ -39,7 +39,7 @@ export class NikoLegs implements DisplayedObject {
         this.game = game;
         this.parent = parent;
         this.sprite = new AnimatedSprite(NikoSprite, { row: 2, frame: 0 })
-        this.frameRate = new FrameRate(Config.frameRate * 2)
+        this.frameRate = new FrameRate(Config.frameRate * Config.playerFrameRateModifier)
         this.animation = new MovingUpAnimation(parent, this.sprite.frameCount, false, this.sprite.row);
     }
 

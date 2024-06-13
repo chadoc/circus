@@ -123,7 +123,7 @@ export class SpeechBubble implements DisplayedObject {
   }
 
   get textWidth(): number {
-    this.game.ctx.font = '26px julien'
+    this.game.ctx.font = '3.2vh julien'
     this.game.ctx.fillStyle = 'black'
     let width = 0
     for (const gimmick of this.gimmick) {
@@ -134,7 +134,7 @@ export class SpeechBubble implements DisplayedObject {
 
   draw() {
     if (this.displayBubble) {
-      this.game.ctx.font = '26px julien'
+      this.game.ctx.font = '3.2vh julien'
       this.game.ctx.fillStyle = 'black'
 
       const lineCount = this.gimmick.length
