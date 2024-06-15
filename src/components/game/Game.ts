@@ -6,7 +6,7 @@ import {InteractiveBackground} from '@/components/game/background/InteractiveBac
 import {Opossum1} from '@/components/game/opossum/Opossum1'
 import {Opossum2} from '@/components/game/opossum/Opossum2'
 import {Opossum3} from '@/components/game/opossum/Opossum3'
-import {SpeechBubble} from '@/components/game/SpeechBubble'
+import {SpeechBubble} from '@/components/game/opossum/SpeechBubble'
 import type {GenericOpossum} from '@/components/game/opossum/GenericOpossum'
 import {NikoPlayer} from '@/components/game/niko/NikoPlayer'
 import Config from '@/components/game/Config'
@@ -189,14 +189,21 @@ export class Game implements GameContext {
     this.animations.push(animation);
   }
 
+  private position(shiftX: number, shiftY: number): Position {
+    return new Position(this.ctx.canvas.width / 2 + shiftX, this.ctx.canvas.height / 2 + shiftY)
+  }
+
   update(deltaTime: number) {
     this.puppets = this.puppets.filter(p => !p.mustDelete)
     this.animations = this.animations.filter(a => !a.mustDelete)
 
     if (this.opossums.length == 0) {
-      this.opossums.push(new Opossum1(this))
-      this.opossums.push(new Opossum2(this))
-      this.opossums.push(new Opossum3(this))
+      this.opossums.push(new Opossum1(this, this.position(-40, -200)))
+      this.opossums.push(new Opossum2(this, this.position(-506, -100)))
+      this.opossums.push(new Opossum3(this, this.position(393, -400)))
+      this.opossums.push(new Opossum1(this, this.position(-1000, -200)))
+      this.opossums.push(new Opossum2(this, this.position(-1506, -100)))
+      this.opossums.push(new Opossum3(this, this.position(1393, -400)))
       // this.animations.push(new SpeechBubble(this, 300, 300, 300))
       // this.opossums.push(new Opossum(this))
     }

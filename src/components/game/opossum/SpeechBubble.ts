@@ -1,11 +1,9 @@
-import CloudImg from '../../assets/SpriteCloud.png'
-import Bubble from '../../assets/speech3.png'
-import CloudSound from '../../assets/liquid.wav'
+import CloudImg from '../../../assets/SpriteCloud.png'
+import Bubble from '../../../assets/speech3.png'
+import CloudSound from '../../../assets/liquid.wav'
 import type {DisplayCoordinate, DisplayedObject, GameContext} from '@/components/game/common/Draw'
 import {FrameRate} from '@/components/game/common/FrameRate'
 import Config from "@/components/game/Config";
-import GimmickSource from '../../assets/gimmick/gimmick.txt?raw'
-import {randomIntFromInterval} from '@/components/game/common/utils'
 
 const sound = new Audio(CloudSound)
 const image = new Image()
@@ -14,32 +12,8 @@ image.src = CloudImg
 const bubble = new Image()
 bubble.src = Bubble
 
-const gimmicks = (GimmickSource as string).split('\n').filter(s => s.length > 0)
-
-let currentGimmick = -1
-
-function nextGimmick() {
-  // console.log('randon', randomIntFromInterval(0, gimmicks.length - 1))
-  // return randomIntFromInterval(0, gimmicks.length - 1)
-  currentGimmick++
-  if (currentGimmick >= gimmicks.length) {
-    currentGimmick = 0
-  }
-  return currentGimmick
-}
-
-function splitInLines(sentence: string, maxLine = 2): string[] {
-  const rowLimit = Math.round(sentence.length / maxLine)
-  const lines: string[] = []
-  let currentLine = 0
-
-  for (const word of sentence.split(' ')) {
-    lines[currentLine] = (lines[currentLine] || '') + word + ' '
-    if (lines[currentLine].length >= rowLimit && currentLine < maxLine) {
-      currentLine++
-    }
-  }
-  return lines.map(line => line.trim())
+export interface HasGimmick {
+  gimmick: string[]
 }
 
 export class SpeechBubble implements DisplayedObject {
@@ -68,7 +42,9 @@ export class SpeechBubble implements DisplayedObject {
 
   private readonly gimmick: string[]
 
-  constructor(game: GameContext, source: DisplayedObject & { coordinate: DisplayCoordinate }, size: number) {
+  constructor(game: GameContext,
+              source: DisplayedObject & { coordinate: DisplayCoordinate } & HasGimmick,
+              size: number) {
     this.game = game
     this.spriteWidth = 300
     this.spriteHeight = 230
@@ -80,7 +56,7 @@ export class SpeechBubble implements DisplayedObject {
     this.spriteFrames = 9
     this.frame = 0
     this.markedForDeletion = false
-    this.gimmick = splitInLines(gimmicks[nextGimmick()])
+    this.gimmick = source.gimmick
 
     this.frameRate = new FrameRate(Config.frameRate)
     this.creationTime = new Date().getTime()

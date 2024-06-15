@@ -4,9 +4,11 @@ import {FrameRate} from '@/components/game/common/FrameRate'
 import {CollisionDetection} from '@/components/game/common/CollisionDetection'
 import {AnimatedSprite, type SpritePointer} from "@/components/game/common/AnimatedSprite";
 import Config from "@/components/game/Config";
+import {getGimmick} from "@/components/game/opossum/Gimmicks";
+import type {HasGimmick} from "@/components/game/opossum/SpeechBubble";
 
 
-export abstract class GenericOpossum implements DisplayedObject {
+export abstract class GenericOpossum implements DisplayedObject, HasGimmick {
     private readonly game: GameContext
     protected sprite: AnimatedSprite
     private position: Position
@@ -16,11 +18,13 @@ export abstract class GenericOpossum implements DisplayedObject {
     private movementRate: FrameRate
     private frameRate: FrameRate
     private collisionDetection: CollisionDetection
+    private gimmick: string[]
 
     constructor(game: GameContext, sprite: AnimatedSprite, position: Position) {
         this.game = game
         this.sprite = sprite
         this.position = position
+        this.gimmick = getGimmick()
 
         this.speed = 0
         this.markedForDeletion = false

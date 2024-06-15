@@ -8,11 +8,11 @@ export class Opossum3 extends GenericOpossum{
   private leftDirection: boolean
   private frame = 3
 
-  constructor(game: GameContext) {
+  constructor(game: GameContext, position: Position) {
     super(
         game,
         new AnimatedSprite(OpossumSprite3, { row: 0, frame: 3 }),
-        new Position(game.ctx.canvas.width / 2 + 393, game.ctx.canvas.height / 2 - 400)
+        position
     )
     this.leftDirection = false
   }
