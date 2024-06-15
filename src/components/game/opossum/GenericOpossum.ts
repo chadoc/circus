@@ -12,6 +12,7 @@ export abstract class GenericOpossum implements DisplayedObject, HasGimmick {
     private readonly game: GameContext
     protected sprite: AnimatedSprite
     private position: Position
+    private readonly initialPosition: Position
     private speed: number
     private markedForDeletion: boolean
     private layerSpeed: number
@@ -24,14 +25,15 @@ export abstract class GenericOpossum implements DisplayedObject, HasGimmick {
         this.game = game
         this.sprite = sprite
         this.position = position
+        this.initialPosition = position
         this.gimmick = getGimmick()
 
         this.speed = 0
         this.markedForDeletion = false
 
-        this.layerSpeed = 25 * 0.8 // TODO should be based on background
+        this.layerSpeed = game.background.speed
 
-        this.movementRate = new FrameRate(60)
+        this.movementRate = new FrameRate(50)
         this.frameRate = new FrameRate(Config.frameRate * 1.66)
         this.collisionDetection = new CollisionDetection(game.collisionCtx)
     }
@@ -71,10 +73,11 @@ export abstract class GenericOpossum implements DisplayedObject, HasGimmick {
     }
 
     update(deltaTime: number, input: InputController) {
+        /*
         if (input.moveRight()) {
-            this.speed = this.xAcceleration
+            this.speed = this.layerSpeed
         } else if (input.moveLeft()) {
-            this.speed = -this.xAcceleration
+            this.speed = -this.layerSpeed
         } else {
             this.speed = 0
         }
@@ -83,6 +86,14 @@ export abstract class GenericOpossum implements DisplayedObject, HasGimmick {
             this.position = {
                 x: Math.floor(this.position.x - this.speed),
                 y: this.position.y
+            }
+        })
+         */
+        this.movementRate.onUpdate(deltaTime, () => {
+            const bgCoordinate = this.game.background.coordinate
+            this.position = {
+                x: this.initialPosition.x + bgCoordinate.x,
+                y: this.initialPosition.y + bgCoordinate.y
             }
         })
         this.frameRate.onUpdate(deltaTime, () => {

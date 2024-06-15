@@ -1,4 +1,5 @@
 import type {AnimationSprite, SpriteDrawReference, SpritePointer} from "@/components/game/common/AnimatedSprite";
+import type {InteractiveBackground} from "@/components/game/background/InteractiveBackground";
 
 export interface DisplayedObject {
   update(deltaTime: number, input: InputController): void
@@ -32,6 +33,7 @@ export interface GameContext {
   cw(scale: number): number
   ch(scale: number): number
   center(width: number, height: number): Position
+  background: InteractiveBackground
 }
 
 export interface InputController {

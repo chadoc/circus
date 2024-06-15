@@ -1,4 +1,4 @@
-import type {DisplayedObject, InputController, GameContext} from '@/components/game/common/Draw'
+import type {DisplayedObject, InputController, GameContext, DisplayCoordinate} from '@/components/game/common/Draw'
 import {DrawContext, Position} from '@/components/game/common/Draw'
 import {Puppet} from '@/components/game/Puppet'
 import {Cloud} from '@/components/game/Cloud'
@@ -120,13 +120,12 @@ class InputHandler implements InputController {
 export class Game implements GameContext {
   readonly drawer: DrawContext
   readonly collisionDrawer: DrawContext
-  private puppets: Puppet[] = []
   private opossums: GenericOpossum[] = []
   private animations: DisplayedObject[] = []
   //private player: Player
   private player: NikoPlayer
   //private ship: PlayerShip
-  private background: InteractiveBackground
+  readonly background: InteractiveBackground
   private readonly level = new Level()
   private readonly input: InputHandler
 
@@ -142,18 +141,6 @@ export class Game implements GameContext {
     this.ctx.font = '50px Impact'
   }
 
-  click(event: MouseEvent) {
-    const detectPixelColor = this.collisionDrawer.ctx.getImageData(event.x, event.y, 1, 1).data
-    this.puppets.forEach(puppet => {
-      if (puppet.fire(detectPixelColor)) {
-        // has been touched
-        this.level.win(1)
-        const { x, y, width } = puppet.coordinate
-        this.animations.push(new Cloud(this, x, y, width))
-      }
-    })
-  }
-
   miss() {
     this.level.miss()
   }
@@ -161,7 +148,6 @@ export class Game implements GameContext {
   private get drawOrder() {
     return [
       ...[this.background],
-      ...this.puppets,
       ...this.opossums,
       ...[this.player],
       ...this.animations,
@@ -171,7 +157,6 @@ export class Game implements GameContext {
   private get envObjects() {
     return [
       ...[this.background],
-      ...this.puppets,
       ...this.opossums,
       ...this.animations,
     ]
@@ -194,16 +179,15 @@ export class Game implements GameContext {
   }
 
   update(deltaTime: number) {
-    this.puppets = this.puppets.filter(p => !p.mustDelete)
     this.animations = this.animations.filter(a => !a.mustDelete)
 
     if (this.opossums.length == 0) {
-      this.opossums.push(new Opossum1(this, this.position(-40, -200)))
-      this.opossums.push(new Opossum2(this, this.position(-506, -100)))
-      this.opossums.push(new Opossum3(this, this.position(393, -400)))
-      this.opossums.push(new Opossum1(this, this.position(-1000, -200)))
-      this.opossums.push(new Opossum2(this, this.position(-1506, -100)))
-      this.opossums.push(new Opossum3(this, this.position(1393, -400)))
+      this.opossums.push(new Opossum1(this, this.position(760, -100)))
+      this.opossums.push(new Opossum2(this, this.position(-150, -300)))
+      this.opossums.push(new Opossum3(this, this.position(-690, 200)))
+      this.opossums.push(new Opossum1(this, this.position(-1640, -350)))
+      this.opossums.push(new Opossum2(this, this.position(-2065, 150)))
+      this.opossums.push(new Opossum3(this, this.position(1710, -400)))
       // this.animations.push(new SpeechBubble(this, 300, 300, 300))
       // this.opossums.push(new Opossum(this))
     }
@@ -222,14 +206,6 @@ export class Game implements GameContext {
         }
       }
     })
-
-    if (this.level.shouldAddPuppet(deltaTime, this.puppets.length)) {
-      this.puppets.push(new Puppet(this))
-      // sort puppets by width to make sure bigger are in front
-      this.puppets.sort(function(a, b) {
-        return a.size - b.size
-      })
-    }
 
     if (!this.background.limit.shouldStopMove(this.input)) {
       this.envObjects.forEach(o => o.update(deltaTime, this.input))

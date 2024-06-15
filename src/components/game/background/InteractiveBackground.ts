@@ -34,7 +34,7 @@ class InteractiveBackgroundLayer implements DisplayedObject {
   private position: Position
   private speed: number
   private backgroundSpeed: number
-  private layerSpeed: number
+  readonly layerSpeed: number
   private speedModifier: number
 
   private frameRate: FrameRate
@@ -187,6 +187,18 @@ export class InteractiveBackground implements DisplayedObject {
 
   get mustDelete(): boolean {
     return false
+  }
+
+  private get opossumLayer(): InteractiveBackgroundLayer {
+    return this.layers[this.layers.length - 1]
+  }
+
+  get coordinate(): DisplayCoordinate {
+    return this.opossumLayer.coordinates
+  }
+
+  get speed(): number {
+    return this.opossumLayer.layerSpeed
   }
 
   update(deltaTime: number, input: InputController) {
