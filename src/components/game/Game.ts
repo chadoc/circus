@@ -137,8 +137,20 @@ export class Game implements GameContext {
     this.player = new NikoPlayer(this)
     //this.ship = new PlayerShip(this, userImg)
     this.background = new InteractiveBackground(this)
-    this.ctx.canvas.addEventListener('click', (e) => this.click(e))
+    //this.ctx.canvas.addEventListener('click', (e) => this.click(e))
     this.ctx.font = '50px Impact'
+
+    window.addEventListener('resize', () => this.computeCanvasWidth())
+    window.addEventListener('orientationchange', () => this.computeCanvasWidth())
+  }
+
+  computeCanvasWidth() {
+    const w = window.innerWidth
+    const h = w * (9 / 16)
+    this.ctx.canvas.width = w
+    this.ctx.canvas.height = h
+    this.collisionCtx.canvas.width = w
+    this.collisionCtx.canvas.height = h
   }
 
   miss() {
