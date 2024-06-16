@@ -1,18 +1,19 @@
 import Bubble from '../../../assets/speech3.png'
 import CloudSound from '../../../assets/liquid.wav'
-import type {DisplayCoordinate, DisplayedObject, GameContext} from '@/components/game/common/Draw'
+import type {DisplayCoordinate, DisplayedObject, GameContext, PositionedElement} from '@/components/game/common/Draw'
 import {FrameRate} from '@/components/game/common/FrameRate'
 import Config from "@/components/game/Config";
 import {AnimatedSprite} from "@/components/game/common/AnimatedSprite";
 import {CloudSprite} from "@/components/game/opossum/CloudSprite";
+import {BubbleText} from "@/components/game/opossum/BubbleText";
 
 const sound = new Audio(CloudSound)
 
 const bubble = new Image()
 bubble.src = Bubble
 
-export interface HasGimmick {
-  gimmick: string[]
+export interface DisplayedText {
+  lines: string[]
 }
 
 export class SpeechBubble implements DisplayedObject {
@@ -22,9 +23,6 @@ export class SpeechBubble implements DisplayedObject {
 
   private frame: number
 
-  private scale: number
-  private spriteFrames: number
-
   private markedForDeletion: boolean
   private fixed: boolean
 
@@ -33,14 +31,12 @@ export class SpeechBubble implements DisplayedObject {
   private creationTime: number
   private displayBubble: boolean = false
 
-  private bubbleImageWidth: number = 656
-  private bubbleImageHeight: number = 520
-  readonly source: DisplayedObject & { coordinate: DisplayCoordinate }
+  readonly source: PositionedElement
 
-  private readonly gimmick: string[]
+  private bubbleText: BubbleText
 
   constructor(game: GameContext,
-              source: DisplayedObject & { coordinate: DisplayCoordinate } & HasGimmick,
+              source: PositionedElement & DisplayedText,
               size: number,
               fixed: boolean = false) {
     this.game = game
@@ -48,14 +44,13 @@ export class SpeechBubble implements DisplayedObject {
     this.size = size
     this.source = source
     this.size = size
-    this.spriteFrames = 9
     this.frame = 0
     this.markedForDeletion = false
     this.fixed = fixed
-    this.gimmick = source.gimmick
 
     this.frameRate = new FrameRate(Config.frameRate)
     this.creationTime = new Date().getTime()
+    this.bubbleText = new BubbleText(game, source.lines, this)
   }
 
   get coordinate(): DisplayCoordinate {
@@ -86,7 +81,7 @@ export class SpeechBubble implements DisplayedObject {
 
     this.frameRate.onUpdate(deltaTime, () => {
       if (!this.displayBubble) {
-        if (this.frame > (this.spriteFrames - 2)) {
+        if (this.frame > (this.sprite.frameCount - 2)) {
           this.markedForDeletion = true
         } else if (this.frame == 4) {
           this.displayBubble = true
@@ -104,35 +99,9 @@ export class SpeechBubble implements DisplayedObject {
     })
   }
 
-  get textWidth(): number {
-    this.game.ctx.font = '3.2vh julien'
-    this.game.ctx.fillStyle = 'black'
-    let width = 0
-    for (const gimmick of this.gimmick) {
-      width = Math.max(width, this.game.ctx.measureText(gimmick).width)
-    }
-    return width
-  }
-
   draw() {
     if (this.displayBubble) {
-      this.game.ctx.font = '3.2vh julien'
-      this.game.ctx.fillStyle = 'black'
-
-      const lineCount = this.gimmick.length
-      const lineHeight = 40
-      const maxTextWidth = this.textWidth
-      const bubbleWidth = maxTextWidth + 250
-      const bubbleHeight = lineCount * lineHeight + lineHeight
-
-      this.game.ctx.drawImage(bubble, 0, 0, this.bubbleImageWidth, this.bubbleImageHeight, this.x, this.y, bubbleWidth, bubbleHeight)
-
-      this.gimmick.forEach(g => {
-        const textWidth = this.game.ctx.measureText(g).width
-        const textX = this.x + ((bubbleWidth - textWidth) / 2)
-        const textY = this.y + lineHeight * this.gimmick.indexOf(g) + lineHeight + 5
-        this.game.ctx.fillText(g, textX, textY)
-      })
+      this.bubbleText.draw()
     } else {
       this.game.drawer.drawSprite(this.sprite.toDrawRef(this.coordinate))
     }

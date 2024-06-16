@@ -1,7 +1,5 @@
-import type {DisplayedObject, InputController, GameContext, DisplayCoordinate} from '@/components/game/common/Draw'
+import type {DisplayedObject, GameContext, InputController} from '@/components/game/common/Draw'
 import {DrawContext, Position} from '@/components/game/common/Draw'
-import {Puppet} from '@/components/game/Puppet'
-import {Cloud} from '@/components/game/Cloud'
 import {InteractiveBackground} from '@/components/game/background/InteractiveBackground'
 import {Opossum1} from '@/components/game/opossum/Opossum1'
 import {Opossum2} from '@/components/game/opossum/Opossum2'
@@ -10,7 +8,6 @@ import {SpeechBubble} from '@/components/game/opossum/SpeechBubble'
 import type {GenericOpossum} from '@/components/game/opossum/GenericOpossum'
 import {NikoPlayer} from '@/components/game/niko/NikoPlayer'
 import Config from '@/components/game/Config'
-import {BubbleParticule} from '@/components/game/niko/BubbleParticule'
 import {Fumigene} from "@/components/game/end/Fumigene";
 
 class Level {
@@ -203,6 +200,21 @@ export class Game implements GameContext {
     if (this.fumigenes.length == 0 && this.shouldFinishGame) {
       this.fumigenes.push(new Fumigene(this, 0))
     }
+    /*
+    if (this.fumigenes.length > 0 && this.fumigenes[0].mustDelete) {
+      const size = this.ctx.canvas.height - 20
+      const position = this.center(size, size)
+      this.fumigenes.push(new SpeechBubble(this, {
+        coordinate: {
+          x: position.x,
+          y: position.y,
+          width: size,
+          height: size
+        },
+        lines: getNextDates()
+      }, size, true))
+    }
+    */
 
     if (this.opossums.length == 0) {
       this.opossums.push(new Opossum1(this, 738, -100))

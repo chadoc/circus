@@ -5,7 +5,8 @@ import {Position} from "@/components/game/common/Draw";
 import {FrameRate} from '@/components/game/common/FrameRate'
 import Config from "@/components/game/Config";
 import {AnimatedSprite, type AnimationSprite} from "@/components/game/common/AnimatedSprite";
-import {randomScale} from "@/components/game/common/utils";
+import {getNextDates} from "@/components/game/end/NextDates";
+import {FixedBubbleText} from "@/components/game/end/FixedBubbleText";
 
 
 const sound = new Audio(CloudSound)
@@ -38,9 +39,9 @@ export class Fumigene implements DisplayedObject {
     private scaleRate: FrameRate
     private layerSpeed: number
     private speed: number
-    private readonly mustDelete = false
+    private mustDelete = false
     private scaleIncrement: number = 0.02
-
+    private readonly bubbleText: FixedBubbleText
 
     constructor(game: GameContext, x: number) {
         this.game = game
@@ -54,6 +55,10 @@ export class Fumigene implements DisplayedObject {
         this.movementRate = new FrameRate(50)
         this.frameRate = new FrameRate(Config.frameRate * 1.1)
         this.scaleRate = new FrameRate(30)
+
+        const height = game.ctx.canvas.height
+        const position = game.center(height, height)
+        this.bubbleText = new FixedBubbleText(this.game, getNextDates())
     }
 
     get width(): number {
@@ -93,6 +98,8 @@ export class Fumigene implements DisplayedObject {
                     this.position.x,
                     this.y
                 )
+            } else {
+                this.mustDelete = true
             }
         })
 
@@ -124,6 +131,10 @@ export class Fumigene implements DisplayedObject {
     }
 
     draw() {
-        this.game.drawer.drawSprite(this.sprite.toDrawRef(this.coordinate))
+        if (this.mustDelete) {
+            this.bubbleText.draw()
+        } else {
+            this.game.drawer.drawSprite(this.sprite.toDrawRef(this.coordinate))
+        }
     }
 }

@@ -14,7 +14,7 @@ export default {
   opossumScale: 0.25,
   bubbleSpeedScale: 0.0002,
   fumigeneSpeedModifier: 0.9,
-  gameDuration: 30,
+  gameDuration: 3,
   leftKeys: ['ArrowLeft', 'SwipeLeft'],
   upKeys: ['ArrowUp', 'SwipeUp'],
   downKeys: ['ArrowDown', 'SwipeDown'],
