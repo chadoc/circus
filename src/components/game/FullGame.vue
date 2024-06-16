@@ -40,8 +40,11 @@ onMounted(() =>  {
   collisionCanvas.width = innerWidth
   collisionCanvas.height = innerHeight
 
-  game.value = triggerGame(canvas, collisionCanvas)
-  game.value?.toggleFullScreen()
+  window.addEventListener('load', function() {
+    game.value = triggerGame(canvas, collisionCanvas)
+    game.value?.toggleFullScreen()
+  })
+
 })
 
 function toggleFullScreen() {
