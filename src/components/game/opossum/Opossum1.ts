@@ -9,11 +9,12 @@ import {AlternateAnimation} from "@/components/game/common/AlternateAnimation";
 export class Opossum1 extends GenericOpossum {
   private animation: ObjectAnimation
 
-  constructor(game: GameContext, position: Position) {
+  constructor(game: GameContext, initialXShift: number, initialYShift: number) {
     super(
         game,
         new AnimatedSprite(OpossumSprite1, { row: 0, frame: 3 }),
-        position
+        initialXShift,
+        initialYShift
     )
     this.animation = new AlternateAnimation([
       () => new LeftRightAnimation(0, 7, 3, 4),

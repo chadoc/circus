@@ -12,7 +12,7 @@ export abstract class GenericOpossum implements DisplayedObject, HasGimmick {
     private readonly game: GameContext
     protected sprite: AnimatedSprite
     private position: Position
-    private readonly initialPosition: Position
+    private initialPosition: Position
     private speed: number
     private markedForDeletion: boolean
     private layerSpeed: number
@@ -20,12 +20,19 @@ export abstract class GenericOpossum implements DisplayedObject, HasGimmick {
     private frameRate: FrameRate
     private collisionDetection: CollisionDetection
     private gimmick: string[]
+    private readonly initialXShift: number
+    private readonly initialYShift: number
 
-    constructor(game: GameContext, sprite: AnimatedSprite, position: Position) {
+    constructor(game: GameContext,
+                sprite: AnimatedSprite,
+                initialXShift: number,
+                initialYShift: number) {
         this.game = game
         this.sprite = sprite
-        this.position = position
-        this.initialPosition = position
+        this.initialXShift = initialXShift
+        this.initialYShift = initialYShift
+        this.initialPosition = this.computeInitialPosition()
+        this.position = this.initialPosition
         this.gimmick = getGimmick()
 
         this.speed = 0
@@ -36,6 +43,17 @@ export abstract class GenericOpossum implements DisplayedObject, HasGimmick {
         this.movementRate = new FrameRate(50)
         this.frameRate = new FrameRate(Config.frameRate * 1.66)
         this.collisionDetection = new CollisionDetection(game.collisionCtx)
+        window.addEventListener('game-resized', () => this.resetInitialPosition())
+    }
+
+    private resetInitialPosition() {
+        this.initialPosition = this.computeInitialPosition()
+    }
+
+    private computeInitialPosition(): Position {
+        const sx = this.game.ctx.canvas.width * (this.initialXShift / 1920)
+        const sy = this.game.ctx.canvas.height * (this.initialYShift / 937)
+        return new Position(this.game.ctx.canvas.width / 2 + sx, this.game.ctx.canvas.height / 2 + sy)
     }
 
     get xAcceleration(): number {

@@ -42,7 +42,7 @@ onMounted(() =>  {
 
   window.addEventListener('load', function() {
     game.value = triggerGame(canvas, collisionCanvas)
-    game.value?.toggleFullScreen()
+    //game.value?.toggleFullScreen()
   })
 
 })

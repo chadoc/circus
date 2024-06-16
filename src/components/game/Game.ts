@@ -142,6 +142,8 @@ export class Game implements GameContext {
 
     window.addEventListener('resize', () => this.computeCanvasWidth())
     window.addEventListener('orientationchange', () => this.computeCanvasWidth())
+
+    setTimeout(() => this.computeCanvasWidth(), 200)
   }
 
   computeCanvasWidth() {
@@ -151,6 +153,7 @@ export class Game implements GameContext {
     this.ctx.canvas.height = h
     this.collisionCtx.canvas.width = w
     this.collisionCtx.canvas.height = h
+    window.dispatchEvent(new CustomEvent('game-resized', {}))
   }
 
   miss() {
@@ -186,21 +189,17 @@ export class Game implements GameContext {
     this.animations.push(animation);
   }
 
-  private position(shiftX: number, shiftY: number): Position {
-    return new Position(this.ctx.canvas.width / 2 + shiftX, this.ctx.canvas.height / 2 + shiftY)
-  }
-
   update(deltaTime: number) {
     this.animations = this.animations.filter(a => !a.mustDelete)
 
     if (this.opossums.length == 0) {
-      this.opossums.push(new Opossum1(this, this.position(760, -100)))
-      this.opossums.push(new Opossum2(this, this.position(-150, -300)))
-      this.opossums.push(new Opossum3(this, this.position(-690, 200)))
-      this.opossums.push(new Opossum1(this, this.position(-1640, -350)))
-      this.opossums.push(new Opossum2(this, this.position(-2065, 150)))
-      this.opossums.push(new Opossum3(this, this.position(1710, -400)))
-      // this.animations.push(new SpeechBubble(this, 300, 300, 300))
+      this.opossums.push(new Opossum1(this, 738, -100))
+      this.opossums.push(new Opossum2(this, -172, -300))
+      this.opossums.push(new Opossum3(this, -724, 200))
+      this.opossums.push(new Opossum1(this, -1657, -350))
+      this.opossums.push(new Opossum2(this, -2088, 150))
+      this.opossums.push(new Opossum3(this, 1680, -400))
+       // this.animations.push(new SpeechBubble(this, 300, 300, 300))
       // this.opossums.push(new Opossum(this))
     }
 
