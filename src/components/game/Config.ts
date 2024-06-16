@@ -8,7 +8,7 @@ export default {
   playerYSpeed: 11,
   playerXSpeed: 10,
   playerXSpeedScale: 0.02,
-  playerYSpeedScale: 0.005,
+  playerYSpeedScale: 0.006,
   playerFrameRateModifier: 0.6,
   playerScale: 0.3,
   opossumScale: 0.25,
