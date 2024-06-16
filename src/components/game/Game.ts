@@ -194,6 +194,10 @@ export class Game implements GameContext {
     return ((new Date().getTime() - this.started) / 1000) > Config.gameDuration
   }
 
+  get isGameDone(): boolean {
+    return this.shouldFinishGame && Boolean(this.fumigenes[0]?.mustDelete)
+  }
+
   update(deltaTime: number) {
     this.animations = this.animations.filter(a => !a.mustDelete)
 
@@ -242,7 +246,7 @@ export class Game implements GameContext {
       }
     })
 
-    if (!this.background.limit.shouldStopMove(this.input)) {
+    if (!this.background.limit.shouldStopMove(this.input) && !this.isGameDone) {
       this.envObjects.forEach(o => o.update(deltaTime, this.input))
     }
     this.player.update(deltaTime, this.input)
@@ -252,6 +256,11 @@ export class Game implements GameContext {
   draw() {
     if (this.level.isGameOver) {
       this.drawGameOver()
+      return
+    }
+    if (this.isGameDone) {
+      this.background.draw()
+      this.fumigenes.forEach(f => f.draw())
       return
     }
     this.drawOrder.forEach(o => o.draw())

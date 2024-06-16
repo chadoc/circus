@@ -56,8 +56,6 @@ export class Fumigene implements DisplayedObject {
         this.frameRate = new FrameRate(Config.frameRate * 1.1)
         this.scaleRate = new FrameRate(30)
 
-        const height = game.ctx.canvas.height
-        const position = game.center(height, height)
         this.bubbleText = new FixedBubbleText(this.game, getNextDates())
     }
 
@@ -99,6 +97,7 @@ export class Fumigene implements DisplayedObject {
                     this.y
                 )
             } else {
+                this.bubbleText.update(deltaTime)
                 this.mustDelete = true
             }
         })
