@@ -1,13 +1,12 @@
-import CloudImg from '../../../assets/SpriteCloud.png'
 import Bubble from '../../../assets/speech3.png'
 import CloudSound from '../../../assets/liquid.wav'
 import type {DisplayCoordinate, DisplayedObject, GameContext} from '@/components/game/common/Draw'
 import {FrameRate} from '@/components/game/common/FrameRate'
 import Config from "@/components/game/Config";
+import {AnimatedSprite} from "@/components/game/common/AnimatedSprite";
+import {CloudSprite} from "@/components/game/opossum/CloudSprite";
 
 const sound = new Audio(CloudSound)
-const image = new Image()
-image.src = CloudImg
 
 const bubble = new Image()
 bubble.src = Bubble
@@ -18,18 +17,16 @@ export interface HasGimmick {
 
 export class SpeechBubble implements DisplayedObject {
   private readonly game: GameContext
-  private width: number
-  private height: number
+  private sprite: AnimatedSprite
   private size: number
 
   private frame: number
 
-  private spriteWidth: number
-  private spriteHeight: number
-  private widthRatio: number
+  private scale: number
   private spriteFrames: number
 
   private markedForDeletion: boolean
+  private fixed: boolean
 
   private frameRate: FrameRate
   private quoteDurationSeconds: number = 4
@@ -44,34 +41,42 @@ export class SpeechBubble implements DisplayedObject {
 
   constructor(game: GameContext,
               source: DisplayedObject & { coordinate: DisplayCoordinate } & HasGimmick,
-              size: number) {
+              size: number,
+              fixed: boolean = false) {
     this.game = game
-    this.spriteWidth = 300
-    this.spriteHeight = 230
-    this.widthRatio = 0.2
-    this.width = this.spriteWidth / this.widthRatio
-    this.height = this.spriteHeight / this.widthRatio
+    this.sprite = new AnimatedSprite(CloudSprite, { row: 0, frame: 0 })
+    this.size = size
     this.source = source
     this.size = size
     this.spriteFrames = 9
     this.frame = 0
     this.markedForDeletion = false
+    this.fixed = fixed
     this.gimmick = source.gimmick
 
     this.frameRate = new FrameRate(Config.frameRate)
     this.creationTime = new Date().getTime()
   }
 
+  get coordinate(): DisplayCoordinate {
+    return {
+      x: this.x,
+      y: this.y,
+      width: this.size,
+      height: this.size
+    }
+  }
+
   get x(): number {
-    return this.source.coordinate.x - 100
+    return this.source.coordinate.x
   }
 
   get y(): number {
-    return this.source.coordinate.y + 100
+    return this.source.coordinate.y
   }
 
   get mustDelete() {
-    return this.markedForDeletion
+    return this.markedForDeletion && !this.fixed
   }
 
   update(deltaTime: number) {
@@ -90,11 +95,12 @@ export class SpeechBubble implements DisplayedObject {
         }
       } else {
         const elapsedTimeInSecond = (new Date().getTime() - this.creationTime) / 1000
-        if (elapsedTimeInSecond > this.quoteDurationSeconds) {
+        if (elapsedTimeInSecond > this.quoteDurationSeconds && !this.fixed) {
           this.displayBubble = false
           this.frame++
         }
       }
+      this.sprite.update({ row: 0, frame: this.frame })
     })
   }
 
@@ -127,12 +133,8 @@ export class SpeechBubble implements DisplayedObject {
         const textY = this.y + lineHeight * this.gimmick.indexOf(g) + lineHeight + 5
         this.game.ctx.fillText(g, textX, textY)
       })
-
-      // this.game.ctx.fillText('Parce que les opossums', textX, textYBase)
-      // this.game.ctx.fillText('les mettraient', textX, textYBase + lineHeight * 1)
-      // this.game.ctx.fillText('sûrement à l\'envers', textX, textYBase + lineHeight * 2)
     } else {
-      this.game.ctx.drawImage(image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.size, this.size)
+      this.game.drawer.drawSprite(this.sprite.toDrawRef(this.coordinate))
     }
   }
 }
