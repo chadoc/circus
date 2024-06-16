@@ -123,7 +123,7 @@ export class Game implements GameContext {
   private opossums: GenericOpossum[] = []
   private animations: DisplayedObject[] = []
   //private player: Player
-  private player: NikoPlayer
+  readonly player: NikoPlayer
   //private ship: PlayerShip
   readonly background: InteractiveBackground
   private readonly level = new Level()
