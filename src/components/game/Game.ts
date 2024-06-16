@@ -11,6 +11,7 @@ import type {GenericOpossum} from '@/components/game/opossum/GenericOpossum'
 import {NikoPlayer} from '@/components/game/niko/NikoPlayer'
 import Config from '@/components/game/Config'
 import {BubbleParticule} from '@/components/game/niko/BubbleParticule'
+import {Fumigene} from "@/components/game/end/Fumigene";
 
 class Level {
   private readonly maxPuppet = 10
@@ -122,12 +123,14 @@ export class Game implements GameContext {
   readonly collisionDrawer: DrawContext
   private opossums: GenericOpossum[] = []
   private animations: DisplayedObject[] = []
+  private fumigenes : DisplayedObject[] = []
   //private player: Player
   readonly player: NikoPlayer
   //private ship: PlayerShip
   readonly background: InteractiveBackground
   private readonly level = new Level()
   private readonly input: InputHandler
+  private readonly started = new Date().getTime()
 
   constructor(ctx: CanvasRenderingContext2D, collisionCtx: CanvasRenderingContext2D) {
     this.drawer = new DrawContext(ctx)
@@ -166,6 +169,7 @@ export class Game implements GameContext {
       ...this.opossums,
       ...[this.player],
       ...this.animations,
+      ...this.fumigenes
     ]
   }
 
@@ -189,8 +193,16 @@ export class Game implements GameContext {
     this.animations.push(animation);
   }
 
+  get shouldFinishGame(): boolean {
+    return ((new Date().getTime() - this.started) / 1000) > Config.gameDuration
+  }
+
   update(deltaTime: number) {
     this.animations = this.animations.filter(a => !a.mustDelete)
+
+    if (this.fumigenes.length == 0 && this.shouldFinishGame) {
+      this.fumigenes.push(new Fumigene(this, 0))
+    }
 
     if (this.opossums.length == 0) {
       this.opossums.push(new Opossum1(this, 738, -100))
@@ -222,6 +234,7 @@ export class Game implements GameContext {
       this.envObjects.forEach(o => o.update(deltaTime, this.input))
     }
     this.player.update(deltaTime, this.input)
+    this.fumigenes.forEach(f => f.update(deltaTime, this.input))
   }
 
   draw() {
